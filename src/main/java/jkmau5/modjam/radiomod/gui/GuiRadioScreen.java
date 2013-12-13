@@ -11,4 +11,11 @@ import net.minecraft.client.gui.GuiScreen;
  */
 public class GuiRadioScreen extends GuiScreen {
 
+    public GuiRadioScreen() {
+
+    }
+
+    public void initGui() {
+        System.out.println("Opening GUI");
+    }
 }

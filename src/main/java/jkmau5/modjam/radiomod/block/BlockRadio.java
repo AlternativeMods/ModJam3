@@ -1,6 +1,8 @@
 package jkmau5.modjam.radiomod.block;
 
 import jkmau5.modjam.radiomod.RadioMod;
+import jkmau5.modjam.radiomod.gui.EnumGui;
+import jkmau5.modjam.radiomod.gui.GuiOpener;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -35,8 +37,26 @@ public class BlockRadio extends Block {
             return false;
 
         TileEntity tempTile = world.getBlockTileEntity(x, y, z);
-        if(tempTile != null)
-            player.addChatMessage("Tile is there!");
-        return false;
+        if(tempTile == null || !(tempTile instanceof TileEntityRadio))
+            return false;
+
+        TileEntityRadio radio = (TileEntityRadio) tempTile;
+        player.addChatMessage(radio.getRadioName());
+
+        GuiOpener.openGuiOnClient(EnumGui.RADIO_BLOCK, player);
+        return true;
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, int oldId, int oldMeta) {
+        if(world.isRemote)
+            return;
+
+        TileEntity tempTile = world.getBlockTileEntity(x, y, z);
+        if(tempTile == null || !(tempTile instanceof TileEntityRadio))
+            return;
+
+        //RadioMod.radioWorldHandler.removeRadioTile((TileEntityRadio)tempTile);
+        super.breakBlock(world, x, y, z, oldId, oldMeta);
     }
 }

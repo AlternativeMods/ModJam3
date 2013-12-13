@@ -5,6 +5,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -15,6 +16,8 @@ import jkmau5.modjam.radiomod.network.RadioWorldHandler;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.creativetab.CreativeTabs;
+
+import java.util.Random;
 
 @Mod(modid = RadioMod.MODID)
 public class RadioMod {
@@ -29,6 +32,11 @@ public class RadioMod {
 
     @SidedProxy(modId = RadioMod.MODID, clientSide = "jkmau5.modjam.radiomod.client.ProxyClient", serverSide = "jkmau5.modjam.radiomod.server.ProxyCommon")
     public static ProxyCommon proxy;
+
+    public static String getUniqueRadioID() {
+        Random random = new Random();
+        return "Radio-" + (random.nextInt(8999999) + 1000000);
+    }
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -60,5 +68,10 @@ public class RadioMod {
     @Mod.EventHandler
     public void serverStarting(FMLServerStartedEvent event) {
         radioWorldHandler = new RadioWorldHandler();
+    }
+
+    @Mod.EventHandler
+    public void serverStopping(FMLServerStoppedEvent event) {
+        radioWorldHandler = null;
     }
 }

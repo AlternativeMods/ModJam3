@@ -14,9 +14,43 @@ import net.minecraft.tileentity.TileEntity;
 public class TileEntityRadio extends TileEntity {
 
     protected String radioName;
+    private boolean isInitiated;
 
     public TileEntityRadio() {
-        RadioMod.radioWorldHandler.addRadioTile(this);
+        isInitiated = false;
+        radioName = RadioMod.getUniqueRadioID();
+    }
+
+    @Override
+    public void validate()
+    {
+        if(!isInitiated) {
+            isInitiated = true;
+            if(!worldObj.isRemote)
+                RadioMod.radioWorldHandler.addRadioTile(this);
+        }
+        this.tileEntityInvalid = false;
+    }
+
+    @Override
+    public void invalidate()
+    {
+        if(isInitiated) {
+            isInitiated = false;
+            if(!worldObj.isRemote)
+                RadioMod.radioWorldHandler.removeRadioTile(this);
+        }
+        this.tileEntityInvalid = true;
+    }
+
+    @Override
+    public void onChunkUnload()
+    {
+        if(isInitiated) {
+            isInitiated = false;
+            if(!worldObj.isRemote)
+                RadioMod.radioWorldHandler.removeRadioTile(this);
+        }
     }
 
     public String getRadioName() {
@@ -30,6 +64,7 @@ public class TileEntityRadio extends TileEntity {
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
+
 
         setRadioName(tagCompound.getString("radioName"));
     }

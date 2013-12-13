@@ -36,6 +36,9 @@ public class RadioWorldHandler {
             return false;
         dimensionTiles.add(radio);
         radioTiles.put(dimensionId, dimensionTiles);
+
+        System.out.println("Added a radio tile in dimension " + dimensionId);
+
         return true;
     }
 
@@ -49,6 +52,9 @@ public class RadioWorldHandler {
             return false;
         dimensionTiles.remove(radio);
         radioTiles.put(dimensionId, dimensionTiles);
+
+        System.out.println("Removed a radio tile from dimension " + dimensionId);
+
         return true;
     }
 }
