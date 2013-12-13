@@ -3,6 +3,7 @@ package jkmau5.modjam.radiomod.network;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
+import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -49,16 +50,17 @@ public class PacketUpdateRadioName extends PacketBase {
         this.dimId = input.readInt();
         this.radioName = input.readUTF();
 
-        World world;
-        if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-            world = player.getEntityWorld();
-        else
-            world = DimensionManager.getWorld(dimId);
+        Side effectiveSide = FMLCommonHandler.instance().getEffectiveSide();
+        World world = DimensionManager.getWorld(dimId);
+        if(effectiveSide == Side.CLIENT)
+            world = Minecraft.getMinecraft().theWorld;
+
         TileEntity tempTile = world.getBlockTileEntity(x, y, z);
         if(tempTile == null || !(tempTile instanceof TileEntityRadio))
             return;
+        TileEntityRadio radio = (TileEntityRadio) tempTile;
 
-        ((TileEntityRadio)tempTile).setRadioName(radioName);
+        radio.setRadioName(radioName);
 
         //if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
         //    PacketDispatcher.sendPacketToAllPlayers(new PacketUpdateRadioName(x, y, z, dimId, radioName).getPacket()); // TODO: Less packet sending at this one...

@@ -3,12 +3,9 @@ package jkmau5.modjam.radiomod.gui;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.network.PacketUpdateRadioName;
-import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 /**
  * Author: Lordmau5
@@ -20,10 +17,12 @@ import net.minecraft.world.World;
 public class GuiRadioScreen extends GuiScreen {
 
     int x, y, z;
-    public GuiRadioScreen(int x, int y, int z) {
+    String radioName;
+    public GuiRadioScreen(int x, int y, int z, String radioName) {
         this.x = x;
         this.y = y;
         this.z = z;
+        this.radioName = radioName;
     }
 
     GuiButton nameButton;
@@ -32,18 +31,10 @@ public class GuiRadioScreen extends GuiScreen {
     public void initGui() {
         buttonList.add(nameButton = new GuiButton(buttonList.size(), this.width / 2 - 100, this.height / 4 + 96 + 12, "Set Radio Name"));
 
-        radioNameField = new GuiTextField(this.fontRenderer, this.width / 2 - 150, 60, 300, 20);
-        radioNameField.setMaxStringLength(26);
+        radioNameField = new GuiTextField(this.fontRenderer, this.width - 140, 30, 120, 20);
+        radioNameField.setMaxStringLength(20);
         radioNameField.setFocused(true);
-        initiateRadioNameField();
-    }
-
-    protected void initiateRadioNameField() {
-        World world = mc.theWorld;
-        TileEntity tempTile = world.getBlockTileEntity(x, y, z);
-        if(tempTile == null || !(tempTile instanceof TileEntityRadio))
-            return;
-        radioNameField.setText(((TileEntityRadio)tempTile).getRadioName());
+        radioNameField.setText(radioName);
     }
 
     protected void actionPerformed(GuiButton button) {
