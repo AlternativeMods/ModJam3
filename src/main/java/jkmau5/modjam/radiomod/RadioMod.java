@@ -19,7 +19,7 @@ public class RadioMod {
     public BlockRadio blockRadio;
     public ItemMediaPlayer itemMediaPlayer;
 
-    public CreativeTabs tabRadioMod = new CreativeTabs("RadioMod");
+    public static final CreativeTabs tabRadioMod = new CreativeTabs("RadioMod");
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -38,7 +38,6 @@ public class RadioMod {
     public void init(FMLInitializationEvent event) {
         LanguageRegistry.addName(blockRadio, "Radio Block");
         LanguageRegistry.addName(itemMediaPlayer, "Media Player");
-        LanguageRegistry.addName("itemGroup.RadioMod", "Radio Mod");
 
         TickRegistry.registerTickHandler(new RadioTickHandler(), Side.SERVER);
     }
