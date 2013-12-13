@@ -18,7 +18,15 @@ public class GuiOpener {
             Minecraft.getMinecraft().displayGuiScreen(new GuiRadioScreen());
     }
 
+    public static void openGuiCallback(EnumGui gui, int x, int y, int z){
+
+    }
+
     public static void openGuiOnClient(EnumGui gui, EntityPlayer player){
         PacketDispatcher.sendPacketToPlayer(new PacketOpenGui(gui).getPacket(), (Player) player);
+    }
+
+    public static void openGuiOnClient(EnumGui gui, EntityPlayer player, int x, int y, int z){
+        PacketDispatcher.sendPacketToPlayer(new PacketOpenGui(gui, x, y, z).getPacket(), (Player) player);
     }
 }

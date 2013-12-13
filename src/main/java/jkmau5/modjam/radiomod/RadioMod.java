@@ -6,12 +6,14 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
+import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import jkmau5.modjam.radiomod.block.BlockRadio;
 import jkmau5.modjam.radiomod.item.ItemMediaPlayer;
+import jkmau5.modjam.radiomod.network.PacketHandler;
 import jkmau5.modjam.radiomod.network.RadioWorldHandler;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
@@ -20,6 +22,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import java.util.Random;
 
 @Mod(modid = RadioMod.MODID)
+@NetworkMod(clientSideRequired = true, channels = {"RadioMod"}, packetHandler = PacketHandler.class)
 public class RadioMod {
 
     public static final String MODID = "RadioMod";
