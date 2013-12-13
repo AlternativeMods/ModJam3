@@ -1,5 +1,6 @@
 package jkmau5.modjam.radiomod.gui;
 
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 
 /**
@@ -15,7 +16,14 @@ public class GuiRadioScreen extends GuiScreen {
 
     }
 
+    GuiButton randomButton;
+
     public void initGui() {
-        System.out.println("Opening GUI");
+        randomButton = new GuiButton(buttonList.size(), );
+        buttonList.add(randomButton);
+    }
+
+    protected void actionPerformed(GuiButton paramGuiButton) {
+
     }
 }
