@@ -1,0 +1,53 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.0-SNAPSHOT'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'forge'
+apply plugin: 'maven'
+
+group = 'jkmau5.modjam'
+version = '0.1-SNAPSHOT'
+archivesBaseName = 'RadioMod' //TODO: name?
+
+minecraft{
+    version = '1.6.4-9.11.1.964'
+    assetDir = 'runtime/client/assets'
+}
+
+jar {
+    manifest {
+        attributes 'Version': project.version
+    }
+    if (project.hasProperty("signmod")) {
+        logger.info("Signing jar")
+        doLast {
+            ant.signjar(jar: jar.archivePath, alias: 'jkmau5', keystore: project.signmod.keystoreLocation, storepass: project.signmod.keystoreLocation)
+        }
+    }
+}
+
+uploadArchives {
+    if (project.hasProperty("filesmaven")) {
+        logger.info('Deploying to file server')
+        repositories.mavenDeployer {
+            configuration = configurations.deployerJars
+            repository(url: "scp://maven.reening.nl/media/maven/") {
+                authentication(userName: project.filesmaven.mavenUsername, password: project.filesmaven.mavenPassword)
+            }
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.8'
+}
