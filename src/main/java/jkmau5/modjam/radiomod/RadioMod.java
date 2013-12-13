@@ -10,6 +10,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import jkmau5.modjam.radiomod.block.BlockRadio;
 import jkmau5.modjam.radiomod.item.ItemMediaPlayer;
+import jkmau5.modjam.radiomod.network.RadioWorldHandler;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.creativetab.CreativeTabs;
 
@@ -19,6 +20,8 @@ public class RadioMod {
     public static final String MODID = "RadioMod";
     public BlockRadio blockRadio;
     public ItemMediaPlayer itemMediaPlayer;
+
+    public RadioWorldHandler radioWorldHandler;
 
     public static final CreativeTabs tabRadioMod = new CreativeTabs("RadioMod");
 
@@ -33,6 +36,8 @@ public class RadioMod {
 
         itemMediaPlayer = new ItemMediaPlayer(5000);
         GameRegistry.registerItem(itemMediaPlayer, "ItemMediaPlayer");
+
+        //--------
     }
 
     @Mod.EventHandler
@@ -45,6 +50,6 @@ public class RadioMod {
 
     @Mod.EventHandler
     public void serverStarting(FMLServerStartedEvent event) {
-
+        radioWorldHandler = new RadioWorldHandler();
     }
 }
