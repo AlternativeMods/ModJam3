@@ -24,7 +24,7 @@ public class PacketUpdateRadioName extends PacketBase {
     private String radioName;
 
     public PacketUpdateRadioName(){}
-    public PacketUpdateRadioName(int x, int y, int z, int dimId, String radioName){
+    public PacketUpdateRadioName(int x, int y, int z, int dimId, String radioName) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -43,20 +43,24 @@ public class PacketUpdateRadioName extends PacketBase {
 
     @Override
     public void readPacket(DataInput input) throws IOException {
-        if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-            return;
-
         this.x = input.readInt();
         this.y = input.readInt();
         this.z = input.readInt();
         this.dimId = input.readInt();
         this.radioName = input.readUTF();
 
-        World world = DimensionManager.getWorld(dimId);
+        World world;
+        if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+            world = player.getEntityWorld();
+        else
+            world = DimensionManager.getWorld(dimId);
         TileEntity tempTile = world.getBlockTileEntity(x, y, z);
         if(tempTile == null || !(tempTile instanceof TileEntityRadio))
             return;
 
         ((TileEntityRadio)tempTile).setRadioName(radioName);
+
+        //if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
+        //    PacketDispatcher.sendPacketToAllPlayers(new PacketUpdateRadioName(x, y, z, dimId, radioName).getPacket()); // TODO: Less packet sending at this one...
     }
 }

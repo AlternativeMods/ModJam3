@@ -26,11 +26,11 @@ public class GuiRadioScreen extends GuiScreen {
         this.z = z;
     }
 
-    GuiButton randomButton;
+    GuiButton nameButton;
     GuiTextField radioNameField;
 
     public void initGui() {
-        buttonList.add(randomButton = new GuiButton(buttonList.size(), this.width / 2 - 100, this.height / 4 + 96 + 12, "Random Name"));
+        buttonList.add(nameButton = new GuiButton(buttonList.size(), this.width / 2 - 100, this.height / 4 + 96 + 12, "Set Radio Name"));
 
         radioNameField = new GuiTextField(this.fontRenderer, this.width / 2 - 150, 60, 300, 20);
         radioNameField.setMaxStringLength(26);
@@ -47,11 +47,30 @@ public class GuiRadioScreen extends GuiScreen {
     }
 
     protected void actionPerformed(GuiButton button) {
-        if(button == randomButton) {
+        if(button == nameButton) {
             if(radioNameField.getText().equals(""))
                 radioNameField.setText(RadioMod.getUniqueRadioID());
             PacketDispatcher.sendPacketToServer(new PacketUpdateRadioName(x, y, z, mc.thePlayer.worldObj.provider.dimensionId, radioNameField.getText()).getPacket());
+            hideScreen();
         }
+    }
+
+    protected void hideScreen() {
+        this.mc.displayGuiScreen(null);
+    }
+
+    protected void keyTyped(char paramChar, int paramInt)
+    {
+        radioNameField.textboxKeyTyped(paramChar, paramInt);
+        if(radioNameField.getText().equals(""))
+            nameButton.displayString = "Random Radio Name";
+        else
+            nameButton.displayString = "Set Radio Name";
+
+        if (paramInt == 28 || paramInt == 156)
+            actionPerformed(nameButton);
+        else if (paramInt == 1)
+            hideScreen();
     }
 
     public void drawScreen(int x, int y, float floatVar)
