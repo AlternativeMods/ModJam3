@@ -23,6 +23,7 @@ import java.io.IOException;
 public abstract class PacketBase {
 
     private static BiMap<Integer, Class<? extends PacketBase>> packets = HashBiMap.create();
+    public EntityPlayer player;
 
     private static void registerPacket(int id, Class<? extends PacketBase> cl){
         packets.put(id, cl);
@@ -53,6 +54,7 @@ public abstract class PacketBase {
             PacketBase newPacket = packets.get(packetid).newInstance();
             if(newPacket != null){
                 newPacket.readPacket(input);
+                newPacket.player = player;
             }
             ret = newPacket;
         }catch(Exception e){
