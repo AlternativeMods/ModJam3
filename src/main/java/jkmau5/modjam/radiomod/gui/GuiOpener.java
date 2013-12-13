@@ -22,7 +22,7 @@ public class GuiOpener {
         if(gui == EnumGui.RADIO_BLOCK) {
             World world = Minecraft.getMinecraft().thePlayer.worldObj;
 
-            Minecraft.getMinecraft().displayGuiScreen(new GuiRadioScreen());
+            Minecraft.getMinecraft().displayGuiScreen(new GuiRadioScreen(x, y, z));
         }
     }
 

@@ -31,6 +31,7 @@ public abstract class PacketBase {
 
     static {
         registerPacket(0, PacketOpenGui.class);
+        registerPacket(1, PacketUpdateRadioName.class);
     }
 
     public final Packet250CustomPayload getPacket(){
