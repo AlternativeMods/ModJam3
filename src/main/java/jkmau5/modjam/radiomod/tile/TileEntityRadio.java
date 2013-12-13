@@ -3,6 +3,7 @@ package jkmau5.modjam.radiomod.tile;
 import jkmau5.modjam.radiomod.RadioMod;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 /**
  * Author: Lordmau5
@@ -15,8 +16,11 @@ public class TileEntityRadio extends TileEntity {
 
     protected String radioName;
 
-    public TileEntityRadio() {
-        RadioMod.radioWorldHandler.addRadioTile(this);
+    public TileEntityRadio() {}
+
+    public TileEntityRadio(World world) {
+        if(!world.isRemote)
+            RadioMod.radioWorldHandler.addRadioTile(this, world);
     }
 
     public String getRadioName() {
@@ -30,6 +34,7 @@ public class TileEntityRadio extends TileEntity {
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
+
 
         setRadioName(tagCompound.getString("radioName"));
     }
