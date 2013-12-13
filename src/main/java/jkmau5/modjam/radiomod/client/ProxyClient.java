@@ -1,6 +1,7 @@
 package jkmau5.modjam.radiomod.client;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import jkmau5.modjam.radiomod.client.render.RenderBlockAntenna;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
 
 /**
@@ -16,6 +17,6 @@ public class ProxyClient extends ProxyCommon {
     public void init(){
         super.init();
 
-
+        RenderingRegistry.registerBlockHandler(new RenderBlockAntenna());
     }
 }

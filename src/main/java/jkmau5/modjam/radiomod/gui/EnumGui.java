@@ -22,4 +22,10 @@ public enum EnumGui {
     public static EnumGui fromID(int id){
         return BY_ID.get(id);
     }
+
+    static {
+        for(EnumGui gui : values()){
+            BY_ID.put(gui.guiID, gui);
+        }
+    }
 }

@@ -11,6 +11,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
+import jkmau5.modjam.radiomod.block.BlockAntenna;
 import jkmau5.modjam.radiomod.block.BlockRadio;
 import jkmau5.modjam.radiomod.item.ItemMediaPlayer;
 import jkmau5.modjam.radiomod.network.PacketHandler;
@@ -27,6 +28,7 @@ public class RadioMod {
 
     public static final String MODID = "RadioMod";
     public BlockRadio blockRadio;
+    public BlockAntenna blockAntenna;
     public ItemMediaPlayer itemMediaPlayer;
 
     public static RadioWorldHandler radioWorldHandler;
@@ -44,7 +46,9 @@ public class RadioMod {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         blockRadio = new BlockRadio(2500);
+        blockAntenna = new BlockAntenna(2501);
         GameRegistry.registerBlock(blockRadio, "BlockRadio");
+        GameRegistry.registerBlock(blockAntenna, "BlockAntenna");
 
         GameRegistry.registerTileEntity(TileEntityRadio.class, "TileRadio");
 
