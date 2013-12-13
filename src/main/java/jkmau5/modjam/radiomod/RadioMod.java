@@ -37,6 +37,8 @@ public class RadioMod {
 
         GameRegistry.registerTileEntity(TileEntityRadio.class, "TileRadio");
 
+        proxy.preInit();
+
         //--------
 
         itemMediaPlayer = new ItemMediaPlayer(5000);
@@ -49,6 +51,8 @@ public class RadioMod {
     public void init(FMLInitializationEvent event) {
         LanguageRegistry.addName(blockRadio, "Radio Block");
         LanguageRegistry.addName(itemMediaPlayer, "Media Player");
+
+        proxy.init();
 
         TickRegistry.registerTickHandler(new RadioTickHandler(), Side.SERVER);
     }
