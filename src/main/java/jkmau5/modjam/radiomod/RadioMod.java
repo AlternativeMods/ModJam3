@@ -21,7 +21,7 @@ public class RadioMod {
     public BlockRadio blockRadio;
     public ItemMediaPlayer itemMediaPlayer;
 
-    public RadioWorldHandler radioWorldHandler;
+    public static RadioWorldHandler radioWorldHandler;
 
     public static final CreativeTabs tabRadioMod = new CreativeTabs("RadioMod");
 

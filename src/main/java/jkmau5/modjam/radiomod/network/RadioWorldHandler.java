@@ -22,6 +22,10 @@ public class RadioWorldHandler {
         radioTiles.clear();
     }
 
+    public String getRadioName(TileEntityRadio radio) {
+        return radio.getRadioName();
+    }
+
     public boolean addRadioTile(TileEntityRadio radio) {
         int dimensionId = radio.worldObj.provider.dimensionId;
         List<TileEntityRadio> dimensionTiles = radioTiles.get(dimensionId);
@@ -40,6 +44,11 @@ public class RadioWorldHandler {
         List<TileEntityRadio> dimensionTiles = radioTiles.get(dimensionId);
 
         if(dimensionTiles == null)
-            dimensionTiles = new ArrayList<TileEntityRadio>();
+            return false;
+        if(!dimensionTiles.contains(radio))
+            return false;
+        dimensionTiles.remove(radio);
+        radioTiles.put(dimensionId, dimensionTiles);
+        return true;
     }
 }
