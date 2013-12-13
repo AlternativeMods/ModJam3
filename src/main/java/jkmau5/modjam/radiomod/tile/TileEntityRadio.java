@@ -12,6 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 public class TileEntityRadio extends TileEntity {
 
     public TileEntityRadio() {
-
+        System.out.println("Tile created!");
     }
 }
