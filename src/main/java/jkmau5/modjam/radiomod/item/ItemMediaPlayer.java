@@ -1,5 +1,6 @@
 package jkmau5.modjam.radiomod.item;
 
+import jkmau5.modjam.radiomod.RadioMod;
 import net.minecraft.item.Item;
 
 /**
@@ -13,5 +14,6 @@ public class ItemMediaPlayer extends Item {
 
     public ItemMediaPlayer(int par1) {
         super(par1);
+        setCreativeTab(RadioMod.tabRadioMod);
     }
 }
