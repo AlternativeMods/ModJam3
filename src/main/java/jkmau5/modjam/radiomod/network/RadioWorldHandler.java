@@ -1,7 +1,6 @@
 package jkmau5.modjam.radiomod.network;
 
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
-import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,8 +26,8 @@ public class RadioWorldHandler {
         return radio.getRadioName();
     }
 
-    public boolean addRadioTile(TileEntityRadio radio, World world) {
-        int dimensionId = world.provider.dimensionId;
+    public boolean addRadioTile(TileEntityRadio radio) {
+        int dimensionId = radio.worldObj.provider.dimensionId;
         List<TileEntityRadio> dimensionTiles = radioTiles.get(dimensionId);
 
         if(dimensionTiles == null)

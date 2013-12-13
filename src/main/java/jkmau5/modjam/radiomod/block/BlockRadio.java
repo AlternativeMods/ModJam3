@@ -27,7 +27,7 @@ public class BlockRadio extends Block {
     }
 
     public TileEntity createTileEntity(World world, int metadata) {
-        return new TileEntityRadio(world);
+        return new TileEntityRadio();
     }
 
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
@@ -35,9 +35,12 @@ public class BlockRadio extends Block {
             return false;
 
         TileEntity tempTile = world.getBlockTileEntity(x, y, z);
-        if(tempTile != null)
-            player.addChatMessage("Tile is there!");
-        return false;
+        if(tempTile == null || !(tempTile instanceof TileEntityRadio))
+            return false;
+
+        TileEntityRadio radio = (TileEntityRadio) tempTile;
+        player.addChatMessage(radio.getRadioName());
+        return true;
     }
 
     @Override

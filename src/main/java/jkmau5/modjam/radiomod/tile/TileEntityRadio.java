@@ -3,7 +3,6 @@ package jkmau5.modjam.radiomod.tile;
 import jkmau5.modjam.radiomod.RadioMod;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 /**
  * Author: Lordmau5
@@ -15,12 +14,22 @@ import net.minecraft.world.World;
 public class TileEntityRadio extends TileEntity {
 
     protected String radioName;
+    private boolean isInitiated;
 
-    public TileEntityRadio() {}
+    public TileEntityRadio() {
+        isInitiated = false;
+        radioName = RadioMod.getUniqueRadioID();
+    }
 
-    public TileEntityRadio(World world) {
-        if(!world.isRemote)
-            RadioMod.radioWorldHandler.addRadioTile(this, world);
+    @Override
+    public void updateEntity() {
+        if(worldObj.isRemote)
+            return;
+
+        if(!isInitiated) {
+            isInitiated = true;
+            RadioMod.radioWorldHandler.addRadioTile(this);
+        }
     }
 
     public String getRadioName() {
