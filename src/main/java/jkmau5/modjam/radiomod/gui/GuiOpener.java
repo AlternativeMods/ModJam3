@@ -5,6 +5,7 @@ import cpw.mods.fml.common.network.Player;
 import jkmau5.modjam.radiomod.network.PacketOpenGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 
 /**
  * No description given
@@ -14,12 +15,15 @@ import net.minecraft.entity.player.EntityPlayer;
 public class GuiOpener {
 
     public static void openGuiCallback(EnumGui gui){
-        if(gui == EnumGui.RADIO_BLOCK)
-            Minecraft.getMinecraft().displayGuiScreen(new GuiRadioScreen());
+
     }
 
     public static void openGuiCallback(EnumGui gui, int x, int y, int z){
+        if(gui == EnumGui.RADIO_BLOCK) {
+            World world = Minecraft.getMinecraft().thePlayer.worldObj;
 
+            Minecraft.getMinecraft().displayGuiScreen(new GuiRadioScreen());
+        }
     }
 
     public static void openGuiOnClient(EnumGui gui, EntityPlayer player){

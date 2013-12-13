@@ -43,7 +43,7 @@ public class BlockRadio extends Block {
         TileEntityRadio radio = (TileEntityRadio) tempTile;
         player.addChatMessage(radio.getRadioName());
 
-        GuiOpener.openGuiOnClient(EnumGui.RADIO_BLOCK, player);
+        GuiOpener.openGuiOnClient(EnumGui.RADIO_BLOCK, player, x, y, z);
         return true;
     }
 
