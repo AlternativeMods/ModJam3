@@ -20,7 +20,11 @@ public class RenderBlockAntenna implements ISimpleBlockRenderingHandler {
 
     @Override
     public boolean renderWorldBlock(IBlockAccess iBlockAccess, int i, int i2, int i3, Block block, int i4, RenderBlocks renderBlocks){
-        return false;
+        renderBlocks.renderAllFaces = true;
+        renderBlocks.setRenderBounds(0.45, 0.55, 0.45, 0.55, 0, 0.9);
+        renderBlocks.renderBlockAllFaces(block, i, i2, i3);
+
+        return true;
     }
 
     @Override
