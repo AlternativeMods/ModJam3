@@ -22,13 +22,34 @@ public class TileEntityRadio extends TileEntity {
     }
 
     @Override
-    public void updateEntity() {
-        if(worldObj.isRemote)
-            return;
-
+    public void validate()
+    {
         if(!isInitiated) {
             isInitiated = true;
-            RadioMod.radioWorldHandler.addRadioTile(this);
+            if(!worldObj.isRemote)
+                RadioMod.radioWorldHandler.addRadioTile(this);
+        }
+        this.tileEntityInvalid = false;
+    }
+
+    @Override
+    public void invalidate()
+    {
+        if(isInitiated) {
+            isInitiated = false;
+            if(!worldObj.isRemote)
+                RadioMod.radioWorldHandler.removeRadioTile(this);
+        }
+        this.tileEntityInvalid = true;
+    }
+
+    @Override
+    public void onChunkUnload()
+    {
+        if(isInitiated) {
+            isInitiated = false;
+            if(!worldObj.isRemote)
+                RadioMod.radioWorldHandler.removeRadioTile(this);
         }
     }
 
