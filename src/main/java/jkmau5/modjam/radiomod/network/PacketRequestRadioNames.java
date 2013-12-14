@@ -64,7 +64,11 @@ public class PacketRequestRadioNames extends PacketBase {
             if(!shouldContinue)
                 return;
 
-            NBTTagCompound compoundTag = CompressedStreamTools.read(input);
+            int length = input.readInt();
+            byte[] byteArray = new byte[length];
+            input.readFully(byteArray);
+
+            NBTTagCompound compoundTag = CompressedStreamTools.decompress(byteArray);
             NBTTagList tagList = compoundTag.getTagList("radios");
 
             List<TileEntityRadio> radios = new ArrayList<TileEntityRadio>();
