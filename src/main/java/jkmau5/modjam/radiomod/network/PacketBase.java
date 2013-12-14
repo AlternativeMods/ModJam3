@@ -32,6 +32,7 @@ public abstract class PacketBase {
     static {
         registerPacket(0, PacketOpenGui.class);
         registerPacket(1, PacketUpdateRadioName.class);
+        registerPacket(2, PacketRequestRadioNames.class);
     }
 
     public final Packet250CustomPayload getPacket(){
@@ -54,8 +55,8 @@ public abstract class PacketBase {
             int packetid = input.readByte();
             PacketBase newPacket = packets.get(packetid).newInstance();
             if(newPacket != null){
-                newPacket.readPacket(input);
                 newPacket.player = player;
+                newPacket.readPacket(input);
             }
             ret = newPacket;
         }catch(Exception e){

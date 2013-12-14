@@ -27,8 +27,8 @@ public class RadioWorldHandler {
         return radio.getRadioName();
     }
 
-    public List<TileEntityRadio> getAvailableRadioList(EntityPlayer player) {
-        int dimensionId = player.worldObj.provider.dimensionId;
+    public List<TileEntityRadio> getAvailableRadioList(int dimensionId, EntityPlayer player) {
+        //World world = player.worldObj.provider.dimensionId;
         List<TileEntityRadio> tempRadios = radioTiles.get(dimensionId);
         if(tempRadios == null || tempRadios.isEmpty())
             return null;
@@ -36,7 +36,7 @@ public class RadioWorldHandler {
         List<TileEntityRadio> availableRadios = new ArrayList<TileEntityRadio>();
 
         for(TileEntityRadio availableRadio : tempRadios) {
-            if(availableRadio.getDistanceToMe(player) < 250)  //TODO: Change Probably?
+            if(availableRadio.getDistanceToMe() < 250)  //TODO: Change Probably?
                 availableRadios.add(availableRadio);
         }
         return availableRadios;
