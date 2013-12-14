@@ -3,6 +3,7 @@ package jkmau5.modjam.radiomod.tile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import jkmau5.modjam.radiomod.RadioMod;
+import jkmau5.modjam.radiomod.network.RadioNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -19,10 +20,26 @@ public class TileEntityBroadcaster extends TileEntity {
 
     protected String radioName;
     private boolean isInitiated;
+    private RadioNetwork radioNetwork;
+    private boolean radioInitiated;
 
     public TileEntityBroadcaster(){
-        isInitiated = false;
-        radioName = RadioMod.getUniqueRadioID();
+        this.isInitiated = false;
+        this.radioName = RadioMod.getUniqueRadioID();
+        this.radioInitiated = false;
+    }
+
+    public void initiateNetwork() {
+        this.radioNetwork = new RadioNetwork(this);
+        this.radioInitiated = false;
+    }
+
+    public void setRadioNetwork(RadioNetwork radioNetwork) {
+        this.radioNetwork = radioNetwork;
+    }
+
+    public RadioNetwork getRadioNetwork() {
+        return this.radioNetwork;
     }
 
     @SideOnly(Side.CLIENT)
@@ -47,6 +64,10 @@ public class TileEntityBroadcaster extends TileEntity {
             isInitiated = true;
             if(!worldObj.isRemote)
                 RadioMod.radioWorldHandler.addRadioTile(this);
+        }
+        if(!radioInitiated) {
+            radioInitiated = true;
+            this.radioNetwork = new RadioNetwork(this);
         }
         this.tileEntityInvalid = false;
     }

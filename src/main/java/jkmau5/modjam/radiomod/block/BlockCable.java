@@ -63,7 +63,7 @@ public class BlockCable extends Block {
         TileEntityCable cable = (TileEntityCable) tempTile;
         player.addChatMessage(cable.getNetwork().toString());
 
-        return true;
+        return false;
     }
 
     public void breakBlock(World world, int x, int y, int z, int oldId, int oldMeta) {
@@ -104,6 +104,11 @@ public class BlockCable extends Block {
     }
 
     public void setCableBoundingBox(IBlockAccess world, int x, int y, int z) {
+        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        if(tile == null || !(tile instanceof TileEntityCable))
+            return;
+        TileEntityCable cable = (TileEntityCable) tile;
+
         float minX = 0.4F;
         float minY = 0.4F;
         float minZ = 0.4F;
@@ -112,19 +117,19 @@ public class BlockCable extends Block {
         float maxY = 0.6F;
         float maxZ = 0.6F;
 
-        if(isValidTileAtPosition(world, x - 1, y, z))
+        if(isValidTileAtPosition(cable, world, x - 1, y, z))
             minX = 0F;
-        if(isValidTileAtPosition(world, x + 1, y, z))
+        if(isValidTileAtPosition(cable, world, x + 1, y, z))
             maxX = 1F;
 
-        if(isValidTileAtPosition(world, x, y - 1, z))
+        if(isValidTileAtPosition(cable, world, x, y - 1, z))
             minY = 0F;
-        if(isValidTileAtPosition(world, x, y + 1, z))
+        if(isValidTileAtPosition(cable, world, x, y + 1, z))
             maxY = 1F;
 
-        if(isValidTileAtPosition(world, x, y, z - 1))
+        if(isValidTileAtPosition(cable, world, x, y, z - 1))
             minZ = 0F;
-        if(isValidTileAtPosition(world, x, y, z + 1))
+        if(isValidTileAtPosition(cable, world, x, y, z + 1))
             maxZ = 1F;
 
         this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
@@ -138,12 +143,18 @@ public class BlockCable extends Block {
         }
     }
 
-    public boolean isValidTileAtPosition(IBlockAccess world, int x, int y, int z) {
+    public boolean isValidTileAtPosition(TileEntityCable cable, IBlockAccess world, int x, int y, int z) {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
         if(tile == null)
             return false;
-        if(tile instanceof TileEntityCable || tile instanceof TileEntityBroadcaster)
+        if(tile instanceof TileEntityCable)
             return true;
+        if(tile instanceof TileEntityBroadcaster) {
+            TileEntityBroadcaster broadcaster = (TileEntityBroadcaster) tile;
+
+            if(broadcaster.getRadioNetwork() == cable.getNetwork())
+                return true;
+        }
         return false;
     }
 

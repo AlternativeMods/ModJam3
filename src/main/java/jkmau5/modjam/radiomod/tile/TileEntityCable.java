@@ -63,6 +63,13 @@ public class TileEntityCable extends TileEntity {
                 connect = true;
 
             connections.setConnected(dir, connect);
+
+            if(tile instanceof TileEntityBroadcaster) {
+                if(getNetwork().getBroadcaster() == null) {
+                    getNetwork().setBroadcaster((TileEntityBroadcaster) tile);
+                    connections.setConnected(dir, true);
+                }
+            }
         }
     }
 
@@ -82,8 +89,13 @@ public class TileEntityCable extends TileEntity {
     private boolean isValidTile(TileEntity tile) {
         if(tile == null)
             return false;
-        if(tile instanceof TileEntityCable || tile instanceof TileEntityBroadcaster)
+        if(tile instanceof TileEntityCable)
             return true;
+        if(tile instanceof TileEntityBroadcaster) {
+            TileEntityBroadcaster broadcaster = (TileEntityBroadcaster) tile;
+            if(getNetwork().getBroadcaster() == broadcaster)
+                return true;
+        }
         return false;
     }
 }

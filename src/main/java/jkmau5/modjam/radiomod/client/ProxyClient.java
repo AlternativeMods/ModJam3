@@ -1,10 +1,8 @@
 package jkmau5.modjam.radiomod.client;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import jkmau5.modjam.radiomod.Constants;
 import jkmau5.modjam.radiomod.client.render.BlockCableRenderer;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
-import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 
 /**
@@ -24,6 +22,6 @@ public class ProxyClient extends ProxyCommon {
 
         //RenderingRegistry.registerBlockHandler(new RenderBlockAntenna());
         RenderingRegistry.registerBlockHandler(new BlockCableRenderer());
-        modelAntenna = AdvancedModelLoader.loadModel("assets/" + Constants.MODID.toLowerCase() + "/models/Antenna.tcn");
+        //modelAntenna = AdvancedModelLoader.loadModel("assets/" + Constants.MODID.toLowerCase() + "/models/Antenna.tcn");
     }
 }
