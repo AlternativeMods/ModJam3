@@ -72,6 +72,19 @@ public class TileEntityCable extends TileEntity {
         }
     }
 
+    public boolean isConnectedToBroadcaster(TileEntityBroadcaster broadcaster) {
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+            if(tile ==  null || !(tile instanceof TileEntityBroadcaster))
+                continue;
+
+            TileEntityBroadcaster conBroadcaster = (TileEntityBroadcaster) tile;
+            if(conBroadcaster == broadcaster)
+                return true;
+        }
+        return false;
+    }
+
     public void tryMergeWithNeighbors() {
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);

@@ -80,10 +80,12 @@ public class RadioNetwork {
     }
 
     public void recalculateNetwork(RadioNetwork network) {
-        for(TileEntityCable cable : network.getCables())
-            cable.initiateNetwork();
         if(this.broadcaster != null)
             this.broadcaster.setRadioNetwork(null);
+
+        for(TileEntityCable cable : network.getCables()) {
+            cable.initiateNetwork();
+        }
     }
 
     public void mergeWithNetwork(RadioNetwork otherNetwork) {
@@ -92,6 +94,9 @@ public class RadioNetwork {
 
         for(TileEntityCable cable : otherNetwork.getCables())
             addCable(cable);
+
+        if(otherNetwork.getBroadcaster() != null)
+            setBroadcaster(otherNetwork.getBroadcaster());
 
         otherNetwork.destroyNetwork();
     }
