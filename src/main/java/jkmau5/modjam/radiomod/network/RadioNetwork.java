@@ -61,6 +61,9 @@ public class RadioNetwork {
             return;
         this.cables.remove(cable);
         cable.setNetwork(null);
+
+        for(TileEntityCable oneOfTheCables : this.cables)
+            oneOfTheCables.tryMergeWithNeighbors();
     }
 
     public void mergeWithNetwork(RadioNetwork otherNetwork) {

@@ -66,6 +66,19 @@ public class BlockCable extends Block {
         return true;
     }
 
+    public void breakBlock(World world, int x, int y, int z, int oldId, int oldMeta) {
+        TileEntity tempTile = world.getBlockTileEntity(x, y, z);
+        if(tempTile == null || !(tempTile instanceof TileEntityCable)) {
+            super.breakBlock(world, x, y, z, oldId, oldMeta);
+            return;
+        }
+
+        TileEntityCable cable = (TileEntityCable) tempTile;
+        cable.getNetwork().removeCable(cable);
+
+        super.breakBlock(world, x, y, z, oldId, oldMeta);
+    }
+
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase ent, ItemStack is) {
         super.onBlockPlacedBy(world, x, y, z, ent, is);
 
@@ -74,7 +87,7 @@ public class BlockCable extends Block {
             return;
 
         cable.onNeighborTileChange();
-        cable.tryMergeWithNeighbors();
+        //cable.tryMergeWithNeighbors();
     }
 
     public void onNeighborTileChange(World world, int x, int y, int z, int tileX, int tileY, int tileZ) {

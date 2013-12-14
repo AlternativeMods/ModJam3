@@ -16,9 +16,11 @@ public class TileEntityCable extends TileEntity {
 
     private CableConnections connections;
     private RadioNetwork network;
+    private boolean initiated;
 
     public TileEntityCable() {
         this.connections = new CableConnections();
+        this.initiated = false;
     }
 
     public RadioNetwork getNetwork() {
@@ -26,7 +28,6 @@ public class TileEntityCable extends TileEntity {
     }
 
     public void setNetwork(RadioNetwork network) {
-        System.out.println("New network: " + network.toString());
         this.network = network;
     }
 
@@ -39,9 +40,18 @@ public class TileEntityCable extends TileEntity {
         this.network = new RadioNetwork(this);
     }
 
+    public void updateEntity() {
+        if(this.worldObj.isRemote)
+            return;
+        if(!this.initiated) {
+            this.initiated = true;
+            tryMergeWithNeighbors();
+        }
+    }
+
     public void onNeighborTileChange() {
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            TileEntity tile = worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+            TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
 
             boolean connect = false;
             if(isValidTile(tile))
@@ -52,13 +62,13 @@ public class TileEntityCable extends TileEntity {
     }
 
     public void tryMergeWithNeighbors() {
-        if(worldObj.isRemote)
+        if(this.worldObj.isRemote)
             return;
 
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            TileEntity tile = worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+            TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
 
-            if(tile != null && tile instanceof TileEntityCable) {
+            if(tile != null && tile instanceof TileEntityCable && ((TileEntityCable)tile).getNetwork() != null) {
                 ((TileEntityCable)tile).getNetwork().mergeWithNetwork(getNetwork());
             }
         }
