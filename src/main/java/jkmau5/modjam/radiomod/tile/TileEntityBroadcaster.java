@@ -56,6 +56,10 @@ public class TileEntityBroadcaster extends TileEntity {
         return false;
     }
 
+    public void destroyNetwork() {
+        this.radioNetwork = null;
+    }
+
     @Override
     public void validate()
     {
@@ -64,10 +68,6 @@ public class TileEntityBroadcaster extends TileEntity {
             isInitiated = true;
             if(!worldObj.isRemote)
                 RadioMod.radioWorldHandler.addRadioTile(this);
-        }
-        if(!radioInitiated) {
-            radioInitiated = true;
-            this.radioNetwork = new RadioNetwork(this);
         }
         this.tileEntityInvalid = false;
     }
@@ -83,7 +83,7 @@ public class TileEntityBroadcaster extends TileEntity {
         }
         if(radioInitiated) {
             radioInitiated = false;
-
+            getRadioNetwork().tryRemoveBroadcaster(this);
         }
         this.tileEntityInvalid = true;
     }
@@ -96,6 +96,10 @@ public class TileEntityBroadcaster extends TileEntity {
             isInitiated = false;
             if(!worldObj.isRemote)
                 RadioMod.radioWorldHandler.removeRadioTile(this);
+        }
+        if(radioInitiated) {
+            radioInitiated = false;
+            getRadioNetwork().tryRemoveBroadcaster(this);
         }
     }
 

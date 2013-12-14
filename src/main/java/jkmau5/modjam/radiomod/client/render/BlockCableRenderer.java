@@ -32,12 +32,12 @@ public class BlockCableRenderer implements ISimpleBlockRenderingHandler {
         renderer.renderAllFaces = true;
         renderer.renderStandardBlock(block, x, y, z);
         TileEntity tile = world.getBlockTileEntity(x, y, z);
-        if(!isValidTile(tile))
+        if(!isValid(tile))
             return false;
 
         TileEntityCable cable = (TileEntityCable) tile;
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if(cable.getConnections().isConnected(dir)) {
+            if(cable.getConnections().isConnected(dir) && isValidBroadcasterConnection(dir, cable, world, x, y, z)) {
                 if(dir == ForgeDirection.UP)
                     renderer.setRenderBounds(min, max, min, max, 1, max);
                 else if(dir == ForgeDirection.DOWN)
@@ -58,8 +58,20 @@ public class BlockCableRenderer implements ISimpleBlockRenderingHandler {
         return true;
     }
 
-    private boolean isValidTile(TileEntity tile) {
-        return tile != null && tile instanceof TileEntityCable || tile instanceof TileEntityBroadcaster;
+    private boolean isValid(TileEntity tile) {
+        return tile != null && tile instanceof TileEntityCable;
+    }
+
+    private boolean isValidBroadcasterConnection(ForgeDirection dir, TileEntityCable thisCable, IBlockAccess world, int x, int y, int z) {
+        TileEntity tile = world.getBlockTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+        if(tile == null || !(tile instanceof TileEntityBroadcaster))
+            return true;
+
+        TileEntityBroadcaster broadcaster = (TileEntityBroadcaster) tile;
+        if(thisCable.getNetwork().getBroadcaster() == broadcaster)
+            return true;
+
+        return false;
     }
 
     @Override

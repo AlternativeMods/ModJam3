@@ -65,7 +65,7 @@ public class TileEntityCable extends TileEntity {
             connections.setConnected(dir, connect);
 
             if(tile instanceof TileEntityBroadcaster) {
-                if(getNetwork().getBroadcaster() == null) {
+                if(((TileEntityBroadcaster)tile).getRadioNetwork() == null && getNetwork().getBroadcaster() == null) {
                     getNetwork().setBroadcaster((TileEntityBroadcaster) tile);
                     connections.setConnected(dir, true);
                 }

@@ -50,6 +50,7 @@ public class RadioNetwork {
             return false;
         if(this.broadcaster == null)
             this.broadcaster = broadcaster;
+        broadcaster.setRadioNetwork(this);
         return true;
     }
 
