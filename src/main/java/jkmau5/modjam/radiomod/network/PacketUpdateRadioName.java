@@ -61,8 +61,5 @@ public class PacketUpdateRadioName extends PacketBase {
         TileEntityRadio radio = (TileEntityRadio) tempTile;
 
         radio.setRadioName(radioName);
-
-        //if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
-        //    PacketDispatcher.sendPacketToAllPlayers(new PacketUpdateRadioName(x, y, z, dimId, radioName).getPacket()); // TODO: Less packet sending at this one...
     }
 }
