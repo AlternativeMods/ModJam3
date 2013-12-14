@@ -18,6 +18,7 @@ import jkmau5.modjam.radiomod.item.ItemMediaPlayer;
 import jkmau5.modjam.radiomod.network.PacketHandler;
 import jkmau5.modjam.radiomod.network.RadioWorldHandler;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
+import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityCable;
 import net.minecraft.creativetab.CreativeTabs;
@@ -56,6 +57,7 @@ public class RadioMod {
 
         GameRegistry.registerTileEntity(TileEntityBroadcaster.class, "TileBroadcaster");
         GameRegistry.registerTileEntity(TileEntityCable.class, "TileCable");
+        GameRegistry.registerTileEntity(TileEntityAntenna.class, "TileAntenna");
 
         proxy.preInit();
 

@@ -1,9 +1,12 @@
 package jkmau5.modjam.radiomod.client;
 
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import jkmau5.modjam.radiomod.Constants;
 import jkmau5.modjam.radiomod.client.render.BlockCableRenderer;
+import jkmau5.modjam.radiomod.client.render.TileEntityAntennaRenderer;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
+import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 
@@ -14,7 +17,6 @@ import net.minecraftforge.client.model.IModelCustom;
  */
 public class ProxyClient extends ProxyCommon {
 
-    public static final int renderID_Antenna = RenderingRegistry.getNextAvailableRenderId();
     public static final int renderID_Cable = RenderingRegistry.getNextAvailableRenderId();
     public static IModelCustom modelAntenna;
 
@@ -22,8 +24,8 @@ public class ProxyClient extends ProxyCommon {
     public void init(){
         super.init();
 
-        //RenderingRegistry.registerBlockHandler(new RenderBlockAntenna());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAntenna.class, new TileEntityAntennaRenderer());
         RenderingRegistry.registerBlockHandler(new BlockCableRenderer());
-        modelAntenna = AdvancedModelLoader.loadModel("assets/" + Constants.MODID.toLowerCase() + "/models/Antenna.tcn");
+        modelAntenna = AdvancedModelLoader.loadModel(Constants.MODID.toLowerCase() + ":models/Antenna.tcn");
     }
 }
