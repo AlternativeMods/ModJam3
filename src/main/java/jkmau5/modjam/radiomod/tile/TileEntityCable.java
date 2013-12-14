@@ -29,6 +29,7 @@ public class TileEntityCable extends TileEntity {
 
     public void setNetwork(RadioNetwork network){
         this.network = network;
+        setupBroadcaster();
     }
 
     public CableConnections getConnections(){
@@ -49,6 +50,7 @@ public class TileEntityCable extends TileEntity {
         if(!this.initiated) {
             this.initiated = true;
             tryMergeWithNeighbors();
+            setupBroadcaster();
         }
     }
 
@@ -63,8 +65,7 @@ public class TileEntityCable extends TileEntity {
             connections.setConnected(dir, connect);
 
             if(tile instanceof TileEntityBroadcaster) {
-                if(((TileEntityBroadcaster)tile).getRadioNetwork() == null && getNetwork().getBroadcaster() == null) {
-                    getNetwork().setBroadcaster((TileEntityBroadcaster) tile);
+                if(getNetwork().setBroadcaster((TileEntityBroadcaster) tile)) {
                     connections.setConnected(dir, true);
                     worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
                 }
@@ -72,15 +73,20 @@ public class TileEntityCable extends TileEntity {
         }
     }
 
-    public boolean isConnectedToBroadcaster(TileEntityBroadcaster broadcaster) {
+    public boolean setupBroadcaster() {
+        if(worldObj.isRemote)
+            return false;
+
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
             if(tile ==  null || !(tile instanceof TileEntityBroadcaster))
                 continue;
 
             TileEntityBroadcaster conBroadcaster = (TileEntityBroadcaster) tile;
-            if(conBroadcaster == broadcaster)
+            if(conBroadcaster.getRadioNetwork() == null) {
+                conBroadcaster.setRadioNetwork(getNetwork());
                 return true;
+            }
         }
         return false;
     }
