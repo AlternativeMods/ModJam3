@@ -50,11 +50,11 @@ public class RadioMod {
         blockBroadcaster = new BlockBroadcaster(2500);
         blockAntenna = new BlockAntenna(2501);
         blockCable = new BlockCable(2502);
-        GameRegistry.registerBlock(blockBroadcaster, "BlockRadio");
+        GameRegistry.registerBlock(blockBroadcaster, "BlockBroadcaster");
         GameRegistry.registerBlock(blockAntenna, "BlockAntenna");
         GameRegistry.registerBlock(blockCable, "BlockCable");
 
-        GameRegistry.registerTileEntity(TileEntityBroadcaster.class, "TileRadio");
+        GameRegistry.registerTileEntity(TileEntityBroadcaster.class, "TileBroadcaster");
         GameRegistry.registerTileEntity(TileEntityCable.class, "TileCable");
 
         proxy.preInit();

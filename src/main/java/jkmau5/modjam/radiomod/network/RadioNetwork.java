@@ -45,8 +45,11 @@ public class RadioNetwork {
     }
 
     public boolean tryRemoveRadio(TileEntityBroadcaster radio){
-        if(!radio.isConnectedToNetwork())
+        if(!radio.isConnectedToNetwork()) {
             this.radio = null;
+            return true;
+        }
+        return false;
     }
 
     public void addCable(TileEntityCable cable) {
