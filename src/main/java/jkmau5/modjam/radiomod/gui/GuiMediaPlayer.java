@@ -4,8 +4,10 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import jkmau5.modjam.radiomod.network.PacketRequestRadioNames;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
@@ -50,33 +52,68 @@ public class GuiMediaPlayer extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTick){
-        this.drawDefaultBackground();
-
         int x = (this.width - this.xSize) / 2;
         int y = (this.height - this.ySize) / 2;
-
-        if(isloading){
-            this.fontRenderer.drawString("Loading...", x, y, 0xFFCCCCCC);
+        if(this.isScrolling){
+            this.scrollY = mouseY - this.mouseGrabY;
+        }
+        if(availableRadios != null){
+            this.scrollY = Math.min(this.scrollY, 0);
+            this.scrollY = Math.max(this.scrollY, 47 - (availableRadios.size() * 10 + 2));
         }
 
-        if(!isloading) {
+        this.drawDefaultBackground();
+
+        ScaledResolution res = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+
+        this.ySize = 116;
+        if(isloading){
+            this.fontRenderer.drawString("Loading...", x, y, 0xFFCCCCCC);
+        }else{
             if(availableRadios != null) {
                 GL11.glPushMatrix();
+                int yS = (this.height / 5);
+                Gui.drawRect(x - 1, y - 1, x + this.xSize + 1, y + yS + 1, 0xFFAAAAAA);
+                Gui.drawRect(x, y, x + this.xSize, y + yS, 0xFF000000);
+
+                int barHeight = (availableRadios.size() - 5) / yS;
+                int barY = yS / (this.scrollY == 0 ? 1 : this.scrollY);
+                Gui.drawRect(x + (this.xSize - 5), y + barY, x + this.xSize, barHeight, 0xFFFFFFFF);
+
+                GL11.glScissor(x * res.getScaleFactor(), this.mc.displayHeight - yS * res.getScaleFactor() - y * res.getScaleFactor(), (this.xSize - 5) * res.getScaleFactor(), yS * res.getScaleFactor());
+                GL11.glTranslated(0, this.scrollY, 0);
+                GL11.glEnable(GL11.GL_SCISSOR_TEST);
                 int index = 0;
                 for(TileEntityRadio radio : availableRadios){
-                    this.fontRenderer.drawString(radio.getRadioName(), x, y + index * 10, 0xFFFFFFFF);
+                    this.fontRenderer.drawString(radio.getRadioName(), x + 3, 3 + y + index * 10, 0xFFFFFFFF);
                     index++;
                 }
+                GL11.glDisable(GL11.GL_SCISSOR_TEST);
                 GL11.glPopMatrix();
-            }
-            else {
-                GL11.glPushMatrix();
+            }else{
                 this.fontRenderer.drawString("No radios found", x, y, 0xFFFFFFFF);
-                GL11.glPopMatrix();
             }
         }
 
         super.drawScreen(mouseX, mouseY, partialTick);
+    }
+
+    @Override
+    protected void mouseClicked(int x, int y, int button){
+        super.mouseClicked(x, y, button);
+        if(button == 0){
+            //TODO: check coords!
+            this.mouseGrabY = y - this.scrollY;
+            this.isScrolling = true;
+        }
+    }
+
+    @Override
+    protected void mouseMovedOrUp(int x, int y, int button){
+        super.mouseMovedOrUp(x, y, button);
+        if(button == 0){
+            this.isScrolling = false;
+        }
     }
 
     public boolean doesGuiPauseGame(){
