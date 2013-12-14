@@ -6,6 +6,7 @@ import jkmau5.modjam.radiomod.network.PacketUpdateRadioName;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import org.lwjgl.input.Keyboard;
 
 /**
  * Author: Lordmau5
@@ -16,58 +17,63 @@ import net.minecraft.client.gui.GuiTextField;
  */
 public class GuiRadioScreen extends GuiScreen {
 
-    int x, y, z;
-    String radioName;
-    public GuiRadioScreen(int x, int y, int z, String radioName) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    private int tileX, tileY, tileZ;
+    private String radioName;
+    private GuiButton nameButton;
+    private GuiTextField radioNameField;
+
+    private int xSize = 176;
+    private int ySize = 166;
+
+    public GuiRadioScreen(int tileX, int tileY, int tileZ, String radioName){
+        this.tileX = tileX;
+        this.tileY = tileY;
+        this.tileZ = tileZ;
         this.radioName = radioName;
     }
 
-    GuiButton nameButton;
-    GuiTextField radioNameField;
+    public void initGui(){
+        int x = (this.width - this.xSize) / 2;
+        int y = (this.height - this.ySize) / 2;
 
-    public void initGui() {
-        buttonList.add(nameButton = new GuiButton(buttonList.size(), this.width / 2 - 100, this.height / 4 + 96 + 12, "Set Radio Name"));
+        this.buttonList.add(nameButton = new GuiButton(0, x, y / 2 + 96 + 12, this.xSize, 20, "Set Radio Name"));
 
-        radioNameField = new GuiTextField(this.fontRenderer, this.width - 140, 30, 120, 20);
-        radioNameField.setMaxStringLength(20);
-        radioNameField.setFocused(true);
-        radioNameField.setText(radioName);
+        this.radioNameField = new GuiTextField(this.fontRenderer, x, y, this.xSize, 20);
+        this.radioNameField.setMaxStringLength(20);
+        this.radioNameField.setFocused(true);
+        this.radioNameField.setText(radioName);
     }
 
-    protected void actionPerformed(GuiButton button) {
-        if(button == nameButton) {
-            if(radioNameField.getText().equals(""))
-                radioNameField.setText(RadioMod.getUniqueRadioID());
-            PacketDispatcher.sendPacketToServer(new PacketUpdateRadioName(x, y, z, mc.thePlayer.worldObj.provider.dimensionId, radioNameField.getText()).getPacket());
-            hideScreen();
+    protected void actionPerformed(GuiButton button){
+        switch(button.id){
+            case 0:
+                if(this.radioNameField.getText().isEmpty()){
+                    this.radioNameField.setText(RadioMod.getUniqueRadioID());
+                }
+                PacketDispatcher.sendPacketToServer(new PacketUpdateRadioName(this.tileX, this.tileY, this.tileZ, this.mc.thePlayer.worldObj.provider.dimensionId, this.radioNameField.getText()).getPacket());
+                this.mc.displayGuiScreen(null);
+                break;
         }
     }
 
-    protected void hideScreen() {
-        this.mc.displayGuiScreen(null);
-    }
-
-    protected void keyTyped(char paramChar, int paramInt)
-    {
-        radioNameField.textboxKeyTyped(paramChar, paramInt);
-        if(radioNameField.getText().equals(""))
-            nameButton.displayString = "Random Radio Name";
-        else
-            nameButton.displayString = "Set Radio Name";
-
-        if (paramInt == 28 || paramInt == 156)
-            actionPerformed(nameButton);
-        else if (paramInt == 1)
-            hideScreen();
-    }
-
-    public void drawScreen(int x, int y, float floatVar)
-    {
+    public void drawScreen(int mouseX, int mouseY, float partialTick){
+        this.drawDefaultBackground();
         this.radioNameField.drawTextBox();
+        super.drawScreen(mouseX, mouseY, partialTick);
+    }
 
-        super.drawScreen(x, y, floatVar);
+    protected void keyTyped(char paramChar, int paramInt){
+        this.radioNameField.textboxKeyTyped(paramChar, paramInt);
+        if(radioNameField.getText().equals("")){
+            this.nameButton.displayString = "Random Radio Name";
+        }else{
+            this.nameButton.displayString = "Set Radio Name";
+        }
+
+        if(paramInt == Keyboard.KEY_RETURN || paramInt == 156){
+            actionPerformed(this.nameButton);
+        }else if(paramInt == Keyboard.KEY_ESCAPE){
+            this.mc.displayGuiScreen(null);
+        }
     }
 }
