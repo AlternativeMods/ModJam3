@@ -26,6 +26,7 @@ public class GuiMediaPlayer extends GuiScreen {
 
     public static void updateRadioStations(List<TileEntityRadio> radios) {
         availableRadios = radios;
+        System.out.println("Updated radio stations! New amount: " + radios.size());
     }
 
     public void initGui() {

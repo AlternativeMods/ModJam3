@@ -5,14 +5,18 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import jkmau5.modjam.radiomod.RadioMod;
+import jkmau5.modjam.radiomod.gui.GuiMediaPlayer;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author: Lordmau5
@@ -23,11 +27,18 @@ import java.io.IOException;
  */
 public class PacketRequestRadioNames extends PacketBase {
 
+    int dimensionId;
+
+    public PacketRequestRadioNames() {}
+    public PacketRequestRadioNames(int dimensionId) {
+        this.dimensionId = dimensionId;
+    }
+
     @Override
     public void writePacket(DataOutput output) throws IOException {
         if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
             NBTTagList list = new NBTTagList();
-            for(TileEntityRadio temporaryRadio : RadioMod.radioWorldHandler.getAvailableRadioList(this.player)) {
+            for(TileEntityRadio temporaryRadio : RadioMod.radioWorldHandler.getAvailableRadioList(dimensionId, this.player)) {
                 NBTTagCompound tempTag = new NBTTagCompound();
                 temporaryRadio.writeToNBT(tempTag);
                 list.appendTag(tempTag);
@@ -41,10 +52,23 @@ public class PacketRequestRadioNames extends PacketBase {
     @Override
     public void readPacket(DataInput input) throws IOException {
         if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
-            NBTTagCompound compoundTag = CompressedStreamTools.decompress(input.readByte());
+            NBTTagCompound compoundTag = CompressedStreamTools.read(input);
+            NBTTagList tagList = compoundTag.getTagList("radios");
+
+            List<TileEntityRadio> radios = new ArrayList<TileEntityRadio>();
+
+            for(int i=0; i<tagList.tagCount(); i++) {
+                NBTBase base = tagList.tagAt(i);
+                if(base instanceof NBTTagCompound) {
+                    TileEntityRadio tempRadio = new TileEntityRadio();
+                    tempRadio.readFromNBT((NBTTagCompound) base);
+                    radios.add(tempRadio);
+                }
+            }
+            GuiMediaPlayer.updateRadioStations(radios);
         }
         else {
-            PacketDispatcher.sendPacketToPlayer(new PacketRequestRadioNames().getPacket(), (Player) this.player);
+            PacketDispatcher.sendPacketToPlayer(new PacketRequestRadioNames(dimensionId).getPacket(), (Player) this.player);
         }
     }
 }
