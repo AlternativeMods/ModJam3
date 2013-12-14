@@ -32,13 +32,14 @@ public class GuiMediaPlayer extends GuiScreen {
 
     public GuiMediaPlayer(){
         PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId).getPacket());
-        isloading = true
+        isloading = true;
     }
 
     public static void updateRadioStations(List<TileEntityRadio> radios){
         availableRadios = radios;
         isloading = false;
-        System.out.println("Updated radio stations! New amount: " + radios.size());
+        if(radios != null)
+            System.out.println("Updated radio stations! New amount: " + radios.size());
     }
 
     public void initGui(){
@@ -58,14 +59,21 @@ public class GuiMediaPlayer extends GuiScreen {
             this.fontRenderer.drawString("Loading...", x, y, 0xFFCCCCCC);
         }
 
-        if(!isloading && availableRadios != null){
-            GL11.glPushMatrix();
-            int index = 0;
-            for(TileEntityRadio radio : availableRadios){
-                this.fontRenderer.drawString(radio.getRadioName(), x, y + index * 10, 0xFFFFFFFF);
-                index++;
+        if(!isloading) {
+            if(availableRadios != null) {
+                GL11.glPushMatrix();
+                int index = 0;
+                for(TileEntityRadio radio : availableRadios){
+                    this.fontRenderer.drawString(radio.getRadioName(), x, y + index * 10, 0xFFFFFFFF);
+                    index++;
+                }
+                GL11.glPopMatrix();
             }
-            GL11.glPopMatrix();
+            else {
+                GL11.glPushMatrix();
+                this.fontRenderer.drawString("No radios found", x, y, 0xFFFFFFFF);
+                GL11.glPopMatrix();
+            }
         }
 
         super.drawScreen(mouseX, mouseY, partialTick);

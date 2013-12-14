@@ -61,8 +61,10 @@ public class PacketRequestRadioNames extends PacketBase {
     public void readPacket(DataInput input) throws IOException {
         if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
             boolean shouldContinue = input.readBoolean();
-            if(!shouldContinue)
+            if(!shouldContinue) {
+                GuiMediaPlayer.updateRadioStations(null);
                 return;
+            }
 
             int length = input.readInt();
             byte[] byteArray = new byte[length];
