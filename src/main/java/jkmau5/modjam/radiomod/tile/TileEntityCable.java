@@ -19,15 +19,24 @@ public class TileEntityCable extends TileEntity {
 
     public TileEntityCable() {
         this.connections = new CableConnections();
-        this.network = new RadioNetwork(this);
+    }
+
+    public RadioNetwork getNetwork() {
+        return this.network;
     }
 
     public void setNetwork(RadioNetwork network) {
+        System.out.println("New network: " + network.toString());
         this.network = network;
     }
 
     public CableConnections getConnections() {
         return this.connections;
+    }
+
+    public void validate() {
+        super.validate();
+        this.network = new RadioNetwork(this);
     }
 
     public void onNeighborTileChange() {
@@ -39,6 +48,19 @@ public class TileEntityCable extends TileEntity {
                 connect = true;
 
             connections.setConnected(dir, connect);
+        }
+    }
+
+    public void tryMergeWithNeighbors() {
+        if(worldObj.isRemote)
+            return;
+
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            TileEntity tile = worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+
+            if(tile != null && tile instanceof TileEntityCable) {
+                ((TileEntityCable)tile).getNetwork().mergeWithNetwork(getNetwork());
+            }
         }
     }
 

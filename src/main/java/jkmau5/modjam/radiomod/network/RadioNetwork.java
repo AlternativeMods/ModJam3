@@ -44,8 +44,9 @@ public class RadioNetwork {
         return true;
     }
 
-    public boolean tryRemoveRadio(TileEntityRadio radio) {
-
+    public void tryRemoveRadio(TileEntityRadio radio) {
+        if(!radio.isConnectedToNetwork())
+            this.radio = null;
     }
 
     public void addCable(TileEntityCable cable) {
@@ -63,6 +64,9 @@ public class RadioNetwork {
     }
 
     public void mergeWithNetwork(RadioNetwork otherNetwork) {
+        if(otherNetwork == this)
+            return;
+
         for(TileEntityCable cable : otherNetwork.getCables())
             addCable(cable);
 

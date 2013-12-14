@@ -10,6 +10,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -51,16 +52,29 @@ public class BlockCable extends Block {
         return ProxyClient.renderID_Cable;
     }
 
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+        if(world.isRemote)
+            return false;
+
+        TileEntity tempTile = world.getBlockTileEntity(x, y, z);
+        if(tempTile == null || !(tempTile instanceof TileEntityCable))
+            return false;
+
+        TileEntityCable cable = (TileEntityCable) tempTile;
+        player.addChatMessage(cable.getNetwork().toString());
+
+        return true;
+    }
+
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase ent, ItemStack is) {
         super.onBlockPlacedBy(world, x, y, z, ent, is);
-        if(!world.isRemote)
-            return;
 
         TileEntityCable cable = (TileEntityCable) world.getBlockTileEntity(x, y, z);
         if(cable == null)
             return;
 
         cable.onNeighborTileChange();
+        cable.tryMergeWithNeighbors();
     }
 
     public void onNeighborTileChange(World world, int x, int y, int z, int tileX, int tileY, int tileZ) {

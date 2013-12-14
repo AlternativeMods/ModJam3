@@ -6,6 +6,7 @@ import jkmau5.modjam.radiomod.RadioMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeDirection;
 
 /**
  * Author: Lordmau5
@@ -29,9 +30,19 @@ public class TileEntityRadio extends TileEntity {
         return (int) Math.ceil(Minecraft.getMinecraft().thePlayer.getDistanceSq(this.xCoord, this.yCoord, this.zCoord));
     }
 
+    public boolean isConnectedToNetwork() {
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            TileEntity tempTile = worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+            if(tempTile != null && tempTile instanceof TileEntityCable)
+                return true;
+        }
+        return false;
+    }
+
     @Override
     public void validate()
     {
+        super.validate();
         if(!isInitiated) {
             isInitiated = true;
             if(!worldObj.isRemote)
@@ -43,6 +54,7 @@ public class TileEntityRadio extends TileEntity {
     @Override
     public void invalidate()
     {
+        super.invalidate();
         if(isInitiated) {
             isInitiated = false;
             if(!worldObj.isRemote)
@@ -54,6 +66,7 @@ public class TileEntityRadio extends TileEntity {
     @Override
     public void onChunkUnload()
     {
+        super.onChunkUnload();
         if(isInitiated) {
             isInitiated = false;
             if(!worldObj.isRemote)
