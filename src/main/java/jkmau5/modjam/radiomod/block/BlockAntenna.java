@@ -1,5 +1,6 @@
 package jkmau5.modjam.radiomod.block;
 
+import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -19,6 +20,7 @@ public class BlockAntenna extends Block {
         super(par1, Material.iron);
 
         this.setUnlocalizedName("radioMod.blockAntenna");
+        this.setCreativeTab(RadioMod.tabRadioMod);
         //this.maxY = 2;
     }
 

@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import jkmau5.modjam.radiomod.block.BlockAntenna;
 import jkmau5.modjam.radiomod.block.BlockBroadcaster;
 import jkmau5.modjam.radiomod.block.BlockCable;
+import jkmau5.modjam.radiomod.item.ItemIngredient;
 import jkmau5.modjam.radiomod.item.ItemMediaPlayer;
 import jkmau5.modjam.radiomod.network.PacketHandler;
 import jkmau5.modjam.radiomod.network.RadioWorldHandler;
@@ -33,6 +34,7 @@ public class RadioMod {
     public BlockAntenna blockAntenna;
     public BlockCable blockCable;
     public ItemMediaPlayer itemMediaPlayer;
+    public ItemIngredient itemIngredient;
 
     @Mod.Instance(Constants.MODID)
     public static RadioMod instance;
@@ -64,12 +66,10 @@ public class RadioMod {
 
         proxy.preInit();
 
-        //--------
-
         itemMediaPlayer = new ItemMediaPlayer(5000);
+        itemIngredient = new ItemIngredient(5001);
         GameRegistry.registerItem(itemMediaPlayer, "ItemMediaPlayer");
-
-        //--------
+        GameRegistry.registerItem(itemIngredient, "ItemIngredient");
     }
 
     @Mod.EventHandler
@@ -79,7 +79,7 @@ public class RadioMod {
 
         proxy.init();
 
-        TickRegistry.registerTickHandler(new RadioTickHandler(), Side.SERVER);
+        TickRegistry.registerTickHandler(new RadioTickHandler(), Side.SERVER); //TODO: remove?
     }
 
     @Mod.EventHandler
