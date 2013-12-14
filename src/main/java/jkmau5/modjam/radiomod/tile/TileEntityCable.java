@@ -46,8 +46,6 @@ public class TileEntityCable extends TileEntity {
     }
 
     public void updateEntity() {
-        if(this.worldObj.isRemote)
-            return;
         if(!this.initiated) {
             this.initiated = true;
             tryMergeWithNeighbors();
@@ -68,20 +66,24 @@ public class TileEntityCable extends TileEntity {
                 if(((TileEntityBroadcaster)tile).getRadioNetwork() == null && getNetwork().getBroadcaster() == null) {
                     getNetwork().setBroadcaster((TileEntityBroadcaster) tile);
                     connections.setConnected(dir, true);
+                    worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
                 }
             }
         }
     }
 
     public void tryMergeWithNeighbors() {
-        if(this.worldObj.isRemote)
-            return;
-
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
 
-            if(tile != null && tile instanceof TileEntityCable && ((TileEntityCable)tile).getNetwork() != null) {
+            if(tile == null)
+                continue;
+
+            if(tile instanceof TileEntityCable && ((TileEntityCable)tile).getNetwork() != null) {
                 ((TileEntityCable)tile).getNetwork().mergeWithNetwork(getNetwork());
+            }
+            else if(tile instanceof TileEntityBroadcaster && ((TileEntityBroadcaster)tile).getRadioNetwork() == null) {
+
             }
         }
     }
