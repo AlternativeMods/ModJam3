@@ -44,12 +44,16 @@ public class RadioNetwork {
     }
 
     public boolean setBroadcaster(TileEntityBroadcaster broadcaster){
+        System.out.println("1");
         if(broadcaster.getRadioNetwork() != null)
             return false;
+        System.out.println("2");
         if(this.broadcaster != null && this.broadcaster == broadcaster)
             return true;
+        System.out.println("3");
         if(this.broadcaster != null && this.broadcaster != broadcaster)
             return false;
+        System.out.println("4");
         this.broadcaster = broadcaster;
         broadcaster.setRadioNetwork(this);
         return true;
@@ -81,6 +85,11 @@ public class RadioNetwork {
     }
 
     public void recalculateNetwork(RadioNetwork network) {
+        if(this.broadcaster != null) {
+            this.broadcaster.destroyNetwork();
+            this.broadcaster = null;
+        }
+
         for(TileEntityCable cable : network.getCables()) {
             cable.initiateNetwork();
         }
