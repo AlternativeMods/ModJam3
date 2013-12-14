@@ -1,8 +1,11 @@
 package jkmau5.modjam.radiomod.block;
 
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.gui.EnumGui;
 import jkmau5.modjam.radiomod.gui.GuiOpener;
+import jkmau5.modjam.radiomod.network.PacketUpdateRadioName;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -41,7 +44,7 @@ public class BlockRadio extends Block {
             return false;
 
         TileEntityRadio radio = (TileEntityRadio) tempTile;
-        player.addChatMessage(radio.getRadioName());
+        PacketDispatcher.sendPacketToPlayer(new PacketUpdateRadioName(x, y, z, world.provider.dimensionId, radio.getRadioName()).getPacket(), (Player) player);
 
         GuiOpener.openGuiOnClient(EnumGui.RADIO_BLOCK, player, x, y, z);
         return true;

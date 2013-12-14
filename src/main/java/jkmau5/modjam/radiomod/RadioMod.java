@@ -57,8 +57,8 @@ public class RadioMod {
 
         itemMediaPlayer = new ItemMediaPlayer(5000);
         GameRegistry.registerItem(itemMediaPlayer, "ItemMediaPlayer");
-
-        //--------
+		
+		//--------
     }
 
     @Mod.EventHandler

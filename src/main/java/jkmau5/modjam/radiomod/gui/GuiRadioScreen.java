@@ -1,7 +1,11 @@
 package jkmau5.modjam.radiomod.gui;
 
+import cpw.mods.fml.common.network.PacketDispatcher;
+import jkmau5.modjam.radiomod.RadioMod;
+import jkmau5.modjam.radiomod.network.PacketUpdateRadioName;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
 
 /**
  * Author: Lordmau5
@@ -12,18 +16,58 @@ import net.minecraft.client.gui.GuiScreen;
  */
 public class GuiRadioScreen extends GuiScreen {
 
-    public GuiRadioScreen() {
-
+    int x, y, z;
+    String radioName;
+    public GuiRadioScreen(int x, int y, int z, String radioName) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.radioName = radioName;
     }
 
-    GuiButton randomButton;
+    GuiButton nameButton;
+    GuiTextField radioNameField;
 
     public void initGui() {
-        randomButton = new GuiButton(buttonList.size(), );
-        buttonList.add(randomButton);
+        buttonList.add(nameButton = new GuiButton(buttonList.size(), this.width / 2 - 100, this.height / 4 + 96 + 12, "Set Radio Name"));
+
+        radioNameField = new GuiTextField(this.fontRenderer, this.width - 140, 30, 120, 20);
+        radioNameField.setMaxStringLength(20);
+        radioNameField.setFocused(true);
+        radioNameField.setText(radioName);
     }
 
-    protected void actionPerformed(GuiButton paramGuiButton) {
+    protected void actionPerformed(GuiButton button) {
+        if(button == nameButton) {
+            if(radioNameField.getText().equals(""))
+                radioNameField.setText(RadioMod.getUniqueRadioID());
+            PacketDispatcher.sendPacketToServer(new PacketUpdateRadioName(x, y, z, mc.thePlayer.worldObj.provider.dimensionId, radioNameField.getText()).getPacket());
+            hideScreen();
+        }
+    }
 
+    protected void hideScreen() {
+        this.mc.displayGuiScreen(null);
+    }
+
+    protected void keyTyped(char paramChar, int paramInt)
+    {
+        radioNameField.textboxKeyTyped(paramChar, paramInt);
+        if(radioNameField.getText().equals(""))
+            nameButton.displayString = "Random Radio Name";
+        else
+            nameButton.displayString = "Set Radio Name";
+
+        if (paramInt == 28 || paramInt == 156)
+            actionPerformed(nameButton);
+        else if (paramInt == 1)
+            hideScreen();
+    }
+
+    public void drawScreen(int x, int y, float floatVar)
+    {
+        this.radioNameField.drawTextBox();
+
+        super.drawScreen(x, y, floatVar);
     }
 }
