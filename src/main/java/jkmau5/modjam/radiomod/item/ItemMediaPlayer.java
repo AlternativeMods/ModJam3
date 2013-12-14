@@ -1,7 +1,10 @@
 package jkmau5.modjam.radiomod.item;
 
 import jkmau5.modjam.radiomod.RadioMod;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 /**
  * Author: Lordmau5
@@ -15,5 +18,10 @@ public class ItemMediaPlayer extends Item {
     public ItemMediaPlayer(int par1) {
         super(par1);
         setCreativeTab(RadioMod.tabRadioMod);
+    }
+
+    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
+    {
+        return itemStack;
     }
 }

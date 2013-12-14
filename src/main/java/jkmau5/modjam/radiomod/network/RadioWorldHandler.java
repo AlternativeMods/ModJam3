@@ -1,6 +1,7 @@
 package jkmau5.modjam.radiomod.network;
 
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
+import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +25,21 @@ public class RadioWorldHandler {
 
     public String getRadioName(TileEntityRadio radio) {
         return radio.getRadioName();
+    }
+
+    public List<TileEntityRadio> getAvailableRadioList(EntityPlayer player) {
+        int dimensionId = player.worldObj.provider.dimensionId;
+        List<TileEntityRadio> tempRadios = radioTiles.get(dimensionId);
+        if(tempRadios == null || tempRadios.isEmpty())
+            return null;
+
+        List<TileEntityRadio> availableRadios = new ArrayList<TileEntityRadio>();
+
+        for(TileEntityRadio availableRadio : tempRadios) {
+            if(availableRadio.getDistanceToMe(player) < 250)  //TODO: Change Probably?
+                availableRadios.add(availableRadio);
+        }
+        return availableRadios;
     }
 
     public boolean addRadioTile(TileEntityRadio radio) {
