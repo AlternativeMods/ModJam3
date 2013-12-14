@@ -8,6 +8,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
@@ -76,10 +77,10 @@ public class GuiMediaPlayer extends GuiScreen {
                 Gui.drawRect(x - 1, y - 1, x + this.xSize + 1, y + yS + 1, 0xFFAAAAAA);
                 Gui.drawRect(x, y, x + this.xSize, y + yS, 0xFF000000);
 
-                int barHeight = (availableRadios.size() - 5) / yS;
+                /*int barHeight = (availableRadios.size() - 5) / yS;
                 //int barY = yS / (this.scrollY == 0 ? 1 : this.scrollY);
                 int barY = this.scrollY / yS;
-                Gui.drawRect(x + (this.xSize - 5), y + barY, x + this.xSize, barHeight, 0xFFFFFFFF);
+                Gui.drawRect(x + (this.xSize - 5), y * barY, x + this.xSize, barHeight, 0xFFFFFFFF);*/
 
                 GL11.glScissor(x * res.getScaleFactor(), this.mc.displayHeight - yS * res.getScaleFactor() - y * res.getScaleFactor(), (this.xSize - 5) * res.getScaleFactor(), yS * res.getScaleFactor());
                 GL11.glTranslated(0, this.scrollY, 0);
@@ -119,5 +120,18 @@ public class GuiMediaPlayer extends GuiScreen {
 
     public boolean doesGuiPauseGame(){
         return false;
+    }
+
+    @Override
+    public void handleMouseInput(){
+        super.handleMouseInput();
+        int scroll = Mouse.getEventDWheel();
+        if(scroll < 0) scroll = -5;
+        if(scroll > 0) scroll = 5;
+        this.scrollY += scroll;
+        if(availableRadios != null){
+            this.scrollY = Math.min(this.scrollY, 0);
+            this.scrollY = Math.max(this.scrollY, 47 - (availableRadios.size() * 10 + 2));
+        }
     }
 }
