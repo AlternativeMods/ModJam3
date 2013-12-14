@@ -60,7 +60,7 @@ public class RadioNetwork {
     }
 
     public boolean tryRemoveBroadcaster(TileEntityBroadcaster radio){
-        if(!radio.isConnectedToNetwork()) {
+        if(radio != null && !radio.isConnectedToNetwork()) {
             this.broadcaster.destroyNetwork();
             this.broadcaster = null;
             return true;
@@ -79,7 +79,6 @@ public class RadioNetwork {
         if(!this.cables.contains(cable))
             return;
         this.cables.remove(cable);
-        cable.setNetwork(null);
 
         recalculateNetwork(this);
     }

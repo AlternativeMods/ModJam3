@@ -45,7 +45,7 @@ public class TileEntityBroadcaster extends TileEntity {
     public boolean isConnectedToNetwork() {
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             TileEntity tempTile = worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
-            if(tempTile != null && tempTile instanceof TileEntityCable)
+            if(tempTile != null && tempTile instanceof TileEntityCable && getRadioNetwork() == ((TileEntityCable)tempTile).getNetwork())
                 return true;
         }
         return false;
