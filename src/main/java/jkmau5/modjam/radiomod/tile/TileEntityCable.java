@@ -35,9 +35,14 @@ public class TileEntityCable extends TileEntity {
         return this.connections;
     }
 
+    public void initiateNetwork() {
+        this.network = new RadioNetwork(this);
+        this.initiated = false;
+    }
+
     public void validate() {
         super.validate();
-        this.network = new RadioNetwork(this);
+        initiateNetwork();
     }
 
     public void updateEntity() {
