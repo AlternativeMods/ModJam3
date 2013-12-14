@@ -1,6 +1,7 @@
 package jkmau5.modjam.radiomod.tile;
 
 import jkmau5.modjam.radiomod.RadioMod;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
@@ -19,6 +20,10 @@ public class TileEntityRadio extends TileEntity {
     public TileEntityRadio() {
         isInitiated = false;
         radioName = RadioMod.getUniqueRadioID();
+    }
+
+    public int getDistanceToMe(Entity player) {
+        return (int) Math.ceil(player.getDistanceSq(this.xCoord, this.yCoord, this.zCoord));
     }
 
     @Override
