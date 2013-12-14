@@ -70,7 +70,7 @@ public class GuiRadioScreen extends GuiScreen {
             this.nameButton.displayString = "Set Radio Name";
         }
 
-        if(paramInt == Keyboard.KEY_RETURN || paramInt == 156){
+        if(paramInt == Keyboard.KEY_RETURN || paramInt == Keyboard.KEY_NUMPADENTER){
             actionPerformed(this.nameButton);
         }else if(paramInt == Keyboard.KEY_ESCAPE){
             this.mc.displayGuiScreen(null);
