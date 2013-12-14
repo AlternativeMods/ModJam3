@@ -25,8 +25,8 @@ public class BlockCableRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-        float min = 0.4F;
-        float max = 0.6F;
+        float min = 0.375F;
+        float max = 0.625F;
         renderer.setRenderBounds(min, min, min, max, max, max);
         renderer.renderAllFaces = true;
         renderer.renderStandardBlock(block, x, y, z);
