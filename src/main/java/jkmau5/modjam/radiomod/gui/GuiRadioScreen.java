@@ -33,6 +33,8 @@ public class GuiRadioScreen extends GuiScreen {
     }
 
     public void initGui(){
+        Keyboard.enableRepeatEvents(true);
+
         int x = (this.width - this.xSize) / 2;
         int y = (this.height - this.ySize) / 2;
 
@@ -42,6 +44,11 @@ public class GuiRadioScreen extends GuiScreen {
         this.radioNameField.setMaxStringLength(20);
         this.radioNameField.setFocused(true);
         this.radioNameField.setText(radioName);
+    }
+
+    @Override
+    public void onGuiClosed(){
+        Keyboard.enableRepeatEvents(false);
     }
 
     protected void actionPerformed(GuiButton button){
