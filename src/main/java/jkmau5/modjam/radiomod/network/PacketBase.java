@@ -6,8 +6,8 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import jkmau5.modjam.radiomod.Constants;
 import jkmau5.modjam.radiomod.RMLogger;
-import jkmau5.modjam.radiomod.RadioMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
@@ -40,7 +40,7 @@ public abstract class PacketBase {
         try{
             output.writeByte(this.getID());
             this.writePacket(output);
-            ret = PacketDispatcher.getPacket(RadioMod.MODID, output.toByteArray());
+            ret = PacketDispatcher.getPacket(Constants.MODID, output.toByteArray());
         }catch(IOException e){
             RMLogger.severe(e, "Error while writing packet data for packet " + this.getID());
         }

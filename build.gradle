@@ -15,13 +15,18 @@ apply plugin: 'java'
 apply plugin: 'forge'
 apply plugin: 'maven'
 
+ext.modid = 'RadioMod'
 group = 'jkmau5.modjam'
 version = '0.1-SNAPSHOT'
-archivesBaseName = 'RadioMod' //TODO: name?
+archivesBaseName = 'RadioMod'
 
 minecraft{
     version = '1.6.4-9.11.1.964'
     assetDir = 'runtime/client/assets'
+
+    replace "@MODID@", project.modid
+    replace "@VERSION@", project.version
+    replaceIn 'Constants.java'
 }
 
 jar {
@@ -36,6 +41,20 @@ jar {
     }
 }
 
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        include 'version.properties'
+        include '**/**.lang'
+        expand 'version':project.version, 'mcversion':project.minecraft.version, 'modid':project.modid
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+        exclude 'version.properties'
+        exclude '**/**.lang'
+    }
+}
+
 uploadArchives {
     if (project.hasProperty("filesmaven")) {
         logger.info('Deploying to file server')
@@ -46,6 +65,27 @@ uploadArchives {
             }
         }
     }
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    appendix = 'src'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    appendix = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    appendix = 'dev'
+}
+
+artifacts {
+    archives sourceJar
+    archives deobfJar
+    archives javadocJar
 }
 
 task wrapper(type: Wrapper) {
