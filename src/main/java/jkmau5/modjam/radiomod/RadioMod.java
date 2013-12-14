@@ -22,11 +22,10 @@ import net.minecraft.creativetab.CreativeTabs;
 
 import java.util.Random;
 
-@Mod(modid = RadioMod.MODID)
-@NetworkMod(clientSideRequired = true, channels = {"RadioMod"}, packetHandler = PacketHandler.class)
+@Mod(modid = Constants.MODID)
+@NetworkMod(clientSideRequired = true, channels = {Constants.MODID}, packetHandler = PacketHandler.class)
 public class RadioMod {
 
-    public static final String MODID = "RadioMod";
     public BlockRadio blockRadio;
     public BlockAntenna blockAntenna;
     public ItemMediaPlayer itemMediaPlayer;
@@ -35,7 +34,7 @@ public class RadioMod {
 
     public static final CreativeTabs tabRadioMod = new CreativeTabs("RadioMod");
 
-    @SidedProxy(modId = RadioMod.MODID, clientSide = "jkmau5.modjam.radiomod.client.ProxyClient", serverSide = "jkmau5.modjam.radiomod.server.ProxyCommon")
+    @SidedProxy(modId = Constants.MODID, clientSide = "jkmau5.modjam.radiomod.client.ProxyClient", serverSide = "jkmau5.modjam.radiomod.server.ProxyCommon")
     public static ProxyCommon proxy;
 
     public static String getUniqueRadioID() {
