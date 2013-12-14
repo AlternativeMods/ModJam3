@@ -6,6 +6,7 @@ import jkmau5.modjam.radiomod.Constants;
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.client.render.BlockCableRenderer;
 import jkmau5.modjam.radiomod.client.render.ItemRendererAntenna;
+import jkmau5.modjam.radiomod.client.render.ItemRendererCable;
 import jkmau5.modjam.radiomod.client.render.TileEntityAntennaRenderer;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
 import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
@@ -36,5 +37,6 @@ public class ProxyClient extends ProxyCommon {
         RenderingRegistry.registerBlockHandler(new BlockCableRenderer());
 
         MinecraftForgeClient.registerItemRenderer(RadioMod.instance.blockAntenna.blockID, new ItemRendererAntenna());
+        MinecraftForgeClient.registerItemRenderer(RadioMod.instance.blockCable.blockID, new ItemRendererCable());
     }
 }

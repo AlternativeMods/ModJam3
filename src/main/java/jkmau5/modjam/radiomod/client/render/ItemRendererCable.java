@@ -29,6 +29,7 @@ public class ItemRendererCable implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data){
         GL11.glPushMatrix();
+        GL11.glScalef(1.2f, 1.2f, 1.2f);
         switch(type){
             case ENTITY:
                 GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
@@ -37,10 +38,10 @@ public class ItemRendererCable implements IItemRenderer {
                 GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
                 break;
             case EQUIPPED:
-                GL11.glTranslatef(0f, 0.5f, 0.35f);
+                GL11.glTranslatef(0.1f, 0.5f, 0.35f);
                 break;
             case EQUIPPED_FIRST_PERSON:
-                GL11.glTranslatef(-0.4f, 0.5f, 0.35f);
+                GL11.glTranslatef(-0.5f, 0.55f, 0.05f);
                 break;
         }
         this.doRenderCable((RenderBlocks) data[0]);
