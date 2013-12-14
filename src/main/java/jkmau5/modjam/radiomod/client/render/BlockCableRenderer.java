@@ -3,6 +3,7 @@ package jkmau5.modjam.radiomod.client.render;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import jkmau5.modjam.radiomod.client.ProxyClient;
 import jkmau5.modjam.radiomod.tile.TileEntityCable;
+import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.tileentity.TileEntity;
@@ -31,7 +32,7 @@ public class BlockCableRenderer implements ISimpleBlockRenderingHandler {
         renderer.renderAllFaces = true;
         renderer.renderStandardBlock(block, x, y, z);
         TileEntity tile = world.getBlockTileEntity(x, y, z);
-        if(tile == null || !(tile instanceof TileEntityCable))
+        if(!isValidTile(tile))
             return false;
 
         TileEntityCable cable = (TileEntityCable) tile;
@@ -55,6 +56,14 @@ public class BlockCableRenderer implements ISimpleBlockRenderingHandler {
         }
 
         return true;
+    }
+
+    private boolean isValidTile(TileEntity tile) {
+        if(tile == null)
+            return false;
+        if(tile instanceof TileEntityCable || tile instanceof TileEntityRadio)
+            return true;
+        return false;
     }
 
     @Override

@@ -1,0 +1,71 @@
+package jkmau5.modjam.radiomod.network;
+
+import jkmau5.modjam.radiomod.tile.TileEntityCable;
+import jkmau5.modjam.radiomod.tile.TileEntityRadio;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Author: Lordmau5
+ * Date: 14.12.13
+ * Time: 15:41
+ * You are allowed to change this code,
+ * however, not to publish it without my permission.
+ */
+public class RadioNetwork {
+    private List<TileEntityCable> cables = new ArrayList<TileEntityCable>();
+    //private List<TileEntityAntenna> antennas = new ArrayList<TileEntityAntenna>(); //TODO: Add tile entity for the antenna
+    private TileEntityRadio radio;
+
+    public RadioNetwork(TileEntityCable mainCable) {
+        this.cables.clear();
+        this.radio = null;
+
+        addCable(mainCable);
+    }
+
+    public void destroyNetwork() {
+        this.cables = null;
+        this.radio = null;
+    }
+
+    public List<TileEntityCable> getCables() {
+        return this.cables;
+    }
+
+    public boolean setRadio(TileEntityRadio radio) {
+        if(this.radio != null && this.radio == radio)
+            return true;
+        if(this.radio != null && this.radio != radio)
+            return false;
+        if(this.radio == null)
+            this.radio = radio;
+        return true;
+    }
+
+    public boolean tryRemoveRadio(TileEntityRadio radio) {
+
+    }
+
+    public void addCable(TileEntityCable cable) {
+        if(this.cables.contains(cable))
+            return;
+        this.cables.add(cable);
+        cable.setNetwork(this);
+    }
+
+    public void removeCable(TileEntityCable cable) {
+        if(!this.cables.contains(cable))
+            return;
+        this.cables.remove(cable);
+        cable.setNetwork(null);
+    }
+
+    public void mergeWithNetwork(RadioNetwork otherNetwork) {
+        for(TileEntityCable cable : otherNetwork.getCables())
+            addCable(cable);
+
+        otherNetwork.destroyNetwork();
+    }
+}
