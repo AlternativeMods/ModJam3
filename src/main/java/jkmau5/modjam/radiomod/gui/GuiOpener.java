@@ -18,7 +18,7 @@ public class GuiOpener {
 
     public static void openGuiCallback(EnumGui gui){
         if(gui == EnumGui.MEDIA_PLAYER){
-            Minecraft.getMinecraft().displayGuiScreen(new GuiMediaPlayer());
+            Minecraft.getMinecraft().displayGuiScreen(new GuiMediaPlayer(true));
         }
     }
 

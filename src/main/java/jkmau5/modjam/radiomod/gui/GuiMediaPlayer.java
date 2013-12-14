@@ -33,8 +33,8 @@ public class GuiMediaPlayer extends GuiScreen {
     private int mouseGrabY = 0;
     private static boolean isloading = false;
 
-    public GuiMediaPlayer(){
-        PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId).getPacket());
+    public GuiMediaPlayer(boolean isMediaPlayer){
+        PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId, isMediaPlayer).getPacket());
         isloading = true;
     }
 

@@ -89,7 +89,7 @@ public class PacketRequestRadioNames extends PacketBase {
             }
             GuiMediaPlayer.updateRadioStations(radios);
         }else{
-            PacketDispatcher.sendPacketToPlayer(new PacketRequestRadioNames(dimensionId).getPacket(), (Player) this.player);
+            PacketDispatcher.sendPacketToPlayer(new PacketRequestRadioNames(dimensionId, isMediaPlayer).getPacket(), (Player) this.player);
         }
     }
 }
