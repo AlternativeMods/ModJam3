@@ -29,6 +29,7 @@ public class TileEntityCable extends TileEntity {
 
     public void setNetwork(RadioNetwork network){
         this.network = network;
+        setupBroadcaster();
     }
 
     public CableConnections getConnections(){
@@ -46,11 +47,10 @@ public class TileEntityCable extends TileEntity {
     }
 
     public void updateEntity() {
-        if(this.worldObj.isRemote)
-            return;
         if(!this.initiated) {
             this.initiated = true;
             tryMergeWithNeighbors();
+            setupBroadcaster();
         }
     }
 
@@ -63,18 +63,46 @@ public class TileEntityCable extends TileEntity {
                 connect = true;
 
             connections.setConnected(dir, connect);
+
+            if(tile instanceof TileEntityBroadcaster) {
+                if(getNetwork().setBroadcaster((TileEntityBroadcaster) tile)) {
+                    connections.setConnected(dir, true);
+                    worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
+                }
+            }
         }
     }
 
-    public void tryMergeWithNeighbors() {
-        if(this.worldObj.isRemote)
-            return;
+    public boolean setupBroadcaster() {
+        if(worldObj.isRemote)
+            return false;
 
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+            if(tile ==  null || !(tile instanceof TileEntityBroadcaster))
+                continue;
 
-            if(tile != null && tile instanceof TileEntityCable && ((TileEntityCable)tile).getNetwork() != null) {
+            TileEntityBroadcaster conBroadcaster = (TileEntityBroadcaster) tile;
+            if(conBroadcaster.getRadioNetwork() == null) {
+                conBroadcaster.setRadioNetwork(getNetwork());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void tryMergeWithNeighbors() {
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+
+            if(tile == null)
+                continue;
+
+            if(tile instanceof TileEntityCable && ((TileEntityCable)tile).getNetwork() != null) {
                 ((TileEntityCable)tile).getNetwork().mergeWithNetwork(getNetwork());
+            }
+            else if(tile instanceof TileEntityBroadcaster && ((TileEntityBroadcaster)tile).getRadioNetwork() == null) {
+
             }
         }
     }
@@ -82,8 +110,13 @@ public class TileEntityCable extends TileEntity {
     private boolean isValidTile(TileEntity tile) {
         if(tile == null)
             return false;
-        if(tile instanceof TileEntityCable || tile instanceof TileEntityBroadcaster)
+        if(tile instanceof TileEntityCable)
             return true;
+        if(tile instanceof TileEntityBroadcaster) {
+            TileEntityBroadcaster broadcaster = (TileEntityBroadcaster) tile;
+            if(getNetwork().getBroadcaster() == broadcaster)
+                return true;
+        }
         return false;
     }
 }

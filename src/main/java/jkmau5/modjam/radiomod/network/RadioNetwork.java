@@ -16,37 +16,48 @@ import java.util.List;
 public class RadioNetwork {
     private List<TileEntityCable> cables = new ArrayList<TileEntityCable>();
     //private List<TileEntityAntenna> antennas = new ArrayList<TileEntityAntenna>(); //TODO: Add tile entity for the antenna
-    private TileEntityBroadcaster radio;
+    private TileEntityBroadcaster broadcaster;
 
     public RadioNetwork(TileEntityCable mainCable) {
         this.cables.clear();
-        this.radio = null;
+        this.broadcaster = null;
 
         addCable(mainCable);
     }
 
+    public RadioNetwork(TileEntityBroadcaster broadcaster) {
+        this.cables.clear();
+        this.broadcaster = broadcaster;
+    }
+
     public void destroyNetwork() {
         this.cables = null;
-        this.radio = null;
+        this.broadcaster = null;
     }
 
     public List<TileEntityCable> getCables() {
         return this.cables;
     }
 
-    public boolean setRadio(TileEntityBroadcaster radio){
-        if(this.radio != null && this.radio == radio)
+    public TileEntityBroadcaster getBroadcaster() {
+        return this.broadcaster;
+    }
+
+    public boolean setBroadcaster(TileEntityBroadcaster broadcaster){
+        if(this.broadcaster != null && this.broadcaster == broadcaster)
             return true;
-        if(this.radio != null && this.radio != radio)
+        if(this.broadcaster != null && this.broadcaster != broadcaster)
             return false;
-        if(this.radio == null)
-            this.radio = radio;
+        if(this.broadcaster == null)
+            this.broadcaster = broadcaster;
+        broadcaster.setRadioNetwork(this);
         return true;
     }
 
-    public boolean tryRemoveRadio(TileEntityBroadcaster radio){
+    public boolean tryRemoveBroadcaster(TileEntityBroadcaster radio){
         if(!radio.isConnectedToNetwork()) {
-            this.radio = null;
+            this.broadcaster.destroyNetwork();
+            this.broadcaster = null;
             return true;
         }
         return false;
@@ -69,8 +80,12 @@ public class RadioNetwork {
     }
 
     public void recalculateNetwork(RadioNetwork network) {
-        for(TileEntityCable cable : network.getCables())
+        if(this.broadcaster != null)
+            this.broadcaster.setRadioNetwork(null);
+
+        for(TileEntityCable cable : network.getCables()) {
             cable.initiateNetwork();
+        }
     }
 
     public void mergeWithNetwork(RadioNetwork otherNetwork) {
@@ -79,6 +94,9 @@ public class RadioNetwork {
 
         for(TileEntityCable cable : otherNetwork.getCables())
             addCable(cable);
+
+        if(otherNetwork.getBroadcaster() != null)
+            setBroadcaster(otherNetwork.getBroadcaster());
 
         otherNetwork.destroyNetwork();
     }

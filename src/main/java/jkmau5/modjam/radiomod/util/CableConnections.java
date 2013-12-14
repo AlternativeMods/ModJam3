@@ -27,16 +27,4 @@ public class CableConnections {
         }
         return this.connections.get(dir.ordinal());
     }
-
-    public void setShouldUpdate(boolean shouldUpdate) {
-        this.shouldUpdate = shouldUpdate;
-    }
-
-    public boolean shouldUpdate() {
-        return this.shouldUpdate;
-    }
-
-    public void onUpdated() {
-        this.shouldUpdate = false;
-    }
 }
