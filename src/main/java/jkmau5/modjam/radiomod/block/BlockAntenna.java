@@ -55,7 +55,9 @@ public class BlockAntenna extends Block {
 
     @Override
     public boolean canBlockStay(World par1World, int x, int y, int z){
-        return !par1World.isAirBlock(x, y - 1, z) && Block.blocksList[par1World.getBlockId(x, y - 1, z)].isBlockSolidOnSide(par1World, x, y - 1, z, ForgeDirection.UP);
+        Block below = Block.blocksList[par1World.getBlockId(x, y - 1, z)];
+        Block above = Block.blocksList[par1World.getBlockId(x, y + 1, z)];
+        return !par1World.isAirBlock(x, y - 1, z) && (below == this || below.isBlockSolidOnSide(par1World, x, y - 1, z, ForgeDirection.UP)) && (above == this || par1World.isAirBlock(x, y + 1, z));
     }
 
     @Override
@@ -76,7 +78,7 @@ public class BlockAntenna extends Block {
 
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, int id){
-        if(!this.canBlockStay(world, x, y, z)){
+        if(world.getBlockMetadata(x, y, z) == 0 && !this.canBlockStay(world, x, y, z)){
             if(world.getBlockMetadata(x, y, z) == 0) this.dropBlockAsItem(world, x, y, z, 0, 0);
             world.setBlockToAir(x, y, z);
         }
@@ -86,7 +88,7 @@ public class BlockAntenna extends Block {
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
         super.onBlockPlacedBy(par1World, par2, par3, par4, par5EntityLivingBase, par6ItemStack);
         if(par1World.getBlockMetadata(par2, par3, par4) == 0){
-            float newYaw = par5EntityLivingBase.rotationYawHead - 90;
+            float newYaw = par5EntityLivingBase.rotationYaw - 90;
             if(newYaw < 0) newYaw += 360;
             if(newYaw >= 360) newYaw -= 360;
             ((TileEntityAntenna) par1World.getBlockTileEntity(par2, par3, par4)).yaw = newYaw;
@@ -96,8 +98,9 @@ public class BlockAntenna extends Block {
     @Override
     public void onBlockAdded(World world, int x, int y, int z){
         super.onBlockAdded(world, x, y, z);
-        if(world.getBlockMetadata(x, y, z) == 0 && world.isAirBlock(x, y + 1, z))
+        if(world.getBlockMetadata(x, y, z) == 0 && world.isAirBlock(x, y + 1, z)){
             world.setBlock(x, y + 1, z, this.blockID, 1, 3);
+        }
     }
 
     @Override
