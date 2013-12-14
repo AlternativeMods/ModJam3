@@ -76,4 +76,8 @@ public class GuiRadioScreen extends GuiScreen {
             this.mc.displayGuiScreen(null);
         }
     }
+
+    public boolean doesGuiPauseGame() {
+        return false;
+    }
 }
