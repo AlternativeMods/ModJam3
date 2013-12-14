@@ -83,10 +83,10 @@ public class TileEntityCable extends TileEntity {
             if(tile instanceof TileEntityCable && ((TileEntityCable)tile).getNetwork() != null) {
                 ((TileEntityCable)tile).getNetwork().mergeWithNetwork(getNetwork());
             }
-            else if(tile instanceof TileEntityBroadcaster && ((TileEntityBroadcaster)tile).getRadioNetwork() == null) {
-                ((TileEntityBroadcaster)tile).setRadioNetwork(getNetwork());
+            /*else if(tile instanceof TileEntityBroadcaster && ((TileEntityBroadcaster)tile).getRadioNetwork() == null) {
+                getNetwork().setBroadcaster((TileEntityBroadcaster) tile);
                 connections.setConnected(dir, true);
-            }
+            }*/
         }
     }
 

@@ -82,9 +82,6 @@ public class RadioNetwork {
     }
 
     public void recalculateNetwork(RadioNetwork network) {
-        if(this.broadcaster != null)
-            this.broadcaster.setRadioNetwork(null);
-
         for(TileEntityCable cable : network.getCables()) {
             cable.initiateNetwork();
         }
@@ -98,7 +95,7 @@ public class RadioNetwork {
             addCable(cable);
 
         if(otherNetwork.getBroadcaster() != null)
-            setBroadcaster(otherNetwork.getBroadcaster());
+            otherNetwork.getBroadcaster().setRadioNetwork(this);
 
         otherNetwork.destroyNetwork();
     }
