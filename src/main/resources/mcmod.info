@@ -1,0 +1,19 @@
+[{
+    "modid" : "${modid}",
+    "name" : "${modid}",
+    "version" : "${version}",
+    "url" : "https://github.com/jkmau5/RadioMod/",
+    "credits" : "To all people that voted on our mod",
+    "authors": [
+        "Lordmau5",
+        "jk-5"
+    ],
+    "description": "Bringing radio broadcasting to minecraft",
+    "logoFile" : "",
+    "updateUrl" : "",
+    "parent" : "",
+    "screenshots": [],
+    "dependancies": [
+        "Forge"
+    ]
+}]
