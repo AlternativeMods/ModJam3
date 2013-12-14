@@ -68,7 +68,7 @@ public class BlockCableRenderer implements ISimpleBlockRenderingHandler {
             return true;
 
         TileEntityBroadcaster broadcaster = (TileEntityBroadcaster) tile;
-        if(thisCable.getNetwork().getBroadcaster() == broadcaster)
+        if(thisCable.getNetwork() == broadcaster.getRadioNetwork() || broadcaster.getRadioNetwork() == null)
             return true;
 
         return false;

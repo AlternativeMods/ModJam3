@@ -66,7 +66,7 @@ public class TileEntityCable extends TileEntity {
                 if(((TileEntityBroadcaster)tile).getRadioNetwork() == null && getNetwork().getBroadcaster() == null) {
                     getNetwork().setBroadcaster((TileEntityBroadcaster) tile);
                     connections.setConnected(dir, true);
-                    worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
+                    worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                 }
             }
         }
