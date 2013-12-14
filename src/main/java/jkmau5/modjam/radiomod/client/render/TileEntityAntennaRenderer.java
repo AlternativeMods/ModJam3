@@ -18,7 +18,11 @@ public class TileEntityAntennaRenderer extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f){
-        float yaw = ((TileEntityAntenna) tileentity).yaw++;
+        float yaw = ((TileEntityAntenna) tileentity).yaw;
+        this.doRender(yaw, x, y, z);
+    }
+
+    public void doRender(float yaw, double x, double y, double z){
         GL11.glPushMatrix();
         this.bindTexture(this.texture);
         GL11.glTranslated(x + 0.5d, y - 0.3d, z + 0.5d);
@@ -27,6 +31,5 @@ public class TileEntityAntennaRenderer extends TileEntitySpecialRenderer {
         GL11.glScalef(0.07f, 0.07f, 0.07f);
         ProxyClient.modelAntenna.renderAll();
         GL11.glPopMatrix();
-        if(yaw >= 360) ((TileEntityAntenna) tileentity).yaw = 0;
     }
 }

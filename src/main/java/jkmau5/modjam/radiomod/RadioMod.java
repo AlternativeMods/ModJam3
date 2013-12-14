@@ -34,6 +34,9 @@ public class RadioMod {
     public BlockCable blockCable;
     public ItemMediaPlayer itemMediaPlayer;
 
+    @Mod.Instance(Constants.MODID)
+    public static RadioMod instance;
+
     public static RadioWorldHandler radioWorldHandler;
 
     public static final CreativeTabs tabRadioMod = new CreativeTabs("RadioMod");
