@@ -28,12 +28,14 @@ import java.util.List;
 public class PacketRequestRadioNames extends PacketBase {
 
     int dimensionId;
+    boolean isMediaPlayer;
 
     public PacketRequestRadioNames(){
     }
 
-    public PacketRequestRadioNames(int dimensionId){
+    public PacketRequestRadioNames(int dimensionId, boolean isMediaPlayer){
         this.dimensionId = dimensionId;
+        this.isMediaPlayer = isMediaPlayer;
     }
 
     @Override
@@ -87,7 +89,7 @@ public class PacketRequestRadioNames extends PacketBase {
             }
             GuiMediaPlayer.updateRadioStations(radios);
         }else{
-            PacketDispatcher.sendPacketToPlayer(new PacketRequestRadioNames(dimensionId).getPacket(), (Player) this.player);
+            PacketDispatcher.sendPacketToPlayer(new PacketRequestRadioNames(dimensionId, isMediaPlayer).getPacket(), (Player) this.player);
         }
     }
 }

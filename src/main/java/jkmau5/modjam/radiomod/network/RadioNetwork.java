@@ -44,24 +44,27 @@ public class RadioNetwork {
     }
 
     public boolean setBroadcaster(TileEntityBroadcaster broadcaster){
+        System.out.println("1");
         if(broadcaster.getRadioNetwork() != null)
             return false;
+        System.out.println("2");
         if(this.broadcaster != null && this.broadcaster == broadcaster)
             return true;
+        System.out.println("3");
         if(this.broadcaster != null && this.broadcaster != broadcaster)
             return false;
-        if(this.broadcaster == null)
-            this.broadcaster = broadcaster;
+        System.out.println("4");
+        this.broadcaster = broadcaster;
         broadcaster.setRadioNetwork(this);
         return true;
     }
 
     public boolean tryRemoveBroadcaster(TileEntityBroadcaster radio){
-        if(!radio.isConnectedToNetwork()) {
+        /*if(radio != null && !radio.isConnectedToNetwork()) {
             this.broadcaster.destroyNetwork();
             this.broadcaster = null;
             return true;
-        }
+        }*/
         return false;
     }
 
@@ -76,18 +79,23 @@ public class RadioNetwork {
         if(!this.cables.contains(cable))
             return;
         this.cables.remove(cable);
-        cable.setNetwork(null);
 
         recalculateNetwork(this);
     }
 
     public void recalculateNetwork(RadioNetwork network) {
-        if(this.broadcaster != null)
-            this.broadcaster.setRadioNetwork(null);
-
         for(TileEntityCable cable : network.getCables()) {
             cable.initiateNetwork();
         }
+
+        if(this.broadcaster != null)
+            this.broadcaster.destroyNetwork();
+        this.broadcaster = null;
+
+        /*if(this.broadcaster != null) {
+            this.broadcaster.destroyNetwork();
+            this.broadcaster = null;
+        }*/
     }
 
     public void mergeWithNetwork(RadioNetwork otherNetwork) {
@@ -97,8 +105,8 @@ public class RadioNetwork {
         for(TileEntityCable cable : otherNetwork.getCables())
             addCable(cable);
 
-        if(otherNetwork.getBroadcaster() != null)
-            setBroadcaster(otherNetwork.getBroadcaster());
+        //if(otherNetwork.getBroadcaster() != null)
+        //    otherNetwork.getBroadcaster().setRadioNetwork(this);
 
         otherNetwork.destroyNetwork();
     }

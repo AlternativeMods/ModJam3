@@ -66,6 +66,7 @@ public class RadioMod {
 
         proxy.preInit();
 
+        //TODO: Actual audio / radio block, that plays music... or at least should play music
         itemMediaPlayer = new ItemMediaPlayer(5000);
         itemIngredient = new ItemIngredient(5001);
         GameRegistry.registerItem(itemMediaPlayer, "ItemMediaPlayer");
