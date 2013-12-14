@@ -1,5 +1,6 @@
 package jkmau5.modjam.radiomod.item;
 
+import jkmau5.modjam.radiomod.RadioMod;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,8 @@ public class ItemIngredient extends Item {
         super(id);
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
+        this.setUnlocalizedName("ingredient");
+        this.setCreativeTab(RadioMod.tabRadioMod);
     }
 
     @Override

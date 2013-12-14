@@ -70,6 +70,8 @@ public class RadioMod {
         itemIngredient = new ItemIngredient(5001);
         GameRegistry.registerItem(itemMediaPlayer, "ItemMediaPlayer");
         GameRegistry.registerItem(itemIngredient, "ItemIngredient");
+
+        Recipes.init();
     }
 
     @Mod.EventHandler
