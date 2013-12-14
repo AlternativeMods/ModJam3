@@ -51,6 +51,8 @@ public class PacketRequestRadioNames extends PacketBase {
             output.writeBoolean(shouldContinue);
             NBTTagCompound compoundTag = new NBTTagCompound();
             compoundTag.setTag("radios", list);
+            int length = CompressedStreamTools.compress(compoundTag).length;
+            output.writeInt(length);
             output.write(CompressedStreamTools.compress(compoundTag));
         }
     }
