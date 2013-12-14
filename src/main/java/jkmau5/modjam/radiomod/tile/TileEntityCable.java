@@ -29,7 +29,7 @@ public class TileEntityCable extends TileEntity {
 
     public void setNetwork(RadioNetwork network){
         this.network = network;
-        setupBroadcaster();
+        //setupBroadcaster();
     }
 
     public CableConnections getConnections(){
@@ -50,7 +50,7 @@ public class TileEntityCable extends TileEntity {
         if(!this.initiated) {
             this.initiated = true;
             tryMergeWithNeighbors();
-            setupBroadcaster();
+            //setupBroadcaster();
         }
     }
 
@@ -73,24 +73,6 @@ public class TileEntityCable extends TileEntity {
         }
     }
 
-    public boolean setupBroadcaster() {
-        if(worldObj.isRemote)
-            return false;
-
-        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
-            if(tile ==  null || !(tile instanceof TileEntityBroadcaster))
-                continue;
-
-            TileEntityBroadcaster conBroadcaster = (TileEntityBroadcaster) tile;
-            if(conBroadcaster.getRadioNetwork() == null) {
-                conBroadcaster.setRadioNetwork(getNetwork());
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void tryMergeWithNeighbors() {
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
@@ -102,7 +84,8 @@ public class TileEntityCable extends TileEntity {
                 ((TileEntityCable)tile).getNetwork().mergeWithNetwork(getNetwork());
             }
             else if(tile instanceof TileEntityBroadcaster && ((TileEntityBroadcaster)tile).getRadioNetwork() == null) {
-
+                ((TileEntityBroadcaster)tile).setRadioNetwork(getNetwork());
+                connections.setConnected(dir, true);
             }
         }
     }

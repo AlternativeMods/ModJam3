@@ -44,6 +44,8 @@ public class RadioNetwork {
     }
 
     public boolean setBroadcaster(TileEntityBroadcaster broadcaster){
+        if(broadcaster.getRadioNetwork() != null)
+            return false;
         if(this.broadcaster != null && this.broadcaster == broadcaster)
             return true;
         if(this.broadcaster != null && this.broadcaster != broadcaster)

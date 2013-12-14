@@ -29,13 +29,8 @@ public class TileEntityBroadcaster extends TileEntity {
         this.radioInitiated = false;
     }
 
-    public void initiateNetwork() {
-        this.radioNetwork = new RadioNetwork(this);
-        this.radioInitiated = false;
-    }
-
     public void setRadioNetwork(RadioNetwork radioNetwork) {
-        this.radioNetwork = radioNetwork;
+       this.radioNetwork = radioNetwork;
     }
 
     public RadioNetwork getRadioNetwork() {
