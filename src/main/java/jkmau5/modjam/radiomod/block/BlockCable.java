@@ -95,8 +95,7 @@ public class BlockCable extends Block {
         if(cable == null)
             return;
 
-        if(world.isRemote)
-            cable.onNeighborTileChange();
+        cable.onNeighborTileChange();
     }
 
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
