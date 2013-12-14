@@ -81,6 +81,10 @@ public class TileEntityBroadcaster extends TileEntity {
             if(!worldObj.isRemote)
                 RadioMod.radioWorldHandler.removeRadioTile(this);
         }
+        if(radioInitiated) {
+            radioInitiated = false;
+
+        }
         this.tileEntityInvalid = true;
     }
 
