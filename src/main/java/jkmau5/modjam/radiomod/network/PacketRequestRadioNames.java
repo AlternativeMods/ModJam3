@@ -37,12 +37,18 @@ public class PacketRequestRadioNames extends PacketBase {
     @Override
     public void writePacket(DataOutput output) throws IOException {
         if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+            boolean shouldContinue = false;
             NBTTagList list = new NBTTagList();
-            for(TileEntityRadio temporaryRadio : RadioMod.radioWorldHandler.getAvailableRadioList(dimensionId, this.player)) {
-                NBTTagCompound tempTag = new NBTTagCompound();
-                temporaryRadio.writeToNBT(tempTag);
-                list.appendTag(tempTag);
+            List<TileEntityRadio> radioList = RadioMod.radioWorldHandler.getAvailableRadioList(dimensionId, this.player);
+            if(radioList != null && !radioList.isEmpty()) {
+                shouldContinue = true;
+                for(TileEntityRadio temporaryRadio : radioList) {
+                    NBTTagCompound tempTag = new NBTTagCompound();
+                    temporaryRadio.writeToNBT(tempTag);
+                    list.appendTag(tempTag);
+                }
             }
+            output.writeBoolean(shouldContinue);
             NBTTagCompound compoundTag = new NBTTagCompound();
             compoundTag.setTag("radios", list);
             output.write(CompressedStreamTools.compress(compoundTag));
@@ -52,6 +58,10 @@ public class PacketRequestRadioNames extends PacketBase {
     @Override
     public void readPacket(DataInput input) throws IOException {
         if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+            boolean shouldContinue = input.readBoolean();
+            if(!shouldContinue)
+                return;
+
             NBTTagCompound compoundTag = CompressedStreamTools.read(input);
             NBTTagList tagList = compoundTag.getTagList("radios");
 

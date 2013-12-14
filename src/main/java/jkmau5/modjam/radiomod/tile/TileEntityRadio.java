@@ -1,7 +1,9 @@
 package jkmau5.modjam.radiomod.tile;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import jkmau5.modjam.radiomod.RadioMod;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
@@ -22,8 +24,9 @@ public class TileEntityRadio extends TileEntity {
         radioName = RadioMod.getUniqueRadioID();
     }
 
-    public int getDistanceToMe(Entity player) {
-        return (int) Math.ceil(player.getDistanceSq(this.xCoord, this.yCoord, this.zCoord));
+    @SideOnly(Side.CLIENT)
+    public int getDistanceToMe() {
+        return (int) Math.ceil(Minecraft.getMinecraft().thePlayer.getDistanceSq(this.xCoord, this.yCoord, this.zCoord));
     }
 
     @Override

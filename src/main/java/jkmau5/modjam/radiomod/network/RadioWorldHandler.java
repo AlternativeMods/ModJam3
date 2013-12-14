@@ -36,7 +36,7 @@ public class RadioWorldHandler {
         List<TileEntityRadio> availableRadios = new ArrayList<TileEntityRadio>();
 
         for(TileEntityRadio availableRadio : tempRadios) {
-            if(availableRadio.getDistanceToMe(player) < 250)  //TODO: Change Probably?
+            if(availableRadio.getDistanceToMe() < 250)  //TODO: Change Probably?
                 availableRadios.add(availableRadio);
         }
         return availableRadios;
