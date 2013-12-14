@@ -1,7 +1,7 @@
 package jkmau5.modjam.radiomod.network;
 
+import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityCable;
-import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 public class RadioNetwork {
     private List<TileEntityCable> cables = new ArrayList<TileEntityCable>();
     //private List<TileEntityAntenna> antennas = new ArrayList<TileEntityAntenna>(); //TODO: Add tile entity for the antenna
-    private TileEntityRadio radio;
+    private TileEntityBroadcaster radio;
 
     public RadioNetwork(TileEntityCable mainCable) {
         this.cables.clear();
@@ -34,7 +34,7 @@ public class RadioNetwork {
         return this.cables;
     }
 
-    public boolean setRadio(TileEntityRadio radio) {
+    public boolean setRadio(TileEntityBroadcaster radio){
         if(this.radio != null && this.radio == radio)
             return true;
         if(this.radio != null && this.radio != radio)
@@ -44,7 +44,7 @@ public class RadioNetwork {
         return true;
     }
 
-    public boolean tryRemoveRadio(TileEntityRadio radio) {
+    public boolean tryRemoveRadio(TileEntityBroadcaster radio){
 
     }
 

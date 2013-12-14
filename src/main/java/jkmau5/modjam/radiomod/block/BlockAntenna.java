@@ -1,8 +1,10 @@
 package jkmau5.modjam.radiomod.block;
 
-import jkmau5.modjam.radiomod.client.ProxyClient;
+import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 /**
  * No description given
@@ -18,7 +20,17 @@ public class BlockAntenna extends Block {
     }
 
     @Override
+    public boolean hasTileEntity(int metadata){
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, int metadata){
+        return new TileEntityAntenna();
+    }
+
+    @Override
     public int getRenderType(){
-        return ProxyClient.renderID_Antenna;
+        return -1;
     }
 }

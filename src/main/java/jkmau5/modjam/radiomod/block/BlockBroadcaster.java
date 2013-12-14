@@ -6,7 +6,7 @@ import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.gui.EnumGui;
 import jkmau5.modjam.radiomod.gui.GuiOpener;
 import jkmau5.modjam.radiomod.network.PacketUpdateRadioName;
-import jkmau5.modjam.radiomod.tile.TileEntityRadio;
+import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,9 +20,9 @@ import net.minecraft.world.World;
  * You are allowed to change this code,
  * however, not to publish it without my permission.
  */
-public class BlockRadio extends Block {
+public class BlockBroadcaster extends Block {
 
-    public BlockRadio(int par1) {
+    public BlockBroadcaster(int par1){
         super(par1, Material.iron);
         setCreativeTab(RadioMod.tabRadioMod);
     }
@@ -32,7 +32,7 @@ public class BlockRadio extends Block {
     }
 
     public TileEntity createTileEntity(World world, int metadata) {
-        return new TileEntityRadio();
+        return new TileEntityBroadcaster();
     }
 
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
@@ -40,10 +40,10 @@ public class BlockRadio extends Block {
             return true;
 
         TileEntity tempTile = world.getBlockTileEntity(x, y, z);
-        if(tempTile == null || !(tempTile instanceof TileEntityRadio))
+        if(tempTile == null || !(tempTile instanceof TileEntityBroadcaster))
             return false;
 
-        TileEntityRadio radio = (TileEntityRadio) tempTile;
+        TileEntityBroadcaster radio = (TileEntityBroadcaster) tempTile;
         PacketDispatcher.sendPacketToPlayer(new PacketUpdateRadioName(x, y, z, world.provider.dimensionId, radio.getRadioName()).getPacket(), (Player) player);
 
         GuiOpener.openGuiOnClient(EnumGui.RADIO_BLOCK, player, x, y, z);
@@ -56,7 +56,7 @@ public class BlockRadio extends Block {
             return;
 
         TileEntity tempTile = world.getBlockTileEntity(x, y, z);
-        if(tempTile == null || !(tempTile instanceof TileEntityRadio))
+        if(tempTile == null || !(tempTile instanceof TileEntityBroadcaster))
             return;
 
         //RadioMod.radioWorldHandler.removeRadioTile((TileEntityRadio)tempTile);

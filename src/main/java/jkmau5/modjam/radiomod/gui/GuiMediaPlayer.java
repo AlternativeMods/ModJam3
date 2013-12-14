@@ -2,7 +2,7 @@ package jkmau5.modjam.radiomod.gui;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import jkmau5.modjam.radiomod.network.PacketRequestRadioNames;
-import jkmau5.modjam.radiomod.tile.TileEntityRadio;
+import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -24,7 +24,7 @@ public class GuiMediaPlayer extends GuiScreen {
 
     private GuiButton connectButton;
 
-    private static List<TileEntityRadio> availableRadios;
+    private static List<TileEntityBroadcaster> availableRadios;
 
     private int xSize = 176;
     private int ySize = 166;
@@ -38,7 +38,7 @@ public class GuiMediaPlayer extends GuiScreen {
         isloading = true;
     }
 
-    public static void updateRadioStations(List<TileEntityRadio> radios){
+    public static void updateRadioStations(List<TileEntityBroadcaster> radios){
         availableRadios = radios;
         isloading = false;
         if(radios != null)
@@ -86,7 +86,7 @@ public class GuiMediaPlayer extends GuiScreen {
                 GL11.glTranslated(0, this.scrollY, 0);
                 GL11.glEnable(GL11.GL_SCISSOR_TEST);
                 int index = 0;
-                for(TileEntityRadio radio : availableRadios){
+                for(TileEntityBroadcaster radio : availableRadios){
                     this.fontRenderer.drawString(radio.getRadioName(), x + 3, 3 + y + index * 10, 0xFFFFFFFF);
                     index++;
                 }
@@ -105,8 +105,8 @@ public class GuiMediaPlayer extends GuiScreen {
         super.mouseClicked(x, y, button);
         if(button == 0){
             //TODO: check coords!
-            this.mouseGrabY = y - this.scrollY;
-            this.isScrolling = true;
+            //this.mouseGrabY = y - this.scrollY;
+            //this.isScrolling = true;
         }
     }
 

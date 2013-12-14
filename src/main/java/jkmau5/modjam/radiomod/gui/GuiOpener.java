@@ -3,7 +3,7 @@ package jkmau5.modjam.radiomod.gui;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import jkmau5.modjam.radiomod.network.PacketOpenGui;
-import jkmau5.modjam.radiomod.tile.TileEntityRadio;
+import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -17,18 +17,18 @@ import net.minecraft.world.World;
 public class GuiOpener {
 
     public static void openGuiCallback(EnumGui gui){
-        if(gui == EnumGui.MEDIA_PLAYER) {
+        if(gui == EnumGui.MEDIA_PLAYER){
             Minecraft.getMinecraft().displayGuiScreen(new GuiMediaPlayer());
         }
     }
 
     public static void openGuiCallback(EnumGui gui, int x, int y, int z){
-        if(gui == EnumGui.RADIO_BLOCK) {
+        if(gui == EnumGui.RADIO_BLOCK){
             World world = Minecraft.getMinecraft().thePlayer.worldObj;
             TileEntity tempTile = world.getBlockTileEntity(x, y, z);
-            if(tempTile == null || !(tempTile instanceof TileEntityRadio))
+            if(tempTile == null || !(tempTile instanceof TileEntityBroadcaster))
                 return;
-            TileEntityRadio radio = (TileEntityRadio) tempTile;
+            TileEntityBroadcaster radio = (TileEntityBroadcaster) tempTile;
             Minecraft.getMinecraft().displayGuiScreen(new GuiRadioScreen(x, y, z, radio.getRadioName()));
         }
     }

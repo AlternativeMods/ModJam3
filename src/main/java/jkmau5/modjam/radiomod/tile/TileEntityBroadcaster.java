@@ -14,12 +14,12 @@ import net.minecraft.tileentity.TileEntity;
  * You are allowed to change this code,
  * however, not to publish it without my permission.
  */
-public class TileEntityRadio extends TileEntity {
+public class TileEntityBroadcaster extends TileEntity {
 
     protected String radioName;
     private boolean isInitiated;
 
-    public TileEntityRadio() {
+    public TileEntityBroadcaster(){
         isInitiated = false;
         radioName = RadioMod.getUniqueRadioID();
     }

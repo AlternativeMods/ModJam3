@@ -17,21 +17,21 @@ public class TileEntityCable extends TileEntity {
     private CableConnections connections;
     private RadioNetwork network;
 
-    public TileEntityCable() {
+    public TileEntityCable(){
         this.connections = new CableConnections();
         this.network = new RadioNetwork(this);
     }
 
-    public void setNetwork(RadioNetwork network) {
+    public void setNetwork(RadioNetwork network){
         this.network = network;
     }
 
-    public CableConnections getConnections() {
+    public CableConnections getConnections(){
         return this.connections;
     }
 
-    public void onNeighborTileChange() {
-        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    public void onNeighborTileChange(){
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
             TileEntity tile = worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
 
             boolean connect = false;
@@ -42,10 +42,10 @@ public class TileEntityCable extends TileEntity {
         }
     }
 
-    private boolean isValidTile(TileEntity tile) {
+    private boolean isValidTile(TileEntity tile){
         if(tile == null)
             return false;
-        if(tile instanceof TileEntityCable || tile instanceof TileEntityRadio)
+        if(tile instanceof TileEntityCable || tile instanceof TileEntityBroadcaster)
             return true;
         return false;
     }

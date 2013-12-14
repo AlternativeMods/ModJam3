@@ -2,7 +2,7 @@ package jkmau5.modjam.radiomod.network;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
-import jkmau5.modjam.radiomod.tile.TileEntityRadio;
+import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -24,8 +24,10 @@ public class PacketUpdateRadioName extends PacketBase {
     private int x, y, z, dimId;
     private String radioName;
 
-    public PacketUpdateRadioName(){}
-    public PacketUpdateRadioName(int x, int y, int z, int dimId, String radioName) {
+    public PacketUpdateRadioName(){
+    }
+
+    public PacketUpdateRadioName(int x, int y, int z, int dimId, String radioName){
         this.x = x;
         this.y = y;
         this.z = z;
@@ -34,7 +36,7 @@ public class PacketUpdateRadioName extends PacketBase {
     }
 
     @Override
-    public void writePacket(DataOutput output) throws IOException {
+    public void writePacket(DataOutput output) throws IOException{
         output.writeInt(this.x);
         output.writeInt(this.y);
         output.writeInt(this.z);
@@ -43,7 +45,7 @@ public class PacketUpdateRadioName extends PacketBase {
     }
 
     @Override
-    public void readPacket(DataInput input) throws IOException {
+    public void readPacket(DataInput input) throws IOException{
         this.x = input.readInt();
         this.y = input.readInt();
         this.z = input.readInt();
@@ -56,9 +58,9 @@ public class PacketUpdateRadioName extends PacketBase {
             world = Minecraft.getMinecraft().theWorld;
 
         TileEntity tempTile = world.getBlockTileEntity(x, y, z);
-        if(tempTile == null || !(tempTile instanceof TileEntityRadio))
+        if(tempTile == null || !(tempTile instanceof TileEntityBroadcaster))
             return;
-        TileEntityRadio radio = (TileEntityRadio) tempTile;
+        TileEntityBroadcaster radio = (TileEntityBroadcaster) tempTile;
 
         radio.setRadioName(radioName);
     }

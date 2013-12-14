@@ -3,8 +3,8 @@ package jkmau5.modjam.radiomod.block;
 import jkmau5.modjam.radiomod.Constants;
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.client.ProxyClient;
+import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityCable;
-import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -115,7 +115,7 @@ public class BlockCable extends Block {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
         if(tile == null)
             return false;
-        if(tile instanceof TileEntityCable || tile instanceof TileEntityRadio)
+        if(tile instanceof TileEntityCable || tile instanceof TileEntityBroadcaster)
             return true;
         return false;
     }

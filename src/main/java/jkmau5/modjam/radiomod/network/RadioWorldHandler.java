@@ -1,6 +1,6 @@
 package jkmau5.modjam.radiomod.network;
 
-import jkmau5.modjam.radiomod.tile.TileEntityRadio;
+import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
@@ -17,37 +17,37 @@ import java.util.Map;
  */
 public class RadioWorldHandler {
 
-    Map<Integer, List<TileEntityRadio>> radioTiles = new HashMap<Integer, List<TileEntityRadio>>();
+    Map<Integer, List<TileEntityBroadcaster>> radioTiles = new HashMap<Integer, List<TileEntityBroadcaster>>();
 
-    public RadioWorldHandler() {
+    public RadioWorldHandler(){
         radioTiles.clear();
     }
 
-    public String getRadioName(TileEntityRadio radio) {
+    public String getRadioName(TileEntityBroadcaster radio){
         return radio.getRadioName();
     }
 
-    public List<TileEntityRadio> getAvailableRadioList(int dimensionId, EntityPlayer player) {
+    public List<TileEntityBroadcaster> getAvailableRadioList(int dimensionId, EntityPlayer player){
         //World world = player.worldObj.provider.dimensionId;
-        List<TileEntityRadio> tempRadios = radioTiles.get(dimensionId);
+        List<TileEntityBroadcaster> tempRadios = radioTiles.get(dimensionId);
         if(tempRadios == null || tempRadios.isEmpty())
             return null;
 
-        List<TileEntityRadio> availableRadios = new ArrayList<TileEntityRadio>();
+        List<TileEntityBroadcaster> availableRadios = new ArrayList<TileEntityBroadcaster>();
 
-        for(TileEntityRadio availableRadio : tempRadios) {
+        for(TileEntityBroadcaster availableRadio : tempRadios){
             if(availableRadio.getDistanceToMe() < 250)  //TODO: Change Probably?
                 availableRadios.add(availableRadio);
         }
         return availableRadios;
     }
 
-    public boolean addRadioTile(TileEntityRadio radio) {
+    public boolean addRadioTile(TileEntityBroadcaster radio){
         int dimensionId = radio.worldObj.provider.dimensionId;
-        List<TileEntityRadio> dimensionTiles = radioTiles.get(dimensionId);
+        List<TileEntityBroadcaster> dimensionTiles = radioTiles.get(dimensionId);
 
         if(dimensionTiles == null)
-            dimensionTiles = new ArrayList<TileEntityRadio>();
+            dimensionTiles = new ArrayList<TileEntityBroadcaster>();
         if(dimensionTiles.contains(radio))
             return false;
         dimensionTiles.add(radio);
@@ -58,9 +58,9 @@ public class RadioWorldHandler {
         return true;
     }
 
-    public boolean removeRadioTile(TileEntityRadio radio) {
+    public boolean removeRadioTile(TileEntityBroadcaster radio){
         int dimensionId = radio.worldObj.provider.dimensionId;
-        List<TileEntityRadio> dimensionTiles = radioTiles.get(dimensionId);
+        List<TileEntityBroadcaster> dimensionTiles = radioTiles.get(dimensionId);
 
         if(dimensionTiles == null)
             return false;
