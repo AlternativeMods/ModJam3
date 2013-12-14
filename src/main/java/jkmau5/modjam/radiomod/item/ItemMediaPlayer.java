@@ -1,6 +1,8 @@
 package jkmau5.modjam.radiomod.item;
 
 import jkmau5.modjam.radiomod.RadioMod;
+import jkmau5.modjam.radiomod.gui.EnumGui;
+import jkmau5.modjam.radiomod.gui.GuiOpener;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,6 +24,7 @@ public class ItemMediaPlayer extends Item {
 
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
     {
+        GuiOpener.openGuiOnClient(EnumGui.MEDIA_PLAYER, player);
         return itemStack;
     }
 }

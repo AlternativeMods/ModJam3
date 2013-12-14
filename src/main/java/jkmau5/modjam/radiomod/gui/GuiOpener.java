@@ -17,7 +17,9 @@ import net.minecraft.world.World;
 public class GuiOpener {
 
     public static void openGuiCallback(EnumGui gui){
-
+        if(gui == EnumGui.MEDIA_PLAYER) {
+            Minecraft.getMinecraft().displayGuiScreen(new GuiMediaPlayer());
+        }
     }
 
     public static void openGuiCallback(EnumGui gui, int x, int y, int z){

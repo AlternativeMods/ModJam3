@@ -10,7 +10,8 @@ import java.util.Map;
  * @author jk-5
  */
 public enum EnumGui {
-    RADIO_BLOCK(0);
+    RADIO_BLOCK(0),
+    MEDIA_PLAYER(1);
 
     public final int guiID;
     private static final Map<Integer, EnumGui> BY_ID = Maps.newHashMap();
