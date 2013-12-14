@@ -6,6 +6,7 @@ import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
@@ -17,26 +18,60 @@ import java.util.List;
  * however, not to publish it without my permission.
  */
 public class GuiMediaPlayer extends GuiScreen {
-    GuiButton connectButton;
+
+    private GuiButton connectButton;
 
     private static List<TileEntityRadio> availableRadios;
 
-    public GuiMediaPlayer() {
+    private int xSize = 176;
+    private int ySize = 166;
+    private int scrollY = 0;
+    private boolean isScrolling = false;
+    private int mouseGrabY = 0;
+    private static boolean isloading = false;
+
+    public GuiMediaPlayer(){
         PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId).getPacket());
+        isloading = true
     }
 
-    public static void updateRadioStations(List<TileEntityRadio> radios) {
+    public static void updateRadioStations(List<TileEntityRadio> radios){
         availableRadios = radios;
+        isloading = false;
         System.out.println("Updated radio stations! New amount: " + radios.size());
     }
 
-    public void initGui() {
-        buttonList.add(connectButton = new GuiButton(buttonList.size(), this.width / 2 - 100, this.height / 4 + 96 + 12, "No radio selected"));
+    public void initGui(){
+        buttonList.add(connectButton = new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 12, "No radio selected"));
 
         //TODO: Add clickable-list of the available radios
     }
 
-    public boolean doesGuiPauseGame() {
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTick){
+        this.drawDefaultBackground();
+
+        int x = (this.width - this.xSize) / 2;
+        int y = (this.height - this.ySize) / 2;
+
+        if(isloading){
+            this.fontRenderer.drawString("Loading...", x, y, 0xFFCCCCCC);
+        }
+
+        if(!isloading && availableRadios != null){
+            GL11.glPushMatrix();
+            int index = 0;
+            for(TileEntityRadio radio : availableRadios){
+                this.fontRenderer.drawString(radio.getRadioName(), x, y + index * 10, 0xFFFFFFFF);
+                index++;
+            }
+            GL11.glPopMatrix();
+        }
+
+        super.drawScreen(mouseX, mouseY, partialTick);
+    }
+
+    public boolean doesGuiPauseGame(){
         return false;
     }
 }
