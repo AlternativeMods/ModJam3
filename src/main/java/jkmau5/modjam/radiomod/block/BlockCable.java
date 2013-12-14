@@ -4,6 +4,7 @@ import jkmau5.modjam.radiomod.Constants;
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.client.ProxyClient;
 import jkmau5.modjam.radiomod.tile.TileEntityCable;
+import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -84,19 +85,19 @@ public class BlockCable extends Block {
         float maxY = 0.6F;
         float maxZ = 0.6F;
 
-        if(isCableAtPosition(world, x - 1, y, z))
+        if(isValidTileAtPosition(world, x - 1, y, z))
             minX = 0F;
-        if(isCableAtPosition(world, x + 1, y, z))
+        if(isValidTileAtPosition(world, x + 1, y, z))
             maxX = 1F;
 
-        if(isCableAtPosition(world, x, y - 1, z))
+        if(isValidTileAtPosition(world, x, y - 1, z))
             minY = 0F;
-        if(isCableAtPosition(world, x, y + 1, z))
+        if(isValidTileAtPosition(world, x, y + 1, z))
             maxY = 1F;
 
-        if(isCableAtPosition(world, x, y, z - 1))
+        if(isValidTileAtPosition(world, x, y, z - 1))
             minZ = 0F;
-        if(isCableAtPosition(world, x, y, z + 1))
+        if(isValidTileAtPosition(world, x, y, z + 1))
             maxZ = 1F;
 
         this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
@@ -110,11 +111,11 @@ public class BlockCable extends Block {
         }
     }
 
-    public boolean isCableAtPosition(IBlockAccess world, int x, int y, int z) {
+    public boolean isValidTileAtPosition(IBlockAccess world, int x, int y, int z) {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
         if(tile == null)
             return false;
-        if(tile instanceof TileEntityCable)
+        if(tile instanceof TileEntityCable || tile instanceof TileEntityRadio)
             return true;
         return false;
     }
