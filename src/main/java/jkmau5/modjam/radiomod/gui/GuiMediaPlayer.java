@@ -77,7 +77,8 @@ public class GuiMediaPlayer extends GuiScreen {
                 Gui.drawRect(x, y, x + this.xSize, y + yS, 0xFF000000);
 
                 int barHeight = (availableRadios.size() - 5) / yS;
-                int barY = yS / (this.scrollY == 0 ? 1 : this.scrollY);
+                //int barY = yS / (this.scrollY == 0 ? 1 : this.scrollY);
+                int barY = this.scrollY / yS;
                 Gui.drawRect(x + (this.xSize - 5), y + barY, x + this.xSize, barHeight, 0xFFFFFFFF);
 
                 GL11.glScissor(x * res.getScaleFactor(), this.mc.displayHeight - yS * res.getScaleFactor() - y * res.getScaleFactor(), (this.xSize - 5) * res.getScaleFactor(), yS * res.getScaleFactor());
