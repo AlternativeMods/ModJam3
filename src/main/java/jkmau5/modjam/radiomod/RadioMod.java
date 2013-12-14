@@ -12,11 +12,13 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import jkmau5.modjam.radiomod.block.BlockAntenna;
+import jkmau5.modjam.radiomod.block.BlockCable;
 import jkmau5.modjam.radiomod.block.BlockRadio;
 import jkmau5.modjam.radiomod.item.ItemMediaPlayer;
 import jkmau5.modjam.radiomod.network.PacketHandler;
 import jkmau5.modjam.radiomod.network.RadioWorldHandler;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
+import jkmau5.modjam.radiomod.tile.TileEntityCable;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.creativetab.CreativeTabs;
 
@@ -28,6 +30,7 @@ public class RadioMod {
 
     public BlockRadio blockRadio;
     public BlockAntenna blockAntenna;
+    public BlockCable blockCable;
     public ItemMediaPlayer itemMediaPlayer;
 
     public static RadioWorldHandler radioWorldHandler;
@@ -46,10 +49,13 @@ public class RadioMod {
     public void preInit(FMLPreInitializationEvent event) {
         blockRadio = new BlockRadio(2500);
         blockAntenna = new BlockAntenna(2501);
+        blockCable = new BlockCable(2502);
         GameRegistry.registerBlock(blockRadio, "BlockRadio");
         GameRegistry.registerBlock(blockAntenna, "BlockAntenna");
+        GameRegistry.registerBlock(blockCable, "BlockCable");
 
         GameRegistry.registerTileEntity(TileEntityRadio.class, "TileRadio");
+        GameRegistry.registerTileEntity(TileEntityCable.class, "TileCable");
 
         proxy.preInit();
 

@@ -7,6 +7,6 @@ package jkmau5.modjam.radiomod;
  */
 public class Constants {
 
-    public static final String MODID = "@MODID@";
+    public static final String MODID = "RadioMod";
     public static final String VERSION = "@VERSION@";
 }
