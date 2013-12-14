@@ -32,7 +32,7 @@ public class ItemRendererAntenna implements IItemRenderer {
                 break;
             case INVENTORY:
                 GL11.glScalef(0.65f, 0.65f, 0.65f);
-                GL11.glTranslatef(-0.3f, -0.7f, 0);
+                GL11.glTranslatef(-0.25f, -0.8f, 0);
                 ProxyClient.antennaRenderer.doRender(180, 0, 0, 0);
                 break;
             case EQUIPPED:
