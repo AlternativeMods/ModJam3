@@ -26,6 +26,6 @@ public class ProxyClient extends ProxyCommon {
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAntenna.class, new TileEntityAntennaRenderer());
         RenderingRegistry.registerBlockHandler(new BlockCableRenderer());
-        modelAntenna = AdvancedModelLoader.loadModel(Constants.MODID.toLowerCase() + ":models/Antenna.tcn");
+        modelAntenna = AdvancedModelLoader.loadModel("/assets/" + Constants.MODID.toLowerCase() + "/models/Antenna.tcn");
     }
 }
