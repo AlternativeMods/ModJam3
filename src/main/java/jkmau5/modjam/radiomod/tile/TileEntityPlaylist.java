@@ -1,5 +1,6 @@
 package jkmau5.modjam.radiomod.tile;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import jkmau5.modjam.radiomod.Constants;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,6 +34,12 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
             titles.remove(title);
         dropRecordItemInWorld(title);
         return true;
+    }
+
+    public void breakBlock() {
+        System.out.println(this.titles.size());
+        for(String title : this.titles)
+            dropRecordItemInWorld(title);
     }
 
     public void dropRecordItemInWorld(String title) {
@@ -69,6 +76,8 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
             NBTTagCompound tag = (NBTTagCompound) tagList.tagAt(i);
             titles.add(tag.getString("title"));
         }
+
+        System.out.println(FMLCommonHandler.instance().getEffectiveSide().toString() + " : " + titles.size());
     }
 
     @Override

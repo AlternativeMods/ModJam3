@@ -29,6 +29,7 @@ public class Constants {
         if(!musicTitles.containsKey(title))
             return null;
 
-        return musicTitles.get(title);
+        ItemStack tempStack = musicTitles.get(title);
+        return new ItemStack(tempStack.itemID, 1, tempStack.getItemDamage());
     }
 }

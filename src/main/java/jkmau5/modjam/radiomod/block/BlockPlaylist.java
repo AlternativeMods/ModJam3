@@ -25,15 +25,23 @@ public class BlockPlaylist extends Block {
     }
 
     @Override
+    public void breakBlock(World world, int x, int y, int z, int oldId, int oldMeta) {
+        TileEntity tempTile = world.getBlockTileEntity(x, y, z);
+        if(tempTile == null || !(tempTile instanceof TileEntityPlaylist)) {
+            super.breakBlock(world, x, y, z, oldId, oldMeta);
+            return;
+        }
+
+        TileEntityPlaylist playlist = (TileEntityPlaylist) tempTile;
+        playlist.breakBlock();
+
+        super.breakBlock(world, x, y, z, oldId, oldMeta);
+    }
+
+    @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         if(world.isRemote)
             return true;
-
-        /*SoundManager sndMng = Minecraft.getMinecraft().sndManager;
-        String name = sndMng.soundPoolStreaming.getRandomSound().getSoundName();
-        System.out.println(name);
-        sndMng.stopAllSounds();
-        sndMng.playStreaming(name.replace(".ogg", ""), par2, par3, par4);*/
 
         if(player.getHeldItem() == null) {
             // Open GUI
@@ -47,6 +55,7 @@ public class BlockPlaylist extends Block {
                 return true;
 
             TileEntityPlaylist playlist = (TileEntityPlaylist) tempTile;
+            System.out.println(record.recordName);
             if(playlist.addTitle(record.recordName))
                 player.getHeldItem().stackSize--;
         }
