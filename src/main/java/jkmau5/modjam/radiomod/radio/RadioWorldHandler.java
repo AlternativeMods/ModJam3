@@ -1,7 +1,13 @@
 package jkmau5.modjam.radiomod.radio;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.storage.MapStorage;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.world.WorldEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,10 +23,14 @@ import java.util.Map;
  */
 public class RadioWorldHandler {
 
+    /**
+     * A map from dimension id to a list of broadcasters
+     */
     Map<Integer, List<TileEntityBroadcaster>> radioTiles = new HashMap<Integer, List<TileEntityBroadcaster>>();
 
     public RadioWorldHandler(){
         radioTiles.clear();
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     public String getRadioName(TileEntityBroadcaster radio){
@@ -72,5 +82,21 @@ public class RadioWorldHandler {
         System.out.println("Removed a radio tile from dimension " + dimensionId);
 
         return true;
+    }
+
+    @ForgeSubscribe
+    @SuppressWarnings("unused")
+    public void onWorldLoad(WorldEvent.Load event){
+        if(FMLCommonHandler.instance().getEffectiveSide().isClient()) return;
+        MapStorage storage = event.world.mapStorage;
+        RadioWorldData data = (RadioWorldData) storage.loadData(RadioWorldData.class, "RadioMod-RadioData-" + event.world.provider.dimensionId);
+    }
+
+    public void readFromNBT(NBTTagCompound tag, int dimension){
+
+    }
+
+    public void writeToNBT(NBTTagCompound tag, int dimension){
+
     }
 }
