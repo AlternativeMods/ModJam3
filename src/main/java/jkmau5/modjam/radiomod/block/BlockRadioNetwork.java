@@ -21,7 +21,7 @@ public abstract class BlockRadioNetwork extends Block {
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
         TileEntityRadioNetwork tile = (TileEntityRadioNetwork) world.getBlockTileEntity(x, y, z);
         if(tile == null) return super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
-        if(!world.isRemote) player.addChatMessage(tile.network.toString());
+        if(!world.isRemote && tile.network != null) player.addChatMessage(tile.network.toString());
         return super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
     }
 }

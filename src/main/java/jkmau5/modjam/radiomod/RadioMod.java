@@ -55,6 +55,8 @@ public class RadioMod {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event){
+        Config.load(event.getSuggestedConfigurationFile());
+
         blockBroadcaster = new BlockBroadcaster(2500);
         blockAntenna = new BlockAntenna(2501);
         blockRadio = new BlockRadio(2503);

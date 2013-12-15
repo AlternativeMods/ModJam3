@@ -73,9 +73,12 @@ public class PacketRequestRadioNames extends PacketBase {
             output.writeInt(length);
             output.write(CompressedStreamTools.compress(compoundTag));
         }else{
-            output.writeInt(this.tileEntity.xCoord);
-            output.writeInt(this.tileEntity.yCoord);
-            output.writeInt(this.tileEntity.zCoord);
+            output.writeBoolean(this.isMediaPlayer);
+            if(!this.isMediaPlayer){
+                output.writeInt(this.tileEntity.xCoord);
+                output.writeInt(this.tileEntity.yCoord);
+                output.writeInt(this.tileEntity.zCoord);
+            }
         }
     }
 
@@ -107,10 +110,10 @@ public class PacketRequestRadioNames extends PacketBase {
             }
             GuiMediaPlayer.updateRadioStations(radios);
         }else{
-            if(isMediaPlayer)
+            this.isMediaPlayer = input.readBoolean();
+            if(isMediaPlayer){
                 PacketDispatcher.sendPacketToPlayer(new PacketRequestRadioNames(dimensionId, isMediaPlayer).getPacket(), (Player) this.player);
-            else {
-
+            }else{
                 World world = DimensionManager.getWorld(this.dimensionId);
                 if(world == null)
                     return;
