@@ -1,9 +1,12 @@
 package jkmau5.modjam.radiomod.radio;
 
+import com.google.common.collect.Lists;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityCable;
+import jkmau5.modjam.radiomod.tile.TileEntityRadioNetwork;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,28 +17,29 @@ import java.util.List;
  * however, not to publish it without my permission.
  */
 public class RadioNetwork {
-    private List<TileEntityCable> cables = new ArrayList<TileEntityCable>();
+
+    private List<ICable> cables = Lists.newArrayList();
     //private List<TileEntityAntenna> antennas = new ArrayList<TileEntityAntenna>(); //TODO: Add tile entity for the antenna
     private TileEntityBroadcaster broadcaster;
 
-    public RadioNetwork(TileEntityCable mainCable) {
+    public RadioNetwork(TileEntityRadioNetwork tile){
         this.cables.clear();
         this.broadcaster = null;
 
-        addCable(mainCable);
+        if(tile instanceof ICable) this.addCable((ICable) tile);
+        if(tile instanceof IBroadcaster) this.broadcaster = (TileEntityBroadcaster) tile;
     }
 
-    public RadioNetwork(TileEntityBroadcaster broadcaster) {
+    public void destroyNetwork(){
         this.cables.clear();
-        this.broadcaster = broadcaster;
-    }
-
-    public void destroyNetwork() {
-        this.cables = null;
         this.broadcaster = null;
     }
 
-    public List<TileEntityCable> getCables() {
+    public void remove(TileEntityRadioNetwork tile){
+
+    }
+
+    public List<ICable> getCables(){
         return this.cables;
     }
 
@@ -44,18 +48,15 @@ public class RadioNetwork {
     }
 
     public boolean setBroadcaster(TileEntityBroadcaster broadcaster){
-        System.out.println("1");
-        if(broadcaster.getRadioNetwork() != null)
-            return false;
-        System.out.println("2");
-        if(this.broadcaster != null && this.broadcaster == broadcaster)
-            return true;
-        System.out.println("3");
-        if(this.broadcaster != null && this.broadcaster != broadcaster)
-            return false;
-        System.out.println("4");
+        //System.out.println("1");
+        if(broadcaster.getNetwork() != null) return false;
+        //System.out.println("2");
+        if(this.broadcaster != null && this.broadcaster == broadcaster) return true;
+        //System.out.println("3");
+        if(this.broadcaster != null) return false;
+        //System.out.println("4");
         this.broadcaster = broadcaster;
-        broadcaster.setRadioNetwork(this);
+        broadcaster.setNetwork(this);
         return true;
     }
 
@@ -68,9 +69,8 @@ public class RadioNetwork {
         return false;
     }
 
-    public void addCable(TileEntityCable cable) {
-        if(this.cables.contains(cable))
-            return;
+    public void addCable(ICable cable){
+        if(this.cables.contains(cable)) return;
         this.cables.add(cable);
         cable.setNetwork(this);
     }
@@ -84,26 +84,23 @@ public class RadioNetwork {
     }
 
     public void recalculateNetwork(RadioNetwork network) {
-        for(TileEntityCable cable : network.getCables()) {
+        for(ICable cable : network.getCables()){
             cable.initiateNetwork();
         }
-
-        if(this.broadcaster != null)
-            this.broadcaster.destroyNetwork();
+        if(this.broadcaster != null) this.broadcaster.destroyNetwork();
         this.broadcaster = null;
-
-        /*if(this.broadcaster != null) {
-            this.broadcaster.destroyNetwork();
-            this.broadcaster = null;
-        }*/
     }
 
     public void mergeWithNetwork(RadioNetwork otherNetwork) {
-        if(otherNetwork == this)
-            return;
+        if(otherNetwork == this) return;
 
-        for(TileEntityCable cable : otherNetwork.getCables())
-            addCable(cable);
+        if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+            if(this.broadcaster != null) System.out.println("First: " + this.broadcaster.toString());
+            if(otherNetwork.getBroadcaster() != null)
+                System.out.println("Second: " + otherNetwork.getBroadcaster().toString());
+        }
+
+        for(ICable cable : otherNetwork.getCables()) addCable(cable);
 
         //if(otherNetwork.getBroadcaster() != null)
         //    otherNetwork.getBroadcaster().setRadioNetwork(this);

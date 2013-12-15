@@ -14,43 +14,48 @@ import net.minecraft.tileentity.TileEntity;
  * however, not to publish it without my permission.
  */
 public class TileEntityRadio extends TileEntity {
+
     private String connectedBroadcastStation;
 
-    public TileEntityRadio() {
+    public TileEntityRadio(){
         setConnectedBroadcastStation("Not connected...");
     }
 
-    public String getConnectedBroadcastStation() {
+    public String getConnectedBroadcastStation(){
         return this.connectedBroadcastStation;
     }
 
-    public void setConnectedBroadcastStation(String connectedBroadcastStation) {
+    public void setConnectedBroadcastStation(String connectedBroadcastStation){
         this.connectedBroadcastStation = connectedBroadcastStation;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
+    public void readFromNBT(NBTTagCompound tagCompound){
         super.readFromNBT(tagCompound);
 
         setConnectedBroadcastStation(tagCompound.getString("connectedBroadcastStation"));
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
+    public void writeToNBT(NBTTagCompound tagCompound){
         super.writeToNBT(tagCompound);
 
         tagCompound.setString("connectedBroadcastStation", getConnectedBroadcastStation());
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public Packet getDescriptionPacket(){
         NBTTagCompound tag = new NBTTagCompound();
         this.writeToNBT(tag);
         return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, tag);
     }
 
     @Override
-    public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
+    public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt){
         readFromNBT(pkt.data);
+    }
+
+    public void writeGuiData(NBTTagCompound tag){
+        tag.setString("station", this.connectedBroadcastStation);
     }
 }
