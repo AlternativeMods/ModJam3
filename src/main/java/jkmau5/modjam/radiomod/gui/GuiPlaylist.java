@@ -1,6 +1,8 @@
 package jkmau5.modjam.radiomod.gui;
 
+import cpw.mods.fml.common.network.PacketDispatcher;
 import jkmau5.modjam.radiomod.Constants;
+import jkmau5.modjam.radiomod.network.PacketRemovePlaylistTitle;
 import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
@@ -146,12 +148,10 @@ public class GuiPlaylist extends GuiScreen {
             return;
 
         int realX = (this.width - this.xSize) / 2;
-        int realY = (this.actualHeight - this.ySize) / 2;
         if(xMouse >= realX + this.xSize - 16 && xMouse < realX + this.xSize - 6) {
             int y = getYStartForTitle();
-            System.out.println((y + 1) + " : " + (yMouse) + " : " + (realY + y + 6));
             if(yMouse >= y + 2 && yMouse <= y + 8) {
-                Packet
+                PacketDispatcher.sendPacketToServer(new PacketRemovePlaylistTitle(playlist.worldObj.provider.dimensionId, playlist.xCoord, playlist.yCoord, playlist.zCoord, selectedIndex).getPacket());
             }
         }
     }

@@ -2,6 +2,7 @@ package jkmau5.modjam.radiomod.network;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
+import jkmau5.modjam.radiomod.Constants;
 import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -64,7 +65,7 @@ public class PacketRemovePlaylistTitle extends PacketBase {
                 return;
 
             TileEntityPlaylist playlist = (TileEntityPlaylist) tempTile;
-            playlist.removeTitle(title);
+            playlist.removeTitle(Constants.getNormalRecordTitle(title));
         }
     }
 }

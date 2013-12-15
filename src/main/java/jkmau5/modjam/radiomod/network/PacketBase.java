@@ -34,6 +34,7 @@ public abstract class PacketBase {
         registerPacket(1, PacketUpdateRadioName.class);
         registerPacket(2, PacketRequestRadioNames.class);
         registerPacket(3, PacketMediaPlayerData.class);
+        registerPacket(4, PacketRemovePlaylistTitle.class);
     }
 
     public final Packet250CustomPayload getPacket(){
