@@ -82,6 +82,9 @@ public class BlockAntenna extends BlockRadioNetwork {
         if(world.getBlockMetadata(x, y, z) == 0 && !this.canBlockStay(world, x, y, z)){
             if(world.getBlockMetadata(x, y, z) == 0) this.dropBlockAsItem(world, x, y, z, 0, 0);
             world.setBlockToAir(x, y, z);
+            if(world.getBlockId(x, y + 1, z) == this.blockID && world.getBlockMetadata(x, y + 1, z) == 1){
+                world.setBlockToAir(x, y + 1, z);
+            }
         }
     }
 

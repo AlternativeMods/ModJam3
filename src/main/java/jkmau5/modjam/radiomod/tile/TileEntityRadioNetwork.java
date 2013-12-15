@@ -3,7 +3,9 @@ package jkmau5.modjam.radiomod.tile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import jkmau5.modjam.radiomod.radio.RadioNetwork;
+import jkmau5.modjam.radiomod.radio.RadioNetworkHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 /**
@@ -25,9 +27,25 @@ public class TileEntityRadioNetwork extends TileEntity {
         return (int) Math.ceil(this.getDistanceFrom(x, y, z));
     }
 
+    @Override
+    public void readFromNBT(NBTTagCompound tag){
+        super.readFromNBT(tag);
+        if(tag.hasKey("networkID")){
+            this.network = RadioNetworkHandler.getNetworkFromID(tag.getInteger("networkID"));
+            this.network.add(this);
+        }
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag){
+        super.writeToNBT(tag);
+        if(this.network != null) tag.setInteger("networkID", this.network.getID());
+    }
+
     public void linkToTile(TileEntityRadioNetwork newTile){
         if(this.network == null && newTile.network == null){
             RadioNetwork network = new RadioNetwork();
+            network.grabNextID();
             network.add(this);
             network.add(newTile);
         }else if(this.network == null){

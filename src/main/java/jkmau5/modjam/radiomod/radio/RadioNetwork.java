@@ -1,6 +1,7 @@
 package jkmau5.modjam.radiomod.radio;
 
 import com.google.common.collect.Lists;
+import jkmau5.modjam.radiomod.Config;
 import jkmau5.modjam.radiomod.tile.TileEntityRadioNetwork;
 
 import java.util.List;
@@ -12,7 +13,13 @@ import java.util.List;
  */
 public class RadioNetwork {
 
-    private static int nextID = 0;
+    private static int nextID = Config.NEXT_NETWORK_ID;
+
+    private static int getNextID(){
+        int ret = nextID++;
+        Config.updateNextID(ret);
+        return ret;
+    }
 
     private int ID = -1;
     private final List<TileEntityRadioNetwork> networkTiles = Lists.newArrayList();
@@ -45,5 +52,9 @@ public class RadioNetwork {
 
     void setID(int id){
         this.ID = id;
+    }
+
+    public void grabNextID(){
+        this.setID(getNextID());
     }
 }

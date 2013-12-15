@@ -26,6 +26,8 @@ public class RadioNetworkHandler {
                 return network;
             }
         }
-        return null;
+        RadioNetwork network = new RadioNetwork();
+        network.setID(id);
+        return network;
     }
 }

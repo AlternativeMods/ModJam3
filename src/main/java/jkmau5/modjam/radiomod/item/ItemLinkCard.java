@@ -28,7 +28,15 @@ public class ItemLinkCard extends Item {
 
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
-        if(world.isRemote) return false;
+        if(world.isRemote){
+            if(world.getBlockId(x, y, z) == RadioMod.instance.blockAntenna.blockID){
+                player.swingItem();
+            }
+            return false;
+        }
+        if(world.getBlockId(x, y, z) == RadioMod.instance.blockAntenna.blockID && world.getBlockMetadata(x, y, z) == 1){
+            y--;
+        }
         TileEntity tile = world.getBlockTileEntity(x, y, z);
         if(tile == null || !(tile instanceof TileEntityRadioNetwork)) return true;
         TileEntityRadioNetwork radioTile = (TileEntityRadioNetwork) tile;

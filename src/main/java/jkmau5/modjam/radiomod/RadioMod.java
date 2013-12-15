@@ -11,26 +11,20 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
-<<<<<<< HEAD
-import jkmau5.modjam.radiomod.block.*;
-=======
 import jkmau5.modjam.radiomod.block.BlockAntenna;
 import jkmau5.modjam.radiomod.block.BlockBroadcaster;
+import jkmau5.modjam.radiomod.block.BlockPlaylist;
 import jkmau5.modjam.radiomod.block.BlockRadio;
->>>>>>> origin/jk-5
 import jkmau5.modjam.radiomod.item.ItemIngredient;
 import jkmau5.modjam.radiomod.item.ItemLinkCard;
 import jkmau5.modjam.radiomod.item.ItemMediaPlayer;
 import jkmau5.modjam.radiomod.network.PacketHandler;
 import jkmau5.modjam.radiomod.radio.RadioWorldHandler;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
-<<<<<<< HEAD
-import jkmau5.modjam.radiomod.tile.*;
-=======
 import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
+import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
->>>>>>> origin/jk-5
 import net.minecraft.creativetab.CreativeTabs;
 
 import java.util.Random;
