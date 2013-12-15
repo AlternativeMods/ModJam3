@@ -27,33 +27,46 @@ public class GuiPlaylist extends GuiScreen {
     private int scrollY = 0;
     private boolean isScrolling = false;
     private int mouseGrabY = 0;
-    private int selectedIndex = -1;
-    private List<String> titleCoordinates = new ArrayList<String>();
+    private String selectedIndex = "";
+    private List<String> titleList = new ArrayList<String>();
+    private Map<String, Integer> titleCoordinates = new HashMap<String, Integer>();
 
     TileEntityPlaylist playlist;
 
     public GuiPlaylist(TileEntityPlaylist playlist) {
         this.playlist = playlist;
 
+        titleList = new ArrayList<String>();
+        titleCoordinates = new HashMap<String, Integer>();
+    }
+
+    @Override
+    public void initGui() {
+        super.initGui();
+
         if(playlist.getTitles() != null && !playlist.getTitles().isEmpty()) {
             List<String> titles = playlist.getTitles();
             for(int i=0; i<titles.size(); i++) {
                 String realTitle = Constants.getRealRecordTitle(titles.get(i));
 
-                int fromPos = 3 + ((this.height - this.ySize) / 2) + ((i - 1) * 10);
-                titleCoordinates.add(realTitle);
+                int fromPos = 3 + ((this.height - 116) / 2) + (i * 10);
+                titleList.add(realTitle);
+                titleCoordinates.put(realTitle, fromPos);
             }
         }
     }
 
-    public int getIndexId(int yClick) {
-        for(int pos : titleCoordinates.values()) {
-            int titlePos = titleCoordinates.get(pos);
+    public String getIndexId(int yClick) {
+        System.out.println(yClick);
+        for(String title : titleList) {
+            int titlePos = titleCoordinates.get(title);
 
-            if(yClick > titlePos && yClick <= titlePos + 10)
-                return i;
+            System.out.println(title + " : " + titlePos);
+
+            if(yClick > titlePos + scrollY && yClick <= titlePos + scrollY + 10)
+                return title;
         }
-        return -1;
+        return "";
     }
 
     @Override
@@ -95,8 +108,8 @@ public class GuiPlaylist extends GuiScreen {
             int index = 0;
             for(String title : playlist.getTitles()){
                 String realRecord = Constants.getRealRecordTitle(title);
-                if(selectedIndex == index)
-                    Gui.drawRect(x + 2, y + 2 + index * 10, x + this.xSize - 2, y + yS - 2, 0xFFAA0000);
+                if(selectedIndex == realRecord)
+                    Gui.drawRect(x + 2, y + 2 + index * 10, x + this.xSize - 2, y + 2 + (index + 1) * 10, 0xFFAA0000);
                 this.fontRenderer.drawString(realRecord, x + 3, 3 + y + index * 10, 0xFFFFFFFF);
                 index++;
             }
@@ -119,7 +132,7 @@ public class GuiPlaylist extends GuiScreen {
             int yS = (this.height / 5);
             if(x > realX && x < realX + this.xSize) {
                 if(y > realY && y < realY + yS) {
-                    selectedIndex = getIndexId(y + scrollY);
+                    selectedIndex = getIndexId(y - scrollY);
                 }
             }
         }
