@@ -31,7 +31,7 @@ public class GuiOpener {
             if(tempTile == null || !(tempTile instanceof TileEntityBroadcaster))
                 return;
             TileEntityBroadcaster radio = (TileEntityBroadcaster) tempTile;
-            Minecraft.getMinecraft().displayGuiScreen(new GuiRadioScreen(x, y, z, radio.getRadioName()));
+            Minecraft.getMinecraft().displayGuiScreen(new GuiBroadcaster(x, y, z, radio.getRadioName()));
         }else if(gui == EnumGui.RADIO_BLOCK){
             World world = Minecraft.getMinecraft().theWorld;
             TileEntity tempTile = world.getBlockTileEntity(x, y, z);

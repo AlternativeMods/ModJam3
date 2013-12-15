@@ -3,6 +3,9 @@ package jkmau5.modjam.radiomod.tile;
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.radio.IBroadcaster;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
 
 /**
  * Author: Lordmau5
@@ -52,15 +55,27 @@ public class TileEntityBroadcaster extends TileEntityRadioNetwork implements IBr
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompound){
-        super.readFromNBT(tagCompound);
-        this.radioName = tagCompound.getString("radioName");
+    public void readFromNBT(NBTTagCompound tag){
+        super.readFromNBT(tag);
+        this.radioName = tag.getString("radioName");
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound){
-        super.writeToNBT(tagCompound);
-        tagCompound.setString("radioName", this.radioName);
+    public void writeToNBT(NBTTagCompound tag){
+        super.writeToNBT(tag);
+        tag.setString("radioName", this.radioName);
+    }
+
+    @Override
+    public Packet getDescriptionPacket(){
+        NBTTagCompound tag = new NBTTagCompound();
+        this.writeToNBT(tag);
+        return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, tag);
+    }
+
+    @Override
+    public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt){
+        readFromNBT(pkt.data);
     }
 
     public String getRadioName(){

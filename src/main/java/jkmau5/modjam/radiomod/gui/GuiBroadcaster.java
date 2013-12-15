@@ -15,7 +15,7 @@ import org.lwjgl.input.Keyboard;
  * You are allowed to change this code,
  * however, not to publish it without my permission.
  */
-public class GuiRadioScreen extends GuiScreen {
+public class GuiBroadcaster extends GuiScreen {
 
     private int tileX, tileY, tileZ;
     private String radioName;
@@ -25,7 +25,7 @@ public class GuiRadioScreen extends GuiScreen {
     private int xSize = 176;
     private int ySize = 166;
 
-    public GuiRadioScreen(int tileX, int tileY, int tileZ, String radioName){
+    public GuiBroadcaster(int tileX, int tileY, int tileZ, String radioName){
         this.tileX = tileX;
         this.tileY = tileY;
         this.tileZ = tileZ;
