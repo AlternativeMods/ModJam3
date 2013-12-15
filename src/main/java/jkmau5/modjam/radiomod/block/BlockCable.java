@@ -108,13 +108,13 @@ public class BlockCable extends Block {
             return;
         TileEntityCable cable = (TileEntityCable) tile;
 
-        float minX = 0.4F;
-        float minY = 0.4F;
-        float minZ = 0.4F;
+        float minX = 0.375F;
+        float minY = 0.375F;
+        float minZ = 0.375F;
 
-        float maxX = 0.6F;
-        float maxY = 0.6F;
-        float maxZ = 0.6F;
+        float maxX = 0.625F;
+        float maxY = 0.625F;
+        float maxZ = 0.625F;
 
         if(isValidTileAtPosition(cable, world, x - 1, y, z))
             minX = 0F;

@@ -99,7 +99,8 @@ public class TileEntityBroadcaster extends TileEntity {
         }
         if(radioInitiated){
             radioInitiated = false;
-            getRadioNetwork().tryRemoveBroadcaster(this);
+            if(getRadioNetwork() != null)
+                getRadioNetwork().tryRemoveBroadcaster(this);
         }
         this.tileEntityInvalid = true;
     }
@@ -114,7 +115,8 @@ public class TileEntityBroadcaster extends TileEntity {
         }
         if(radioInitiated){
             radioInitiated = false;
-            getRadioNetwork().tryRemoveBroadcaster(this);
+            if(getRadioNetwork() != null)
+                getRadioNetwork().tryRemoveBroadcaster(this);
         }
     }
 

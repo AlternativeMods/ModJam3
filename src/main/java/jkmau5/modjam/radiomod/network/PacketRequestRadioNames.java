@@ -12,6 +12,8 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -70,6 +72,10 @@ public class PacketRequestRadioNames extends PacketBase {
             int length = CompressedStreamTools.compress(compoundTag).length;
             output.writeInt(length);
             output.write(CompressedStreamTools.compress(compoundTag));
+        }else{
+            output.writeInt(this.tileEntity.xCoord);
+            output.writeInt(this.tileEntity.yCoord);
+            output.writeInt(this.tileEntity.zCoord);
         }
     }
 
@@ -101,7 +107,23 @@ public class PacketRequestRadioNames extends PacketBase {
             }
             GuiMediaPlayer.updateRadioStations(radios);
         }else{
-            PacketDispatcher.sendPacketToPlayer(new PacketRequestRadioNames(dimensionId, isMediaPlayer).getPacket(), (Player) this.player);
+            if(isMediaPlayer)
+                PacketDispatcher.sendPacketToPlayer(new PacketRequestRadioNames(dimensionId, isMediaPlayer).getPacket(), (Player) this.player);
+            else {
+
+                World world = DimensionManager.getWorld(this.dimensionId);
+                if(world == null)
+                    return;
+
+                int x = input.readInt();
+                int y = input.readInt();
+                int z = input.readInt();
+                TileEntityRadio radio = (TileEntityRadio) world.getBlockTileEntity(x, y, z);
+                if(radio == null)
+                    return;
+
+                PacketDispatcher.sendPacketToPlayer(new PacketRequestRadioNames(dimensionId, radio).getPacket(), (Player) this.player);
+            }
         }
     }
 }
