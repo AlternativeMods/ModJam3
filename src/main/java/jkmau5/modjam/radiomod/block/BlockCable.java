@@ -87,7 +87,6 @@ public class BlockCable extends Block {
             return;
 
         cable.onNeighborTileChange();
-        //cable.tryMergeWithNeighbors();
     }
 
     public void onNeighborTileChange(World world, int x, int y, int z, int tileX, int tileY, int tileZ) {
