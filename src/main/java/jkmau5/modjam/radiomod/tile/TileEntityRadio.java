@@ -1,6 +1,9 @@
 package jkmau5.modjam.radiomod.tile;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 
 /**
@@ -32,6 +35,18 @@ public class TileEntityRadio extends TileEntity {
     public void writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
 
-        tag
+        tagCompound.setString("connectedBroadcastStation", getConnectedBroadcastStation());
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        Packet132TileEntityData tilePacket = new Packet132TileEntityData();
+        writeToNBT(tilePacket.data);
+        return tilePacket;
+    }
+
+    @Override
+    public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
+        readFromNBT(pkt.data);
     }
 }

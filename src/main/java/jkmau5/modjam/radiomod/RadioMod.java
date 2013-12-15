@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import jkmau5.modjam.radiomod.block.BlockAntenna;
 import jkmau5.modjam.radiomod.block.BlockBroadcaster;
 import jkmau5.modjam.radiomod.block.BlockCable;
+import jkmau5.modjam.radiomod.block.BlockRadio;
 import jkmau5.modjam.radiomod.item.ItemIngredient;
 import jkmau5.modjam.radiomod.item.ItemMediaPlayer;
 import jkmau5.modjam.radiomod.network.PacketHandler;
@@ -22,6 +23,7 @@ import jkmau5.modjam.radiomod.server.ProxyCommon;
 import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityCable;
+import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.creativetab.CreativeTabs;
 
 import java.util.Random;
@@ -35,6 +37,7 @@ public class RadioMod {
     public BlockCable blockCable;
     public ItemMediaPlayer itemMediaPlayer;
     public ItemIngredient itemIngredient;
+    public BlockRadio blockRadio;
 
     @Mod.Instance(Constants.MODID)
     public static RadioMod instance;
@@ -56,13 +59,16 @@ public class RadioMod {
         blockBroadcaster = new BlockBroadcaster(2500);
         blockAntenna = new BlockAntenna(2501);
         blockCable = new BlockCable(2502);
+        blockRadio = new BlockRadio(2503);
         GameRegistry.registerBlock(blockBroadcaster, "BlockBroadcaster");
         GameRegistry.registerBlock(blockAntenna, "BlockAntenna");
         GameRegistry.registerBlock(blockCable, "BlockCable");
+        GameRegistry.registerBlock(blockRadio, "BlockRadio");
 
         GameRegistry.registerTileEntity(TileEntityBroadcaster.class, "TileBroadcaster");
         GameRegistry.registerTileEntity(TileEntityCable.class, "TileCable");
         GameRegistry.registerTileEntity(TileEntityAntenna.class, "TileAntenna");
+        GameRegistry.registerTileEntity(TileEntityRadio.class, "TileRadio");
 
         proxy.preInit();
 
