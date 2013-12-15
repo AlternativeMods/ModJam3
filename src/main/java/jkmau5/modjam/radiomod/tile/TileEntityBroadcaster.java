@@ -1,5 +1,6 @@
 package jkmau5.modjam.radiomod.tile;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.radio.IBroadcaster;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,7 +24,12 @@ public class TileEntityBroadcaster extends TileEntityRadioNetwork implements IBr
         this.radioName = RadioMod.getUniqueRadioID();
         this.radioInitiated = false;
     }
-    
+
+    @Override
+    public boolean canUpdate(){
+        return FMLCommonHandler.instance().getEffectiveSide().isServer();
+    }
+
     public void updateEntity(){
         super.updateEntity();
         if(!this.radioInitiated){

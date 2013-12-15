@@ -1,6 +1,7 @@
 package jkmau5.modjam.radiomod.radio;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import cpw.mods.fml.common.FMLCommonHandler;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
@@ -39,10 +40,9 @@ public class RadioWorldHandler {
 
     public List<TileEntityBroadcaster> getAvailableRadioList(int dimensionId, EntityPlayer player){
         Collection<TileEntityBroadcaster> tempRadios = radioTiles.get(dimensionId);
-        if(tempRadios == null || tempRadios.isEmpty())
-            return null;
+        if(tempRadios == null || tempRadios.isEmpty()) return null;
 
-        List<TileEntityBroadcaster> availableRadios = new ArrayList<TileEntityBroadcaster>();
+        List<TileEntityBroadcaster> availableRadios = Lists.newArrayList();
 
         for(TileEntityBroadcaster availableRadio : tempRadios){
             if(availableRadio.getDistanceToPlayer() < 250)  //TODO: Change Probably?
@@ -69,6 +69,7 @@ public class RadioWorldHandler {
     }
 
     public boolean addRadioTile(TileEntityBroadcaster radio){
+        if(radio.worldObj.isRemote) return false;
         int dimid = radio.worldObj.provider.dimensionId;
         this.radioTiles.put(dimid, radio);
         System.out.println("Added a radio tile in dimension " + dimid);
@@ -76,6 +77,7 @@ public class RadioWorldHandler {
     }
 
     public boolean removeRadioTile(TileEntityBroadcaster radio){
+        if(radio.worldObj.isRemote) return false;
         int dimid = radio.worldObj.provider.dimensionId;
         this.radioTiles.remove(dimid, radio);
         System.out.println("Removed a radio tile from dimension " + dimid);

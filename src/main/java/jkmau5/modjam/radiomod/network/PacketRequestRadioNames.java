@@ -1,5 +1,6 @@
 package jkmau5.modjam.radiomod.network;
 
+import com.google.common.collect.Lists;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
@@ -19,7 +20,6 @@ import net.minecraftforge.common.DimensionManager;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,7 +97,7 @@ public class PacketRequestRadioNames extends PacketBase {
             NBTTagCompound compoundTag = CompressedStreamTools.read(input);
             NBTTagList tagList = compoundTag.getTagList("radios");
 
-            List<TileEntityBroadcaster> radios = new ArrayList<TileEntityBroadcaster>();
+            List<TileEntityBroadcaster> radios = Lists.newArrayList();
 
             for(int i = 0; i < tagList.tagCount(); i++){
                 NBTBase base = tagList.tagAt(i);
