@@ -7,7 +7,6 @@ import jkmau5.modjam.radiomod.gui.EnumGui;
 import jkmau5.modjam.radiomod.gui.GuiOpener;
 import jkmau5.modjam.radiomod.network.PacketUpdateRadioName;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -20,7 +19,7 @@ import net.minecraft.world.World;
  * You are allowed to change this code,
  * however, not to publish it without my permission.
  */
-public class BlockBroadcaster extends Block {
+public class BlockBroadcaster extends BlockRadioNetwork {
 
     public BlockBroadcaster(int par1){
         super(par1, Material.iron);

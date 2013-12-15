@@ -78,11 +78,11 @@ public class RadioNetwork {
     }
 
     public void recalculateNetwork(){
-        for(ICable cable : this.getCables()){
-            cable.initiateNetwork();
-        }
         if(this.broadcaster != null) this.broadcaster.destroyNetwork();
         this.broadcaster = null;
+        for(int i = 0; i < this.cables.size(); i++){
+            this.cables.get(i).initiateNetwork();
+        }
     }
 
     public void mergeWithNetwork(RadioNetwork otherNetwork){

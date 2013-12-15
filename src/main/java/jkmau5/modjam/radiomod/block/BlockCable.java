@@ -5,13 +5,10 @@ import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.client.ProxyClient;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityCable;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
@@ -26,7 +23,7 @@ import java.util.List;
  * You are allowed to change this code,
  * however, not to publish it without my permission.
  */
-public class BlockCable extends Block {
+public class BlockCable extends BlockRadioNetwork {
 
     public BlockCable(int par1) {
         super(par1, Material.iron);
@@ -75,21 +72,6 @@ public class BlockCable extends Block {
         cable.getNetwork().remove(cable);
 
         super.breakBlock(world, x, y, z, oldId, oldMeta);
-    }
-
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase ent, ItemStack is) {
-        super.onBlockPlacedBy(world, x, y, z, ent, is);
-        TileEntityCable cable = (TileEntityCable) world.getBlockTileEntity(x, y, z);
-        if(cable == null) return;
-        cable.refreshConnections();
-    }
-
-    @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, int neighborID){
-        super.onNeighborBlockChange(world, x, y, z, neighborID);
-        TileEntityCable cable = (TileEntityCable) world.getBlockTileEntity(x, y, z);
-        if(cable == null) return;
-        cable.refreshConnections();
     }
 
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {

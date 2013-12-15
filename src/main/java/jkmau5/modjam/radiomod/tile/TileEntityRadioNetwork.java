@@ -4,7 +4,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import jkmau5.modjam.radiomod.radio.RadioNetwork;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeDirection;
 
 /**
  * No description given
@@ -15,8 +18,10 @@ public class TileEntityRadioNetwork extends TileEntity {
 
     private RadioNetwork network;
     private boolean networkInitiated = false;
+    private boolean merged = false;
 
     public void initiateNetwork(){
+        if(this.networkInitiated) this.destroyNetwork();
         this.network = new RadioNetwork(this);
         this.networkInitiated = true;
     }
@@ -35,12 +40,28 @@ public class TileEntityRadioNetwork extends TileEntity {
         if(!this.networkInitiated){
             this.initiateNetwork();
         }
+        if(!this.merged){
+            this.tryMergeNeighborNetworks();
+            this.merged = true;
+        }
+    }
+
+    public void tryMergeNeighborNetworks(){
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
+            TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+            if(tile == null) continue;
+            if(tile instanceof TileEntityCable && ((TileEntityCable) tile).getNetwork() != null){
+                ((TileEntityCable) tile).getNetwork().mergeWithNetwork(getNetwork());
+            }else if(tile instanceof TileEntityBroadcaster && ((TileEntityBroadcaster) tile).getNetwork() == null){
+                getNetwork().setBroadcaster((TileEntityBroadcaster) tile);
+            }
+        }
     }
 
     @Override
     public void validate(){
         super.validate();
-        this.networkInitiated = false;
+        this.initiateNetwork();
     }
 
     @Override
@@ -75,5 +96,13 @@ public class TileEntityRadioNetwork extends TileEntity {
     @SideOnly(Side.CLIENT)
     public int getDistanceToCoords(int x, int y, int z){
         return (int) Math.ceil(this.getDistanceFrom(x, y, z));
+    }
+
+    public void onNeighborBlockChange(){
+        this.tryMergeNeighborNetworks();
+    }
+
+    public void onBlockPlacedBy(EntityLivingBase ent, ItemStack is){
+
     }
 }

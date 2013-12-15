@@ -2,6 +2,8 @@ package jkmau5.modjam.radiomod.tile;
 
 import jkmau5.modjam.radiomod.radio.ICable;
 import jkmau5.modjam.radiomod.util.CableConnections;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -15,27 +17,6 @@ import net.minecraftforge.common.ForgeDirection;
 public class TileEntityCable extends TileEntityRadioNetwork implements ICable {
 
     public final CableConnections connections = new CableConnections();
-    private boolean initiated = false;
-
-    public void updateEntity(){
-        super.updateEntity();
-        if(!this.initiated){
-            this.initiated = true;
-            tryMergeNeighborNetworks();
-        }
-    }
-
-    public void tryMergeNeighborNetworks(){
-        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
-            TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
-            if(tile == null) continue;
-            if(tile instanceof TileEntityCable && ((TileEntityCable) tile).getNetwork() != null){
-                ((TileEntityCable) tile).getNetwork().mergeWithNetwork(getNetwork());
-            }else if(tile instanceof TileEntityBroadcaster && ((TileEntityBroadcaster) tile).getNetwork() == null){
-                getNetwork().setBroadcaster((TileEntityBroadcaster) tile);
-            }
-        }
-    }
 
     private boolean isValidTile(TileEntity tile){
         if(tile == null) return false;
@@ -47,7 +28,7 @@ public class TileEntityCable extends TileEntityRadioNetwork implements ICable {
         return tile instanceof TileEntityRadioNetwork;
     }
 
-    public void refreshConnections(){
+    private void refreshConnections(){
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
             TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
 
@@ -61,5 +42,17 @@ public class TileEntityCable extends TileEntityRadioNetwork implements ICable {
                 }
             }
         }
+    }
+
+    @Override
+    public void onNeighborBlockChange(){
+        this.refreshConnections();
+        super.onNeighborBlockChange();
+    }
+
+    @Override
+    public void onBlockPlacedBy(EntityLivingBase ent, ItemStack is){
+        this.refreshConnections();
+        super.onBlockPlacedBy(ent, is);
     }
 }
