@@ -120,7 +120,7 @@ public class GuiPlaylist extends GuiScreen {
             int index = 0;
             for(String title : playlist.getTitles()){
                 String realRecord = Constants.getRealRecordTitle(title);
-                if(selectedIndex == realRecord) {
+                if(selectedIndex.equals(realRecord)){
                     Gui.drawRect(x + 2, y + 2 + index * 10, x + this.xSize - 2, y + 2 + (index + 1) * 10, 0xFF00AA00);
                     Gui.drawRect(x + this.xSize - 16, y + 3 + index * 10, x + this.xSize - 6, y + 1 + (index + 1) * 10, 0xFFDD0000);
                 }
@@ -144,9 +144,7 @@ public class GuiPlaylist extends GuiScreen {
     }
 
     private void removeIfClickingRemove(int xMouse, int yMouse) {
-        if(selectedIndex == "")
-            return;
-
+        if(selectedIndex == "") return;
         int realX = (this.width - this.xSize) / 2;
         if(xMouse >= realX + this.xSize - 16 && xMouse < realX + this.xSize - 6) {
             int y = getYStartForTitle();
@@ -160,14 +158,12 @@ public class GuiPlaylist extends GuiScreen {
     protected void mouseClicked(int x, int y, int button){
         super.mouseClicked(x, y, button);
         if(button == 0){
-            //TODO: check coords!
             int realX = (this.width - this.xSize) / 2;
             int realY = (this.actualHeight - this.ySize) / 2;
             int yS = (this.actualHeight / 5);
             if(x > realX && x < realX + this.xSize) {
                 if(y > realY && y < realY + yS) {
                     removeIfClickingRemove(x, y - scrollY);
-
                     selectedIndex = getIndexId(y - scrollY);
                 }
             }

@@ -44,12 +44,13 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
     public boolean removeTitle(String title) {
         if(titles.contains(title)){
             titles.remove(title);
+            dropRecordItemInWorld(worldObj, title);
+            if(worldObj != null && !worldObj.isRemote){
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            }
+            return true;
         }
-        dropRecordItemInWorld(worldObj, title);
-        if(worldObj != null && !worldObj.isRemote){
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        }
-        return true;
+        return false;
     }
 
     public void breakBlock(){
