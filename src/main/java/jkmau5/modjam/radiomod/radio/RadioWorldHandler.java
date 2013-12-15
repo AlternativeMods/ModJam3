@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import cpw.mods.fml.common.FMLCommonHandler;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
+import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -45,6 +46,23 @@ public class RadioWorldHandler {
 
         for(TileEntityBroadcaster availableRadio : tempRadios){
             if(availableRadio.getDistanceToMe() < 250)  //TODO: Change Probably?
+                availableRadios.add(availableRadio);
+        }
+        return availableRadios;
+    }
+
+    public List<TileEntityBroadcaster> getAvailableRadioList(int dimensionId, TileEntityRadio tile){
+        if(tile == null)
+            return null;
+
+        List<TileEntityBroadcaster> tempRadios = radioTiles.get(dimensionId);
+        if(tempRadios == null || tempRadios.isEmpty())
+            return null;
+
+        List<TileEntityBroadcaster> availableRadios = new ArrayList<TileEntityBroadcaster>();
+
+        for(TileEntityBroadcaster availableRadio : tempRadios){
+            if(availableRadio.getDistanceToMe(tile.xCoord, tile.yCoord, tile.zCoord) < 250)  //TODO: Change Probably?
                 availableRadios.add(availableRadio);
         }
         return availableRadios;

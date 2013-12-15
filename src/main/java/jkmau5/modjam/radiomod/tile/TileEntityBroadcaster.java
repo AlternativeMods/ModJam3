@@ -42,6 +42,11 @@ public class TileEntityBroadcaster extends TileEntity {
         return (int) Math.ceil(Minecraft.getMinecraft().thePlayer.getDistanceSq(this.xCoord, this.yCoord, this.zCoord));
     }
 
+    @SideOnly(Side.CLIENT)
+    public int getDistanceToMe(int x, int y, int z){
+        return (int) Math.ceil(this.getDistanceFrom(x, y, z));
+    }
+
     public boolean isConnectedToNetwork(){
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
             TileEntity tempTile = worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
@@ -78,7 +83,7 @@ public class TileEntityBroadcaster extends TileEntity {
         super.validate();
         if(!isInitiated){
             isInitiated = true;
-            if(!worldObj.isRemote)
+            if(worldObj != null && !worldObj.isRemote)
                 RadioMod.radioWorldHandler.addRadioTile(this);
         }
         this.tileEntityInvalid = false;

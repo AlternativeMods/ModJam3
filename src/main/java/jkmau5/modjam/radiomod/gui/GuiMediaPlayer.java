@@ -3,6 +3,7 @@ package jkmau5.modjam.radiomod.gui;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import jkmau5.modjam.radiomod.network.PacketRequestRadioNames;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
+import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -33,8 +34,18 @@ public class GuiMediaPlayer extends GuiScreen {
     private int mouseGrabY = 0;
     private static boolean isloading = false;
 
-    public GuiMediaPlayer(boolean isMediaPlayer){
-        PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId, isMediaPlayer).getPacket());
+    private TileEntityRadio tileEntity;
+
+    public GuiMediaPlayer(){
+        PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId, false).getPacket());
+        isloading = true;
+    }
+
+    public GuiMediaPlayer(TileEntityRadio tileEntity){
+        this.tileEntity = tileEntity;
+
+        PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId, tileEntity).getPacket());
+
         isloading = true;
     }
 

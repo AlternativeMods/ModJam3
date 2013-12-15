@@ -25,6 +25,7 @@ public class BlockBroadcaster extends Block {
     public BlockBroadcaster(int par1){
         super(par1, Material.iron);
         setCreativeTab(RadioMod.tabRadioMod);
+        setUnlocalizedName("radiomod.BlockBroadcaster");
     }
 
     public boolean hasTileEntity(int metadata) {
@@ -48,7 +49,7 @@ public class BlockBroadcaster extends Block {
             player.addChatMessage(radio.getRadioNetwork().toString());
         PacketDispatcher.sendPacketToPlayer(new PacketUpdateRadioName(x, y, z, world.provider.dimensionId, radio.getRadioName()).getPacket(), (Player) player);
 
-        GuiOpener.openGuiOnClient(EnumGui.RADIO_BLOCK, player, x, y, z);
+        GuiOpener.openGuiOnClient(EnumGui.BROADCASTER_BLOCK, player, x, y, z);
         return true;
     }
 
