@@ -90,6 +90,8 @@ public class RadioMod {
         proxy.init();
 
         TickRegistry.registerTickHandler(new RadioTickHandler(), Side.SERVER); //TODO: remove?
+
+        Constants.initiateTitles();
     }
 
     @Mod.EventHandler
