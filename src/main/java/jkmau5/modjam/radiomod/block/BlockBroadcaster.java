@@ -27,15 +27,15 @@ public class BlockBroadcaster extends BlockRadioNetwork {
         setUnlocalizedName("radiomod.BlockBroadcaster");
     }
 
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(int metadata){
         return true;
     }
 
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, int metadata){
         return new TileEntityBroadcaster();
     }
 
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
         if(world.isRemote) return true;
 
         TileEntity tempTile = world.getBlockTileEntity(x, y, z);
@@ -43,9 +43,6 @@ public class BlockBroadcaster extends BlockRadioNetwork {
             return false;
 
         TileEntityBroadcaster radio = (TileEntityBroadcaster) tempTile;
-        if(radio.getNetwork() != null){
-            player.addChatMessage(radio.getNetwork().toString());
-        }
         PacketDispatcher.sendPacketToPlayer(new PacketUpdateRadioName(x, y, z, world.provider.dimensionId, radio.getRadioName()).getPacket(), (Player) player);
 
         GuiOpener.openGuiOnClient(EnumGui.BROADCASTER_BLOCK, player, x, y, z);
@@ -53,7 +50,7 @@ public class BlockBroadcaster extends BlockRadioNetwork {
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, int oldId, int oldMeta) {
+    public void breakBlock(World world, int x, int y, int z, int oldId, int oldMeta){
         if(world.isRemote)
             return;
 

@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -27,15 +28,31 @@ public class ItemLinkCard extends Item {
 
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
+        if(world.isRemote) return false;
         TileEntity tile = world.getBlockTileEntity(x, y, z);
-        if(tile == null || !(tile instanceof TileEntityRadioNetwork)) return false;
+        if(tile == null || !(tile instanceof TileEntityRadioNetwork)) return true;
+        TileEntityRadioNetwork radioTile = (TileEntityRadioNetwork) tile;
         NBTTagCompound tag = stack.getTagCompound();
-        if(tag == null) stack.setTagCompound(new NBTTagCompound());
+        if(tag == null){
+            stack.setTagCompound(new NBTTagCompound());
+            stack.getTagCompound().setBoolean("linked", false);
+        }
         tag = stack.getTagCompound();
-        tag.setBoolean("linked", true);
-        tag.setInteger("linkedX", x);
-        tag.setInteger("linkedY", y);
-        tag.setInteger("linkedZ", z);
+        boolean linked = tag.getBoolean("linked");
+        if(linked){
+            TileEntity newTile = world.getBlockTileEntity(tag.getInteger("linkedX"), tag.getInteger("linkedY"), tag.getInteger("linkedZ"));
+            if(newTile == null || !(newTile instanceof TileEntityRadioNetwork)){
+                player.sendChatToPlayer(ChatMessageComponent.createFromTranslationKey("radioMod.linkCard.invalid"));
+            }else{
+                radioTile.linkTo((TileEntityRadioNetwork) newTile);
+                ((TileEntityRadioNetwork) newTile).linkTo(radioTile);
+            }
+        }else{
+            tag.setBoolean("linked", true);
+            tag.setInteger("linkedX", x);
+            tag.setInteger("linkedY", y);
+            tag.setInteger("linkedZ", z);
+        }
         return true;
     }
 

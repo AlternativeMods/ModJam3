@@ -2,6 +2,7 @@ package jkmau5.modjam.radiomod.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import jkmau5.modjam.radiomod.radio.RadioNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,8 @@ import net.minecraft.tileentity.TileEntity;
  * @author jk-5
  */
 public class TileEntityRadioNetwork extends TileEntity {
+
+    private RadioNetwork network;
 
     @SideOnly(Side.CLIENT)
     public int getDistanceToPlayer(){
@@ -30,5 +33,9 @@ public class TileEntityRadioNetwork extends TileEntity {
 
     public void onBlockPlacedBy(EntityLivingBase ent, ItemStack is){
 
+    }
+
+    public void linkTo(TileEntityRadioNetwork newTile){
+        this.linkedTileEntity = newTile;
     }
 }
