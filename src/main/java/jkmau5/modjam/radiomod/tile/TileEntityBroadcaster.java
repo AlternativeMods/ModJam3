@@ -43,6 +43,7 @@ public class TileEntityBroadcaster extends TileEntity {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     @SideOnly(Side.CLIENT)
     public int getDistanceToMe(TileEntity tile){
         return (int) Math.ceil(tile.getDistanceFrom(this.xCoord, this.yCoord, this.zCoord));
@@ -50,6 +51,10 @@ public class TileEntityBroadcaster extends TileEntity {
 
     public boolean isConnectedToNetwork() {
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+=======
+    public boolean isConnectedToNetwork(){
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
+>>>>>>> origin/jk-5
 =======
     public boolean isConnectedToNetwork(){
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
