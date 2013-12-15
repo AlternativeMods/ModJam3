@@ -1,6 +1,6 @@
 package jkmau5.modjam.radiomod.tile;
 
-import jkmau5.modjam.radiomod.network.RadioNetwork;
+import jkmau5.modjam.radiomod.radio.RadioNetwork;
 import jkmau5.modjam.radiomod.util.CableConnections;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
@@ -23,7 +23,7 @@ public class TileEntityCable extends TileEntity {
         this.initiated = false;
     }
 
-    public RadioNetwork getNetwork() {
+    public RadioNetwork getNetwork(){
         return this.network;
     }
 
@@ -36,26 +36,26 @@ public class TileEntityCable extends TileEntity {
         return this.connections;
     }
 
-    public void initiateNetwork() {
+    public void initiateNetwork(){
         this.network = new RadioNetwork(this);
         this.initiated = false;
     }
 
-    public void validate() {
+    public void validate(){
         super.validate();
         initiateNetwork();
     }
 
-    public void updateEntity() {
-        if(!this.initiated) {
+    public void updateEntity(){
+        if(!this.initiated){
             this.initiated = true;
             tryMergeWithNeighbors();
             //setupBroadcaster();
         }
     }
 
-    public void onNeighborTileChange() {
-        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    public void onNeighborTileChange(){
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
             TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
 
             boolean connect = false;
@@ -64,8 +64,8 @@ public class TileEntityCable extends TileEntity {
 
             connections.setConnected(dir, connect);
 
-            if(tile instanceof TileEntityBroadcaster) {
-                if(getNetwork().setBroadcaster((TileEntityBroadcaster) tile)) {
+            if(tile instanceof TileEntityBroadcaster){
+                if(getNetwork().setBroadcaster((TileEntityBroadcaster) tile)){
                     connections.setConnected(dir, true);
                     worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
                 }
@@ -73,28 +73,27 @@ public class TileEntityCable extends TileEntity {
         }
     }
 
-    public void tryMergeWithNeighbors() {
-        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    public void tryMergeWithNeighbors(){
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
             TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
 
             if(tile == null)
                 continue;
 
-            if(tile instanceof TileEntityCable && ((TileEntityCable)tile).getNetwork() != null) {
-                ((TileEntityCable)tile).getNetwork().mergeWithNetwork(getNetwork());
-            }
-            else if(tile instanceof TileEntityBroadcaster && ((TileEntityBroadcaster)tile).getRadioNetwork() == null) {
+            if(tile instanceof TileEntityCable && ((TileEntityCable) tile).getNetwork() != null){
+                ((TileEntityCable) tile).getNetwork().mergeWithNetwork(getNetwork());
+            }else if(tile instanceof TileEntityBroadcaster && ((TileEntityBroadcaster) tile).getRadioNetwork() == null){
                 getNetwork().setBroadcaster((TileEntityBroadcaster) tile);
             }
         }
     }
 
-    private boolean isValidTile(TileEntity tile) {
+    private boolean isValidTile(TileEntity tile){
         if(tile == null)
             return false;
         if(tile instanceof TileEntityCable)
             return true;
-        if(tile instanceof TileEntityBroadcaster) {
+        if(tile instanceof TileEntityBroadcaster){
             TileEntityBroadcaster broadcaster = (TileEntityBroadcaster) tile;
             if(getNetwork().getBroadcaster() == broadcaster)
                 return true;

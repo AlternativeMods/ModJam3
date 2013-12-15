@@ -18,7 +18,7 @@ import jkmau5.modjam.radiomod.block.BlockRadio;
 import jkmau5.modjam.radiomod.item.ItemIngredient;
 import jkmau5.modjam.radiomod.item.ItemMediaPlayer;
 import jkmau5.modjam.radiomod.network.PacketHandler;
-import jkmau5.modjam.radiomod.network.RadioWorldHandler;
+import jkmau5.modjam.radiomod.radio.RadioWorldHandler;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
 import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
