@@ -99,7 +99,12 @@ public class TileEntityRadioNetwork extends TileEntity {
     }
 
     public void onNeighborBlockChange(){
-        this.tryMergeNeighborNetworks();
+        for(int i = 0; i < this.network.getNetworkTiles().size(); i++){
+            TileEntityRadioNetwork tile = this.network.getNetworkTiles().get(i);
+            tile.initiateNetwork();
+            tile.tryMergeNeighborNetworks();
+        }
+        //this.tryMergeNeighborNetworks();
     }
 
     public void onBlockPlacedBy(EntityLivingBase ent, ItemStack is){
