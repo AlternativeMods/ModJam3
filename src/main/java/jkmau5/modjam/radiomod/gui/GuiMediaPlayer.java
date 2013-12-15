@@ -9,6 +9,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -26,6 +27,7 @@ public class GuiMediaPlayer extends GuiScreen {
     private GuiButton connectButton;
 
     private static List<TileEntityBroadcaster> availableRadios;
+    public static NBTTagCompound guiData;
 
     private int xSize = 176;
     private int ySize = 166;

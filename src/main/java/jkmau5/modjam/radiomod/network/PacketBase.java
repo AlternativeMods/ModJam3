@@ -22,7 +22,7 @@ import java.io.IOException;
  */
 public abstract class PacketBase {
 
-    private static BiMap<Integer, Class<? extends PacketBase>> packets = HashBiMap.create();
+    private static final BiMap<Integer, Class<? extends PacketBase>> packets = HashBiMap.create();
     public EntityPlayer player;
 
     private static void registerPacket(int id, Class<? extends PacketBase> cl){
@@ -33,6 +33,7 @@ public abstract class PacketBase {
         registerPacket(0, PacketOpenGui.class);
         registerPacket(1, PacketUpdateRadioName.class);
         registerPacket(2, PacketRequestRadioNames.class);
+        registerPacket(3, PacketMediaPlayerData.class);
     }
 
     public final Packet250CustomPayload getPacket(){
