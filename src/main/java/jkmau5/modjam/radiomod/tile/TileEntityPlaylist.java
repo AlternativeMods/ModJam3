@@ -1,5 +1,6 @@
 package jkmau5.modjam.radiomod.tile;
 
+import com.google.common.collect.Lists;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import jkmau5.modjam.radiomod.Constants;
@@ -24,38 +25,41 @@ import java.util.List;
  * however, not to publish it without my permission.
  */
 public class TileEntityPlaylist extends TileEntityRadioNetwork {
-    private List<String> titles = new ArrayList<String>();
+
+    private List<String> titles = Lists.newArrayList();
 
     public List<String> getTitles() {
         return titles;
     }
 
     public boolean addTitle(String title) {
-        if(titles.contains(title))
-            return false;
-        titles.add(title);
-        if(worldObj != null && !worldObj.isRemote)
+        if(titles.contains(title)) return false;
+        this.titles.add(title);
+        if(worldObj != null && !worldObj.isRemote){
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
         return true;
     }
 
     public boolean removeTitle(String title) {
-        if(titles.contains(title))
+        if(titles.contains(title)){
             titles.remove(title);
+        }
         dropRecordItemInWorld(worldObj, title);
-        if(worldObj != null && !worldObj.isRemote)
+        if(worldObj != null && !worldObj.isRemote){
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
         return true;
     }
 
-    public void breakBlock(World world) {
-        for(String title : this.titles)
-            dropRecordItemInWorld(world, title);
+    public void breakBlock(){
+        for(String title : this.titles){
+            dropRecordItemInWorld(this.worldObj, title);
+        }
     }
 
     public void dropRecordItemInWorld(World world, String title) {
-        if(world.isRemote)
-            return;
+        if(world.isRemote) return;
 
         double d0 = world.rand.nextFloat() * 0.7F + 1.0F - 0.7F * 0.5D;
         double d1 = world.rand.nextFloat() * 0.7F + 1.0F - 0.7F * 0.5D;

@@ -4,7 +4,6 @@ import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.gui.EnumGui;
 import jkmau5.modjam.radiomod.gui.GuiOpener;
 import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemRecord;
@@ -18,30 +17,27 @@ import net.minecraft.world.World;
  * You are allowed to change this code,
  * however, not to publish it without my permission.
  */
-public class BlockPlaylist extends Block {
+public class BlockPlaylist extends BlockRadioNetwork {
 
-    public BlockPlaylist(int par1) {
+    public BlockPlaylist(int par1){
         super(par1, Material.iron);
         setCreativeTab(RadioMod.tabRadioMod);
         setUnlocalizedName("radiomod.BlockPlaylist");
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, int oldId, int oldMeta) {
+    public void breakBlock(World world, int x, int y, int z, int oldId, int oldMeta){
+        super.breakBlock(world, x, y, z, oldId, oldMeta);
         TileEntity tempTile = world.getBlockTileEntity(x, y, z);
-        if(tempTile == null || !(tempTile instanceof TileEntityPlaylist)) {
+        if(tempTile == null || !(tempTile instanceof TileEntityPlaylist)){
             super.breakBlock(world, x, y, z, oldId, oldMeta);
             return;
         }
-
-        TileEntityPlaylist playlist = (TileEntityPlaylist) tempTile;
-        playlist.breakBlock(world);
-
-        super.breakBlock(world, x, y, z, oldId, oldMeta);
+        ((TileEntityPlaylist) tempTile).breakBlock();
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
         if(world.isRemote)
             return true;
 
@@ -50,7 +46,7 @@ public class BlockPlaylist extends Block {
             return true;
         TileEntityPlaylist playlist = (TileEntityPlaylist) tempTile;
 
-        if(player.getHeldItem() == null) {
+        if(player.getHeldItem() == null){
             GuiOpener.openGuiOnClient(EnumGui.PLAYLIST_BLOCK, player, x, y, z);
         }else{
             if(!(player.getHeldItem().getItem() instanceof ItemRecord))
@@ -65,12 +61,12 @@ public class BlockPlaylist extends Block {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(int metadata){
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, int metadata){
         return new TileEntityPlaylist();
     }
 }

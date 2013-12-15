@@ -37,7 +37,7 @@ public class BlockRadio extends Block {
     @SideOnly(Side.CLIENT)
     private Icon bottom;
 
-    public BlockRadio(int par1) {
+    public BlockRadio(int par1){
         super(par1, Material.iron);
         this.setCreativeTab(RadioMod.tabRadioMod);
         this.setUnlocalizedName("radiomod.BlockRadio");
@@ -46,12 +46,12 @@ public class BlockRadio extends Block {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(int metadata){
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, int metadata){
         return new TileEntityRadio();
     }
 
@@ -91,7 +91,7 @@ public class BlockRadio extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9){
         TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
         if(tileEntity == null || !(tileEntity instanceof TileEntityRadio)) return true;
         if(!world.isRemote){
