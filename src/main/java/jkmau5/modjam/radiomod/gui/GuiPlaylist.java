@@ -120,7 +120,7 @@ public class GuiPlaylist extends GuiScreen {
                 String realRecord = Constants.getRealRecordTitle(title);
                 if(selectedIndex == realRecord) {
                     Gui.drawRect(x + 2, y + 2 + index * 10, x + this.xSize - 2, y + 2 + (index + 1) * 10, 0xFF00AA00);
-                    Gui.drawRect
+                    Gui.drawRect(x + this.xSize - 16, y + 3 + index * 10, x + this.xSize - 6, y + 1 + (index + 1) * 10, 0xFFDD0000);
                 }
                 this.fontRenderer.drawString(realRecord, x + 3, 3 + y + index * 10, 0xFFFFFFFF);
                 index++;
