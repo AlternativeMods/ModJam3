@@ -134,8 +134,26 @@ public class GuiPlaylist extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTick);
     }
 
-    private void removeIfClickingRemove(int xMouse, int yMouse) {
+    private int getYStartForTitle() {
+        if(!titleCoordinates.containsKey(selectedIndex))
+            return -1;
 
+        return titleCoordinates.get(selectedIndex);
+    }
+
+    private void removeIfClickingRemove(int xMouse, int yMouse) {
+        if(selectedIndex == "")
+            return;
+
+        int realX = (this.width - this.xSize) / 2;
+        int realY = (this.actualHeight - this.ySize) / 2;
+        if(xMouse >= realX + this.xSize - 16 && xMouse < realX + this.xSize - 6) {
+            int y = getYStartForTitle();
+            System.out.println((y + 1) + " : " + (yMouse) + " : " + (realY + y + 6));
+            if(yMouse >= y + 2 && yMouse <= y + 8) {
+                Packet
+            }
+        }
     }
 
     @Override
@@ -148,9 +166,9 @@ public class GuiPlaylist extends GuiScreen {
             int yS = (this.actualHeight / 5);
             if(x > realX && x < realX + this.xSize) {
                 if(y > realY && y < realY + yS) {
-                    selectedIndex = getIndexId(y - scrollY);
-
                     removeIfClickingRemove(x, y - scrollY);
+
+                    selectedIndex = getIndexId(y - scrollY);
                 }
             }
         }
