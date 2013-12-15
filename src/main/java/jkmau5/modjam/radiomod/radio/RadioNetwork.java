@@ -1,5 +1,7 @@
 package jkmau5.modjam.radiomod.radio;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityCable;
 
@@ -102,10 +104,12 @@ public class RadioNetwork {
         if(otherNetwork == this)
             return;
 
-        if(getBroadcaster() != null)
-            System.out.println("First: " + getBroadcaster().toString());
-        if(otherNetwork.getBroadcaster() != null)
-            System.out.println("Second: " + otherNetwork.getBroadcaster().toString());
+        if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+            if(this.broadcaster != null)
+                System.out.println("First: " + this.broadcaster.toString());
+            if(otherNetwork.getBroadcaster() != null)
+                System.out.println("Second: " + otherNetwork.getBroadcaster().toString());
+        }
 
         for(TileEntityCable cable : otherNetwork.getCables())
             addCable(cable);
