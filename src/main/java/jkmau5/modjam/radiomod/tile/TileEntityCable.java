@@ -18,6 +18,7 @@ public class TileEntityCable extends TileEntityRadioNetwork implements ICable {
     private boolean initiated = false;
 
     public void updateEntity(){
+        super.updateEntity();
         if(!this.initiated){
             this.initiated = true;
             tryMergeNeighborNetworks();
