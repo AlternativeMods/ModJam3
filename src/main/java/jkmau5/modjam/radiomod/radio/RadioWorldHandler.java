@@ -1,4 +1,4 @@
-package jkmau5.modjam.radiomod.network;
+package jkmau5.modjam.radiomod.radio;
 
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import net.minecraft.entity.player.EntityPlayer;
