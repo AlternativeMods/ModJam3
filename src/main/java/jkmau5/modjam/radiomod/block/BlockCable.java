@@ -81,30 +81,26 @@ public class BlockCable extends Block {
 
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase ent, ItemStack is) {
         super.onBlockPlacedBy(world, x, y, z, ent, is);
-
         TileEntityCable cable = (TileEntityCable) world.getBlockTileEntity(x, y, z);
-        if(cable == null)
-            return;
-
-        cable.onNeighborTileChange();
+        if(cable == null) return;
+        cable.refreshConnections();
     }
 
-    public void onNeighborTileChange(World world, int x, int y, int z, int tileX, int tileY, int tileZ) {
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, int neighborID){
+        super.onNeighborBlockChange(world, x, y, z, neighborID);
         TileEntityCable cable = (TileEntityCable) world.getBlockTileEntity(x, y, z);
-        if(cable == null)
-            return;
-
-        cable.onNeighborTileChange();
+        if(cable == null) return;
+        cable.refreshConnections();
     }
 
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-        setCableBoundingBox(world, x, y, z);
+        this.setCableBoundingBox(world, x, y, z);
     }
 
     public void setCableBoundingBox(IBlockAccess world, int x, int y, int z) {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
-        if(tile == null || !(tile instanceof TileEntityCable))
-            return;
+        if(tile == null || !(tile instanceof TileEntityCable)) return;
         TileEntityCable cable = (TileEntityCable) tile;
 
         float minX = 0.375F;
@@ -115,20 +111,12 @@ public class BlockCable extends Block {
         float maxY = 0.625F;
         float maxZ = 0.625F;
 
-        if(isValidTileAtPosition(cable, world, x - 1, y, z))
-            minX = 0F;
-        if(isValidTileAtPosition(cable, world, x + 1, y, z))
-            maxX = 1F;
-
-        if(isValidTileAtPosition(cable, world, x, y - 1, z))
-            minY = 0F;
-        if(isValidTileAtPosition(cable, world, x, y + 1, z))
-            maxY = 1F;
-
-        if(isValidTileAtPosition(cable, world, x, y, z - 1))
-            minZ = 0F;
-        if(isValidTileAtPosition(cable, world, x, y, z + 1))
-            maxZ = 1F;
+        if(isValidTileAtPosition(cable, world, x - 1, y, z)) minX = 0F;
+        if(isValidTileAtPosition(cable, world, x + 1, y, z)) maxX = 1F;
+        if(isValidTileAtPosition(cable, world, x, y - 1, z)) minY = 0F;
+        if(isValidTileAtPosition(cable, world, x, y + 1, z)) maxY = 1F;
+        if(isValidTileAtPosition(cable, world, x, y, z - 1)) minZ = 0F;
+        if(isValidTileAtPosition(cable, world, x, y, z + 1)) maxZ = 1F;
 
         this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
     }
@@ -149,9 +137,7 @@ public class BlockCable extends Block {
             return true;
         if(tile instanceof TileEntityBroadcaster) {
             TileEntityBroadcaster broadcaster = (TileEntityBroadcaster) tile;
-
-            if(broadcaster.getRadioNetwork() == cable.getNetwork())
-                return true;
+            if(broadcaster.getNetwork() == cable.getNetwork()) return true;
         }
         return false;
     }

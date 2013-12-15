@@ -45,7 +45,7 @@ public class RadioWorldHandler {
         List<TileEntityBroadcaster> availableRadios = new ArrayList<TileEntityBroadcaster>();
 
         for(TileEntityBroadcaster availableRadio : tempRadios){
-            if(availableRadio.getDistanceToMe() < 250)  //TODO: Change Probably?
+            if(availableRadio.getDistanceToPlayer() < 250)  //TODO: Change Probably?
                 availableRadios.add(availableRadio);
         }
         return availableRadios;
@@ -62,7 +62,7 @@ public class RadioWorldHandler {
         List<TileEntityBroadcaster> availableRadios = new ArrayList<TileEntityBroadcaster>();
 
         for(TileEntityBroadcaster availableRadio : tempRadios){
-            if(availableRadio.getDistanceToMe(tile.xCoord, tile.yCoord, tile.zCoord) < 250)  //TODO: Change Probably?
+            if(availableRadio.getDistanceToCoords(tile.xCoord, tile.yCoord, tile.zCoord) < 250)  //TODO: Change Probably?
                 availableRadios.add(availableRadio);
         }
         return availableRadios;
