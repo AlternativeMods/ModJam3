@@ -8,6 +8,11 @@ import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Author: Lordmau5
  * Date: 15.12.13
@@ -23,11 +28,32 @@ public class GuiPlaylist extends GuiScreen {
     private boolean isScrolling = false;
     private int mouseGrabY = 0;
     private int selectedIndex = -1;
+    private List<String> titleCoordinates = new ArrayList<String>();
 
     TileEntityPlaylist playlist;
 
     public GuiPlaylist(TileEntityPlaylist playlist) {
         this.playlist = playlist;
+
+        if(playlist.getTitles() != null && !playlist.getTitles().isEmpty()) {
+            List<String> titles = playlist.getTitles();
+            for(int i=0; i<titles.size(); i++) {
+                String realTitle = Constants.getRealRecordTitle(titles.get(i));
+
+                int fromPos = 3 + ((this.height - this.ySize) / 2) + ((i - 1) * 10);
+                titleCoordinates.add(realTitle);
+            }
+        }
+    }
+
+    public int getIndexId(int yClick) {
+        for(int pos : titleCoordinates.values()) {
+            int titlePos = titleCoordinates.get(pos);
+
+            if(yClick > titlePos && yClick <= titlePos + 10)
+                return i;
+        }
+        return -1;
     }
 
     @Override
@@ -88,8 +114,13 @@ public class GuiPlaylist extends GuiScreen {
         super.mouseClicked(x, y, button);
         if(button == 0){
             //TODO: check coords!
-            if(x > (this.width - this.xSize) / 2 && x < this.xSize) {
-                System.out.println("Looking good from here!");
+            int realX = (this.width - this.xSize) / 2;
+            int realY = (this.height - this.ySize) / 2;
+            int yS = (this.height / 5);
+            if(x > realX && x < realX + this.xSize) {
+                if(y > realY && y < realY + yS) {
+                    selectedIndex = getIndexId(y + scrollY);
+                }
             }
         }
     }
