@@ -55,7 +55,7 @@ public class RadioWorldHandler {
         if(tile == null)
             return null;
 
-        List<TileEntityBroadcaster> tempRadios = radioTiles.get(dimensionId);
+        Collection<TileEntityBroadcaster> tempRadios = radioTiles.get(dimensionId);
         if(tempRadios == null || tempRadios.isEmpty())
             return null;
 
