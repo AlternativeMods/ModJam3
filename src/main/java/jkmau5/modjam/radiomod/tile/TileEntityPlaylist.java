@@ -30,7 +30,7 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
         if(titles.contains(title))
             return false;
         titles.add(title);
-        if(!worldObj.isRemote)
+        if(worldObj != null && !worldObj.isRemote)
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         return true;
     }
@@ -39,7 +39,7 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
         if(titles.contains(title))
             titles.remove(title);
         dropRecordItemInWorld(worldObj, title);
-        if(!worldObj.isRemote)
+        if(worldObj != null && !worldObj.isRemote)
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         return true;
     }

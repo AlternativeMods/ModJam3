@@ -1,9 +1,11 @@
 package jkmau5.modjam.radiomod.gui;
 
+import jkmau5.modjam.radiomod.Constants;
 import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -20,6 +22,7 @@ public class GuiPlaylist extends GuiScreen {
     private int scrollY = 0;
     private boolean isScrolling = false;
     private int mouseGrabY = 0;
+    private int selectedIndex = -1;
 
     TileEntityPlaylist playlist;
 
@@ -49,7 +52,7 @@ public class GuiPlaylist extends GuiScreen {
         ScaledResolution res = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
 
         this.ySize = 116;
-        if(playlist != null && playlist.getTitles() != null) {
+        if(playlist != null && playlist.getTitles() != null && !playlist.getTitles().isEmpty()) {
             GL11.glPushMatrix();
             int yS = (this.height / 5);
             Gui.drawRect(x - 1, y - 1, x + this.xSize + 1, y + yS + 1, 0xFFAAAAAA);
@@ -65,15 +68,42 @@ public class GuiPlaylist extends GuiScreen {
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
             int index = 0;
             for(String title : playlist.getTitles()){
-                this.fontRenderer.drawString(title, x + 3, 3 + y + index * 10, 0xFFFFFFFF);
+                String realRecord = Constants.getRealRecordTitle(title);
+                if(selectedIndex == index)
+                    Gui.drawRect(x + 2, y + 2 + index * 10, x + this.xSize - 2, y + yS - 2, 0xFFAA0000);
+                this.fontRenderer.drawString(realRecord, x + 3, 3 + y + index * 10, 0xFFFFFFFF);
                 index++;
             }
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
             GL11.glPopMatrix();
         }else{
-            this.fontRenderer.drawString("No radios found", x, y, 0xFFFFFFFF);
+            this.fontRenderer.drawString("No songs available", x, y, 0xFFFFFFFF);
         }
 
         super.drawScreen(mouseX, mouseY, partialTick);
+    }
+
+    @Override
+    protected void mouseClicked(int x, int y, int button){
+        super.mouseClicked(x, y, button);
+        if(button == 0){
+            //TODO: check coords!
+            if(x > (this.width - this.xSize) / 2 && x < this.xSize) {
+                System.out.println("Looking good from here!");
+            }
+        }
+    }
+
+    @Override
+    public void handleMouseInput(){
+        super.handleMouseInput();
+        int scroll = Mouse.getEventDWheel();
+        if(scroll < 0) scroll = -5;
+        if(scroll > 0) scroll = 5;
+        this.scrollY += scroll;
+        if(playlist != null && playlist.getTitles() != null && !playlist.getTitles().isEmpty()){
+            this.scrollY = Math.min(this.scrollY, 0);
+            this.scrollY = Math.max(this.scrollY, 47 - (playlist.getTitles().size() * 10 + 2));
+        }
     }
 }
