@@ -8,6 +8,7 @@ import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.gui.GuiMediaPlayer;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,9 +38,10 @@ public class PacketRequestRadioNames extends PacketBase {
     public PacketRequestRadioNames(){
     }
 
-    public PacketRequestRadioNames(int dimensionId, boolean isMediaPlayer){
+    public PacketRequestRadioNames(int dimensionId, EntityPlayer player){
         this.dimensionId = dimensionId;
-        this.isMediaPlayer = isMediaPlayer;
+        this.isMediaPlayer = true;
+        this.player = player;
     }
     public PacketRequestRadioNames(int dimensionId, TileEntityRadio tileEntity){
         this.dimensionId = dimensionId;
@@ -110,7 +112,7 @@ public class PacketRequestRadioNames extends PacketBase {
             this.isMediaPlayer = input.readBoolean();
             this.dimensionId = input.readInt();
             if(isMediaPlayer){
-                PacketDispatcher.sendPacketToPlayer(new PacketRequestRadioNames(dimensionId, true).getPacket(), (Player) this.player);
+                PacketDispatcher.sendPacketToPlayer(new PacketRequestRadioNames(dimensionId, this.player).getPacket(), (Player) this.player);
             }else{
                 World world = DimensionManager.getWorld(this.dimensionId);
                 if(world == null) return;

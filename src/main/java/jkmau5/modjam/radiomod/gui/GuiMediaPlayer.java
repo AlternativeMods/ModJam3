@@ -39,7 +39,7 @@ public class GuiMediaPlayer extends GuiScreen {
     private TileEntityRadio tileEntity;
 
     public GuiMediaPlayer(){
-        PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId, false).getPacket());
+        PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId, Minecraft.getMinecraft().thePlayer).getPacket());
         isloading = true;
     }
 

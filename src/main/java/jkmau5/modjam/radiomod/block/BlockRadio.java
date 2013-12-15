@@ -50,6 +50,6 @@ public class BlockRadio extends Block {
             GuiOpener.openGuiOnClient(EnumGui.RADIO_BLOCK, player, x, y, z);
         }
 
-        return super.onBlockActivated(world, x, y, z, player, side, par7, par8, par9);
+        return true;
     }
 }
