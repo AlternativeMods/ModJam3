@@ -38,7 +38,7 @@ public class TileEntityCable extends TileEntityRadioNetwork implements ICable {
     }
 
     private boolean isValidTile(TileEntity tile){
-        if(tile == null) return false;
+        if(tile == null || getNetwork() == null) return false;
         if(tile instanceof TileEntityBroadcaster){
             TileEntityBroadcaster broadcaster = (TileEntityBroadcaster) tile;
             if(getNetwork().getBroadcaster() == broadcaster)
@@ -56,7 +56,7 @@ public class TileEntityCable extends TileEntityRadioNetwork implements ICable {
             this.connections.setConnected(dir, connect);
 
             if(tile instanceof TileEntityBroadcaster){
-                if(getNetwork().setBroadcaster((TileEntityBroadcaster) tile)){
+                if(getNetwork() != null && getNetwork().setBroadcaster((TileEntityBroadcaster) tile)){
                     worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
                 }
             }

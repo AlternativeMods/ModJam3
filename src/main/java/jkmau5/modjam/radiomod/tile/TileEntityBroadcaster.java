@@ -35,7 +35,7 @@ public class TileEntityBroadcaster extends TileEntityRadioNetwork implements IBr
     public void tryConnectToSurroundings(){
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
             TileEntity tempTile = worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
-            if(tempTile != null && tempTile instanceof TileEntityCable && ((TileEntityCable) tempTile).getNetwork().getBroadcaster() == null){
+            if(tempTile != null && tempTile instanceof TileEntityCable && ((TileEntityCable) tempTile).getNetwork() != null && ((TileEntityCable) tempTile).getNetwork().getBroadcaster() == null){
                 ((TileEntityCable) tempTile).getNetwork().setBroadcaster(this);
                 return;
             }
