@@ -83,7 +83,7 @@ public class TileEntityBroadcaster extends TileEntity {
         super.validate();
         if(!isInitiated){
             isInitiated = true;
-            if(!worldObj.isRemote)
+            if(worldObj != null && !worldObj.isRemote)
                 RadioMod.radioWorldHandler.addRadioTile(this);
         }
         this.tileEntityInvalid = false;

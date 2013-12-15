@@ -35,14 +35,12 @@ public class BlockRadio extends Block {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
-        if(world.isRemote)
-            return true;
-
         TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
         if(tileEntity == null || !(tileEntity instanceof TileEntityRadio))
             return true;
 
-        GuiOpener.openGuiOnClient(EnumGui.RADIO_BLOCK, player, x, y, z);
+        if(!world.isRemote)
+            GuiOpener.openGuiOnClient(EnumGui.RADIO_BLOCK, player, x, y, z);
 
         return super.onBlockActivated(world, x, y, z, player, side, par7, par8, par9);
     }
