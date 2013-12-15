@@ -53,12 +53,10 @@ public class BlockCable extends Block {
     }
 
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        if(world.isRemote)
-            return true;
+        if(world.isRemote) return true;
 
         TileEntity tempTile = world.getBlockTileEntity(x, y, z);
-        if(tempTile == null || !(tempTile instanceof TileEntityCable))
-            return false;
+        if(tempTile == null || !(tempTile instanceof TileEntityCable)) return false;
 
         TileEntityCable cable = (TileEntityCable) tempTile;
         player.addChatMessage(cable.getNetwork().toString());
@@ -74,7 +72,7 @@ public class BlockCable extends Block {
         }
 
         TileEntityCable cable = (TileEntityCable) tempTile;
-        cable.getNetwork().removeCable(cable);
+        cable.getNetwork().remove(cable);
 
         super.breakBlock(world, x, y, z, oldId, oldMeta);
     }

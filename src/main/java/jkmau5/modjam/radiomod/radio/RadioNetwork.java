@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
-import jkmau5.modjam.radiomod.tile.TileEntityCable;
 import jkmau5.modjam.radiomod.tile.TileEntityRadioNetwork;
 
 import java.util.List;
@@ -36,14 +35,17 @@ public class RadioNetwork {
     }
 
     public void remove(TileEntityRadioNetwork tile){
-
+        if(tile instanceof ICable && this.cables.contains(tile)){
+            this.cables.remove(tile);
+            this.recalculateNetwork();
+        }
     }
 
     public List<ICable> getCables(){
         return this.cables;
     }
 
-    public TileEntityBroadcaster getBroadcaster() {
+    public TileEntityBroadcaster getBroadcaster(){
         return this.broadcaster;
     }
 
@@ -75,26 +77,18 @@ public class RadioNetwork {
         cable.setNetwork(this);
     }
 
-    public void removeCable(TileEntityCable cable) {
-        if(!this.cables.contains(cable))
-            return;
-        this.cables.remove(cable);
-
-        recalculateNetwork(this);
-    }
-
-    public void recalculateNetwork(RadioNetwork network) {
-        for(ICable cable : network.getCables()){
+    public void recalculateNetwork(){
+        for(ICable cable : this.getCables()){
             cable.initiateNetwork();
         }
         if(this.broadcaster != null) this.broadcaster.destroyNetwork();
         this.broadcaster = null;
     }
 
-    public void mergeWithNetwork(RadioNetwork otherNetwork) {
+    public void mergeWithNetwork(RadioNetwork otherNetwork){
         if(otherNetwork == this) return;
 
-        if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+        if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){
             if(this.broadcaster != null) System.out.println("First: " + this.broadcaster.toString());
             if(otherNetwork.getBroadcaster() != null)
                 System.out.println("Second: " + otherNetwork.getBroadcaster().toString());

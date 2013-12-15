@@ -1,6 +1,5 @@
 package jkmau5.modjam.radiomod.tile;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import jkmau5.modjam.radiomod.radio.RadioNetwork;
@@ -23,14 +22,10 @@ public class TileEntityRadioNetwork extends TileEntity {
     }
 
     public void destroyNetwork(){
+        if(!this.networkInitiated) return;
         this.network.remove(this);
         this.network = null;
         this.networkInitiated = false;
-    }
-
-    @Override
-    public boolean canUpdate(){
-        return FMLCommonHandler.instance().getEffectiveSide().isServer();
     }
 
     @Override
@@ -69,7 +64,7 @@ public class TileEntityRadioNetwork extends TileEntity {
     }
 
     public RadioNetwork getNetwork(){
-        return network;
+        return this.network;
     }
 
     @SideOnly(Side.CLIENT)
