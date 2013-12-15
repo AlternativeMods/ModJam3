@@ -41,7 +41,6 @@ public class PacketRequestRadioNames extends PacketBase {
         this.dimensionId = dimensionId;
         this.isMediaPlayer = isMediaPlayer;
     }
-
     public PacketRequestRadioNames(int dimensionId, TileEntityRadio tileEntity){
         this.dimensionId = dimensionId;
         this.isMediaPlayer = false;
@@ -51,51 +50,49 @@ public class PacketRequestRadioNames extends PacketBase {
     @Override
     public void writePacket(DataOutput output) throws IOException{
         if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){
-            boolean shouldContinue = false;
+            boolean listEmpty = true;
             NBTTagList list = new NBTTagList();
-            List<TileEntityBroadcaster> radioList = null;
-            if(this.isMediaPlayer)
+            List<TileEntityBroadcaster> radioList;
+            if(this.isMediaPlayer){
                 radioList = RadioMod.radioWorldHandler.getAvailableRadioList(dimensionId, this.player);
-            else
+            }else{
                 radioList = RadioMod.radioWorldHandler.getAvailableRadioList(dimensionId, this.tileEntity);
+            }
             if(radioList != null && !radioList.isEmpty()){
-                shouldContinue = true;
+                listEmpty = false;
                 for(TileEntityBroadcaster temporaryRadio : radioList){
                     NBTTagCompound tempTag = new NBTTagCompound();
                     temporaryRadio.writeToNBT(tempTag);
                     list.appendTag(tempTag);
                 }
             }
-            output.writeBoolean(shouldContinue);
+            output.writeBoolean(listEmpty);
             NBTTagCompound compoundTag = new NBTTagCompound();
             compoundTag.setTag("radios", list);
-            int length = CompressedStreamTools.compress(compoundTag).length;
-            output.writeInt(length);
-            output.write(CompressedStreamTools.compress(compoundTag));
+            CompressedStreamTools.write(compoundTag, output);
         }else{
             output.writeBoolean(this.isMediaPlayer);
             if(!this.isMediaPlayer){
+                output.writeInt(this.tileEntity.worldObj.provider.dimensionId);
                 output.writeInt(this.tileEntity.xCoord);
                 output.writeInt(this.tileEntity.yCoord);
                 output.writeInt(this.tileEntity.zCoord);
+            }else{
+                output.writeInt(this.player.worldObj.provider.dimensionId);
             }
         }
     }
 
     @Override
     public void readPacket(DataInput input) throws IOException{
-        if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
-            boolean shouldContinue = input.readBoolean();
-            if(!shouldContinue){
+        if(FMLCommonHandler.instance().getEffectiveSide().isClient()){
+            boolean listEmpty = input.readBoolean();
+            if(listEmpty){
                 GuiMediaPlayer.updateRadioStations(null);
                 return;
             }
 
-            int length = input.readInt();
-            byte[] byteArray = new byte[length];
-            input.readFully(byteArray);
-
-            NBTTagCompound compoundTag = CompressedStreamTools.decompress(byteArray);
+            NBTTagCompound compoundTag = CompressedStreamTools.read(input);
             NBTTagList tagList = compoundTag.getTagList("radios");
 
             List<TileEntityBroadcaster> radios = new ArrayList<TileEntityBroadcaster>();
@@ -111,20 +108,17 @@ public class PacketRequestRadioNames extends PacketBase {
             GuiMediaPlayer.updateRadioStations(radios);
         }else{
             this.isMediaPlayer = input.readBoolean();
+            this.dimensionId = input.readInt();
             if(isMediaPlayer){
-                PacketDispatcher.sendPacketToPlayer(new PacketRequestRadioNames(dimensionId, isMediaPlayer).getPacket(), (Player) this.player);
+                PacketDispatcher.sendPacketToPlayer(new PacketRequestRadioNames(dimensionId, true).getPacket(), (Player) this.player);
             }else{
                 World world = DimensionManager.getWorld(this.dimensionId);
-                if(world == null)
-                    return;
-
+                if(world == null) return;
                 int x = input.readInt();
                 int y = input.readInt();
                 int z = input.readInt();
                 TileEntityRadio radio = (TileEntityRadio) world.getBlockTileEntity(x, y, z);
-                if(radio == null)
-                    return;
-
+                if(radio == null) return;
                 PacketDispatcher.sendPacketToPlayer(new PacketRequestRadioNames(dimensionId, radio).getPacket(), (Player) this.player);
             }
         }
