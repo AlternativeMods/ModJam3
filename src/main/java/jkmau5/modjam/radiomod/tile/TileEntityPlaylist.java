@@ -1,6 +1,10 @@
 package jkmau5.modjam.radiomod.tile;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import jkmau5.modjam.radiomod.Constants;
+import jkmau5.modjam.radiomod.gui.GuiPlaylist;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -78,10 +82,19 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
     public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
         super.readFromNBT(par1NBTTagCompound);
 
+        titles = new ArrayList<String>();
         NBTTagList tagList = par1NBTTagCompound.getTagList("titles");
         for(int i=0; i<tagList.tagCount(); i++) {
             NBTTagCompound tag = (NBTTagCompound) tagList.tagAt(i);
             addTitle(tag.getString("title"));
+        }
+
+        if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+            if(Minecraft.getMinecraft().currentScreen instanceof GuiPlaylist) {
+                GuiPlaylist playlistGui = (GuiPlaylist) Minecraft.getMinecraft().currentScreen;
+                if(playlistGui.playlist == this)
+                    playlistGui.updateTitles();
+            }
         }
     }
 
