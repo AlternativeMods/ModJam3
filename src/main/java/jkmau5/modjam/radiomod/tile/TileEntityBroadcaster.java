@@ -72,29 +72,30 @@ public class TileEntityBroadcaster extends TileEntity {
     }
 
     public void updateEntity(){
+        if(!this.isInitiated) {
+            if(worldObj != null && !worldObj.isRemote && RadioMod.radioWorldHandler != null) {
+                this.isInitiated = true;
+                RadioMod.radioWorldHandler.addRadioTile(this);
+            }
+        }
         if(!this.radioInitiated){
             this.radioInitiated = true;
             tryConnectToSurroundings();
         }
     }
 
-    @Override
+    /*@Override
     public void validate(){
         super.validate();
-        if(!isInitiated){
-            isInitiated = true;
-            if(worldObj != null && !worldObj.isRemote)
-                RadioMod.radioWorldHandler.addRadioTile(this);
-        }
         this.tileEntityInvalid = false;
-    }
+    }*/
 
     @Override
     public void invalidate(){
         super.invalidate();
         if(isInitiated){
             isInitiated = false;
-            if(!worldObj.isRemote)
+            if(worldObj != null && !worldObj.isRemote && RadioMod.radioWorldHandler != null)
                 RadioMod.radioWorldHandler.removeRadioTile(this);
         }
         if(radioInitiated){
