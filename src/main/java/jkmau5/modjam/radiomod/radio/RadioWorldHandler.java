@@ -4,6 +4,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -97,6 +98,13 @@ public class RadioWorldHandler {
     }
 
     public void writeToNBT(NBTTagCompound tag, int dimension){
-
+        List<TileEntityBroadcaster> broadcasters = this.radioTiles.get(dimension);
+        NBTTagList list = new NBTTagList();
+        for(TileEntityBroadcaster broadcaster : broadcasters){
+            NBTTagCompound b = new NBTTagCompound();
+            b.setString("name", broadcaster.getRadioName());
+            list.appendTag(b);
+        }
+        tag.setTag("RadioList", list);
     }
 }
