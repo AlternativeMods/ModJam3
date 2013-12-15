@@ -42,23 +42,13 @@ public class TileEntityBroadcaster extends TileEntity {
         return (int) Math.ceil(Minecraft.getMinecraft().thePlayer.getDistanceSq(this.xCoord, this.yCoord, this.zCoord));
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     @SideOnly(Side.CLIENT)
     public int getDistanceToMe(TileEntity tile){
         return (int) Math.ceil(tile.getDistanceFrom(this.xCoord, this.yCoord, this.zCoord));
     }
 
-    public boolean isConnectedToNetwork() {
-        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-=======
     public boolean isConnectedToNetwork(){
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
->>>>>>> origin/jk-5
-=======
-    public boolean isConnectedToNetwork(){
-        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
->>>>>>> origin/jk-5
             TileEntity tempTile = worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
             if(tempTile != null && tempTile instanceof TileEntityCable && getRadioNetwork() == ((TileEntityCable) tempTile).getNetwork())
                 return true;
