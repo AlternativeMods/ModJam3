@@ -11,19 +11,13 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
-import jkmau5.modjam.radiomod.block.BlockAntenna;
-import jkmau5.modjam.radiomod.block.BlockBroadcaster;
-import jkmau5.modjam.radiomod.block.BlockCable;
-import jkmau5.modjam.radiomod.block.BlockRadio;
+import jkmau5.modjam.radiomod.block.*;
 import jkmau5.modjam.radiomod.item.ItemIngredient;
 import jkmau5.modjam.radiomod.item.ItemMediaPlayer;
 import jkmau5.modjam.radiomod.network.PacketHandler;
 import jkmau5.modjam.radiomod.radio.RadioWorldHandler;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
-import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
-import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
-import jkmau5.modjam.radiomod.tile.TileEntityCable;
-import jkmau5.modjam.radiomod.tile.TileEntityRadio;
+import jkmau5.modjam.radiomod.tile.*;
 import net.minecraft.creativetab.CreativeTabs;
 
 import java.util.Random;
@@ -38,6 +32,7 @@ public class RadioMod {
     public ItemMediaPlayer itemMediaPlayer;
     public ItemIngredient itemIngredient;
     public BlockRadio blockRadio;
+    public BlockPlaylist blockPlaylist;
 
     @Mod.Instance(Constants.MODID)
     public static RadioMod instance;
@@ -60,15 +55,18 @@ public class RadioMod {
         blockAntenna = new BlockAntenna(2501);
         blockCable = new BlockCable(2502);
         blockRadio = new BlockRadio(2503);
+        blockPlaylist = new BlockPlaylist(2504);
         GameRegistry.registerBlock(blockBroadcaster, "BlockBroadcaster");
         GameRegistry.registerBlock(blockAntenna, "BlockAntenna");
         GameRegistry.registerBlock(blockCable, "BlockCable");
         GameRegistry.registerBlock(blockRadio, "BlockRadio");
+        GameRegistry.registerBlock(blockPlaylist, "BlockPlaylist");
 
         GameRegistry.registerTileEntity(TileEntityBroadcaster.class, "TileBroadcaster");
         GameRegistry.registerTileEntity(TileEntityCable.class, "TileCable");
         GameRegistry.registerTileEntity(TileEntityAntenna.class, "TileAntenna");
         GameRegistry.registerTileEntity(TileEntityRadio.class, "TileRadio");
+        GameRegistry.registerTileEntity(TileEntityPlaylist.class, "TilePlaylist");
 
         proxy.preInit();
 
@@ -86,6 +84,7 @@ public class RadioMod {
         LanguageRegistry.addName(blockBroadcaster, "Broadcaster Block");
         LanguageRegistry.addName(itemMediaPlayer, "Media Player");
         LanguageRegistry.addName(blockRadio, "Radio Block");
+        LanguageRegistry.addName(blockPlaylist, "Playlist Block");
 
         proxy.init();
 

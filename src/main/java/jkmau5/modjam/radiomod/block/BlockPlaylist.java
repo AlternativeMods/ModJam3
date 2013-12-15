@@ -1,5 +1,6 @@
 package jkmau5.modjam.radiomod.block;
 
+import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -20,6 +21,8 @@ public class BlockPlaylist extends Block {
 
     public BlockPlaylist(int par1) {
         super(par1, Material.iron);
+        setCreativeTab(RadioMod.tabRadioMod);
+        setUnlocalizedName("radiomod.BlockPlaylist");
     }
 
     @Override
@@ -27,7 +30,11 @@ public class BlockPlaylist extends Block {
         if(!par1World.isRemote)
             return false;
 
-        SoundManager sndMng = ;
+        SoundManager sndMng = Minecraft.getMinecraft().sndManager;
+        String name = sndMng.soundPoolStreaming.getRandomSound().getSoundName();
+        System.out.println(name);
+        sndMng.stopAllSounds();
+        sndMng.playStreaming(name.replace(".ogg", ""), par2, par3, par4);
 
         return super.onBlockActivated(par1World, par2, par3, par4, par5EntityPlayer, par6, par7, par8, par9);
     }
