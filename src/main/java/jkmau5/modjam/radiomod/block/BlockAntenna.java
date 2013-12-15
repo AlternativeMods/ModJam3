@@ -25,6 +25,7 @@ public class BlockAntenna extends BlockRadioNetwork {
         this.setResistance(7.0F);
         this.setUnlocalizedName("radioMod.blockAntenna");
         this.setCreativeTab(RadioMod.tabRadioMod);
+        this.setLightOpacity(0);
 
         this.minX = 0.3;
         this.maxX = 0.8;
