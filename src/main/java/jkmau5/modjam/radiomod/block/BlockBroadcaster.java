@@ -36,6 +36,9 @@ public class BlockBroadcaster extends BlockRadioNetwork {
     }
 
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
+        super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ); //TODO: remove
+
+
         if(world.isRemote) return true;
 
         TileEntity tempTile = world.getBlockTileEntity(x, y, z);

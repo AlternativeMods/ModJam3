@@ -4,8 +4,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import jkmau5.modjam.radiomod.radio.RadioNetwork;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 /**
@@ -15,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
  */
 public class TileEntityRadioNetwork extends TileEntity {
 
-    private RadioNetwork network;
+    public RadioNetwork network;
 
     @SideOnly(Side.CLIENT)
     public int getDistanceToPlayer(){
@@ -27,15 +25,33 @@ public class TileEntityRadioNetwork extends TileEntity {
         return (int) Math.ceil(this.getDistanceFrom(x, y, z));
     }
 
-    public void onNeighborBlockChange(){
-
-    }
-
-    public void onBlockPlacedBy(EntityLivingBase ent, ItemStack is){
-
-    }
-
-    public void linkTo(TileEntityRadioNetwork newTile){
-        this.linkedTileEntity = newTile;
+    public void linkToTile(TileEntityRadioNetwork newTile){
+        if(this.network == null && newTile.network == null){
+            RadioNetwork network = new RadioNetwork();
+            network.add(this);
+            network.add(newTile);
+        }else if(this.network == null){
+            newTile.network.add(this);
+        }else if(newTile.network == null){
+            this.network.add(newTile);
+        }else{
+            if(this.network.getNetworkSize() >= newTile.network.getNetworkSize()){
+                //Move all the tiles in the other tile's network to my network
+                for(int i = 0; i < newTile.network.getNetworkSize(); i++){
+                    TileEntityRadioNetwork t = newTile.network.getNetworkTiles().get(i);
+                    newTile.network.getNetworkTiles().remove(t);
+                    this.network.add(t);
+                    t.network = this.network;
+                }
+            }else{
+                //Move all the tiles in this tile's network to the other tile's network
+                for(int i = 0; i < this.network.getNetworkSize(); i++){
+                    TileEntityRadioNetwork t = this.network.getNetworkTiles().get(i);
+                    this.network.getNetworkTiles().remove(t);
+                    newTile.network.add(t);
+                    t.network = this.network;
+                }
+            }
+        }
     }
 }
