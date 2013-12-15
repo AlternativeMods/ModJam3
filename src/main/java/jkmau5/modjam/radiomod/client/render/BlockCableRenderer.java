@@ -2,6 +2,7 @@ package jkmau5.modjam.radiomod.client.render;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import jkmau5.modjam.radiomod.client.ProxyClient;
+import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityCable;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -36,7 +37,7 @@ public class BlockCableRenderer implements ISimpleBlockRenderingHandler {
 
         TileEntityCable cable = (TileEntityCable) tile;
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if(cable.connections.isConnected(dir)){
+            if(isValidTileAtPosition(cable, world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)) {
                 if(dir == ForgeDirection.UP)
                     renderer.setRenderBounds(min, max, min, max, 1, max);
                 else if(dir == ForgeDirection.DOWN)
@@ -55,6 +56,19 @@ public class BlockCableRenderer implements ISimpleBlockRenderingHandler {
         }
 
         return true;
+    }
+
+    public boolean isValidTileAtPosition(TileEntityCable cable, IBlockAccess world, int x, int y, int z) {
+        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        if(tile == null)
+            return false;
+        if(tile instanceof TileEntityCable)
+            return true;
+        if(tile instanceof TileEntityBroadcaster) {
+            TileEntityBroadcaster broadcaster = (TileEntityBroadcaster) tile;
+            if(broadcaster.getNetwork() == cable.getNetwork()) return true;
+        }
+        return false;
     }
 
     private boolean isValid(TileEntity tile) {
