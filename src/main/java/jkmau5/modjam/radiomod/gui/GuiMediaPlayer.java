@@ -8,6 +8,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -33,8 +34,18 @@ public class GuiMediaPlayer extends GuiScreen {
     private int mouseGrabY = 0;
     private static boolean isloading = false;
 
-    public GuiMediaPlayer(boolean isMediaPlayer){
-        PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId, isMediaPlayer).getPacket());
+    private TileEntity tileEntity;
+
+    public GuiMediaPlayer(){
+        PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId, false).getPacket());
+        isloading = true;
+    }
+
+    public GuiMediaPlayer(TileEntity tileEntity){
+        this.tileEntity = tileEntity;
+
+        PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId, tileEntity).getPacket());
+
         isloading = true;
     }
 

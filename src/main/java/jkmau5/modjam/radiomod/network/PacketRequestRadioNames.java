@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -29,6 +30,7 @@ public class PacketRequestRadioNames extends PacketBase {
 
     int dimensionId;
     boolean isMediaPlayer;
+    TileEntity tileEntity;
 
     public PacketRequestRadioNames(){
     }
@@ -38,12 +40,22 @@ public class PacketRequestRadioNames extends PacketBase {
         this.isMediaPlayer = isMediaPlayer;
     }
 
+    public PacketRequestRadioNames(int dimensionId, TileEntity tileEntity){
+        this.dimensionId = dimensionId;
+        this.isMediaPlayer = false;
+        this.tileEntity = tileEntity;
+    }
+
     @Override
     public void writePacket(DataOutput output) throws IOException{
         if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){
             boolean shouldContinue = false;
             NBTTagList list = new NBTTagList();
-            List<TileEntityBroadcaster> radioList = RadioMod.radioWorldHandler.getAvailableRadioList(dimensionId, this.player);
+            List<TileEntityBroadcaster> radioList = null;
+            if(this.isMediaPlayer)
+                radioList = RadioMod.radioWorldHandler.getAvailableRadioList(dimensionId, this.player);
+            else
+                radioList = RadioMod.radioWorldHandler.getAvailableRadioList(dimensionId, this.tileEntity);
             if(radioList != null && !radioList.isEmpty()){
                 shouldContinue = true;
                 for(TileEntityBroadcaster temporaryRadio : radioList){

@@ -42,6 +42,11 @@ public class TileEntityBroadcaster extends TileEntity {
         return (int) Math.ceil(Minecraft.getMinecraft().thePlayer.getDistanceSq(this.xCoord, this.yCoord, this.zCoord));
     }
 
+    @SideOnly(Side.CLIENT)
+    public int getDistanceToMe(TileEntity tile){
+        return (int) Math.ceil(tile.getDistanceFrom(this.xCoord, this.yCoord, this.zCoord));
+    }
+
     public boolean isConnectedToNetwork() {
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             TileEntity tempTile = worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);

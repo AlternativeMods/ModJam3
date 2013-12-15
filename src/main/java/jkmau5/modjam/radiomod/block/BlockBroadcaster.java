@@ -48,7 +48,7 @@ public class BlockBroadcaster extends Block {
             player.addChatMessage(radio.getRadioNetwork().toString());
         PacketDispatcher.sendPacketToPlayer(new PacketUpdateRadioName(x, y, z, world.provider.dimensionId, radio.getRadioName()).getPacket(), (Player) player);
 
-        GuiOpener.openGuiOnClient(EnumGui.RADIO_BLOCK, player, x, y, z);
+        GuiOpener.openGuiOnClient(EnumGui.BROADCASTER_BLOCK, player, x, y, z);
         return true;
     }
 
