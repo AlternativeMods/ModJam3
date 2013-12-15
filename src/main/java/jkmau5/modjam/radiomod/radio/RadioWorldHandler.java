@@ -1,5 +1,7 @@
 package jkmau5.modjam.radiomod.radio;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import cpw.mods.fml.common.FMLCommonHandler;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,9 +13,8 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Author: Lordmau5
@@ -27,7 +28,7 @@ public class RadioWorldHandler {
     /**
      * A map from dimension id to a list of broadcasters
      */
-    Map<Integer, List<TileEntityBroadcaster>> radioTiles = new HashMap<Integer, List<TileEntityBroadcaster>>();
+    private Multimap<Integer, TileEntityBroadcaster> radioTiles = ArrayListMultimap.create();
 
     public RadioWorldHandler(){
         radioTiles.clear();
@@ -40,7 +41,7 @@ public class RadioWorldHandler {
 
     public List<TileEntityBroadcaster> getAvailableRadioList(int dimensionId, EntityPlayer player){
         //World world = player.worldObj.provider.dimensionId;
-        List<TileEntityBroadcaster> tempRadios = radioTiles.get(dimensionId);
+        Collection<TileEntityBroadcaster> tempRadios = radioTiles.get(dimensionId);
         if(tempRadios == null || tempRadios.isEmpty())
             return null;
 
@@ -54,34 +55,16 @@ public class RadioWorldHandler {
     }
 
     public boolean addRadioTile(TileEntityBroadcaster radio){
-        int dimensionId = radio.worldObj.provider.dimensionId;
-        List<TileEntityBroadcaster> dimensionTiles = radioTiles.get(dimensionId);
-
-        if(dimensionTiles == null)
-            dimensionTiles = new ArrayList<TileEntityBroadcaster>();
-        if(dimensionTiles.contains(radio))
-            return false;
-        dimensionTiles.add(radio);
-        radioTiles.put(dimensionId, dimensionTiles);
-
-        System.out.println("Added a radio tile in dimension " + dimensionId);
-
+        int dimid = radio.worldObj.provider.dimensionId;
+        this.radioTiles.put(dimid, radio);
+        System.out.println("Added a radio tile in dimension " + dimid);
         return true;
     }
 
     public boolean removeRadioTile(TileEntityBroadcaster radio){
-        int dimensionId = radio.worldObj.provider.dimensionId;
-        List<TileEntityBroadcaster> dimensionTiles = radioTiles.get(dimensionId);
-
-        if(dimensionTiles == null)
-            return false;
-        if(!dimensionTiles.contains(radio))
-            return false;
-        dimensionTiles.remove(radio);
-        radioTiles.put(dimensionId, dimensionTiles);
-
-        System.out.println("Removed a radio tile from dimension " + dimensionId);
-
+        int dimid = radio.worldObj.provider.dimensionId;
+        this.radioTiles.remove(dimid, radio);
+        System.out.println("Removed a radio tile from dimension " + dimid);
         return true;
     }
 
@@ -98,7 +81,7 @@ public class RadioWorldHandler {
     }
 
     public void writeToNBT(NBTTagCompound tag, int dimension){
-        List<TileEntityBroadcaster> broadcasters = this.radioTiles.get(dimension);
+        Collection<TileEntityBroadcaster> broadcasters = this.radioTiles.get(dimension);
         NBTTagList list = new NBTTagList();
         for(TileEntityBroadcaster broadcaster : broadcasters){
             NBTTagCompound b = new NBTTagCompound();
