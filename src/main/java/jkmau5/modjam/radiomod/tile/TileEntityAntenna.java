@@ -4,7 +4,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
 /**
@@ -12,7 +11,7 @@ import net.minecraft.util.AxisAlignedBB;
  *
  * @author jk-5
  */
-public class TileEntityAntenna extends TileEntity {
+public class TileEntityAntenna extends TileEntityRadioNetwork {
 
     public float yaw = 0f;
 

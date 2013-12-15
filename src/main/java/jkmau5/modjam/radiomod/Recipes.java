@@ -22,9 +22,6 @@ public class Recipes {
         addShaped(EnumIngredient.BIGANTENNAFOOT.getStack(1), "r", "r", "r", 'r', EnumIngredient.ANTENNAFOOT.getStack(1));
         addShaped(EnumIngredient.ANTENNAONFOOT.getStack(1), "prr", "f  ", "f  ", 'f', EnumIngredient.BIGANTENNAFOOT.getStack(1), 'p', Item.enderPearl, 'r', EnumIngredient.ANTENNAROD.getStack(1));
         addShaped(new ItemStack(RadioMod.instance.blockAntenna, 1), "rrr", "rar", "rrr", 'r', EnumIngredient.ANTENNAROD.getStack(1), 'a', EnumIngredient.ANTENNAONFOOT.getStack(1));
-
-        //Cable
-        addShaped(new ItemStack(RadioMod.instance.blockCable, 4), "iii", "rdr", "iii", 'i', Item.ingotIron, 'r', Item.redstone, 'd', Item.diamond);
     }
 
     private static void addShaped(ItemStack output, Object... data){

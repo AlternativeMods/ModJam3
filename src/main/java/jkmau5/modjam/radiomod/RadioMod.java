@@ -11,13 +11,26 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
+<<<<<<< HEAD
 import jkmau5.modjam.radiomod.block.*;
+=======
+import jkmau5.modjam.radiomod.block.BlockAntenna;
+import jkmau5.modjam.radiomod.block.BlockBroadcaster;
+import jkmau5.modjam.radiomod.block.BlockRadio;
+>>>>>>> origin/jk-5
 import jkmau5.modjam.radiomod.item.ItemIngredient;
+import jkmau5.modjam.radiomod.item.ItemLinkCard;
 import jkmau5.modjam.radiomod.item.ItemMediaPlayer;
 import jkmau5.modjam.radiomod.network.PacketHandler;
 import jkmau5.modjam.radiomod.radio.RadioWorldHandler;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
+<<<<<<< HEAD
 import jkmau5.modjam.radiomod.tile.*;
+=======
+import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
+import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
+import jkmau5.modjam.radiomod.tile.TileEntityRadio;
+>>>>>>> origin/jk-5
 import net.minecraft.creativetab.CreativeTabs;
 
 import java.util.Random;
@@ -28,9 +41,9 @@ public class RadioMod {
 
     public BlockBroadcaster blockBroadcaster;
     public BlockAntenna blockAntenna;
-    public BlockCable blockCable;
     public ItemMediaPlayer itemMediaPlayer;
     public ItemIngredient itemIngredient;
+    public ItemLinkCard itemLinkCard;
     public BlockRadio blockRadio;
     public BlockPlaylist blockPlaylist;
 
@@ -51,19 +64,18 @@ public class RadioMod {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event){
+        Config.load(event.getSuggestedConfigurationFile());
+
         blockBroadcaster = new BlockBroadcaster(2500);
         blockAntenna = new BlockAntenna(2501);
-        blockCable = new BlockCable(2502);
         blockRadio = new BlockRadio(2503);
         blockPlaylist = new BlockPlaylist(2504);
         GameRegistry.registerBlock(blockBroadcaster, "BlockBroadcaster");
         GameRegistry.registerBlock(blockAntenna, "BlockAntenna");
-        GameRegistry.registerBlock(blockCable, "BlockCable");
         GameRegistry.registerBlock(blockRadio, "BlockRadio");
         GameRegistry.registerBlock(blockPlaylist, "BlockPlaylist");
 
         GameRegistry.registerTileEntity(TileEntityBroadcaster.class, "TileBroadcaster");
-        GameRegistry.registerTileEntity(TileEntityCable.class, "TileCable");
         GameRegistry.registerTileEntity(TileEntityAntenna.class, "TileAntenna");
         GameRegistry.registerTileEntity(TileEntityRadio.class, "TileRadio");
         GameRegistry.registerTileEntity(TileEntityPlaylist.class, "TilePlaylist");
@@ -73,8 +85,10 @@ public class RadioMod {
         //TODO: Actual audio / radio block, that plays music... or at least should play music
         itemMediaPlayer = new ItemMediaPlayer(5000);
         itemIngredient = new ItemIngredient(5001);
+        itemLinkCard = new ItemLinkCard(5002);
         GameRegistry.registerItem(itemMediaPlayer, "ItemMediaPlayer");
         GameRegistry.registerItem(itemIngredient, "ItemIngredient");
+        GameRegistry.registerItem(itemLinkCard, "ItemLinkCard");
 
         Recipes.init();
     }

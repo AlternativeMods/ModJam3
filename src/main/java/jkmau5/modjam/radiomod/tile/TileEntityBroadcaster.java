@@ -3,8 +3,6 @@ package jkmau5.modjam.radiomod.tile;
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.radio.IBroadcaster;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
 
 /**
  * Author: Lordmau5
@@ -23,6 +21,7 @@ public class TileEntityBroadcaster extends TileEntityRadioNetwork implements IBr
         this.radioInitiated = false;
     }
 
+<<<<<<< HEAD
     public boolean isConnectedToNetwork(){
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
             TileEntity tempTile = worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
@@ -42,12 +41,13 @@ public class TileEntityBroadcaster extends TileEntityRadioNetwork implements IBr
         }
     }
 
+=======
+>>>>>>> origin/jk-5
     public void updateEntity(){
         super.updateEntity();
         if(!this.radioInitiated){
             this.radioInitiated = true;
             RadioMod.radioWorldHandler.addRadioTile(this);
-            this.tryConnectToSurroundings();
         }
     }
 
