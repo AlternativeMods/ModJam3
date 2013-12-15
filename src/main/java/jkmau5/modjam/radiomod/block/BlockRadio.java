@@ -1,5 +1,6 @@
 package jkmau5.modjam.radiomod.block;
 
+import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.gui.EnumGui;
 import jkmau5.modjam.radiomod.gui.GuiOpener;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
@@ -20,6 +21,7 @@ public class BlockRadio extends Block {
 
     public BlockRadio(int par1) {
         super(par1, Material.iron);
+        setCreativeTab(RadioMod.tabRadioMod);
     }
 
     public boolean hasTileEntity(int metadata) {

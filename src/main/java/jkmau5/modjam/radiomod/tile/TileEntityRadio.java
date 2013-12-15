@@ -16,6 +16,10 @@ import net.minecraft.tileentity.TileEntity;
 public class TileEntityRadio extends TileEntity {
     private String connectedBroadcastStation;
 
+    public TileEntityRadio() {
+        setConnectedBroadcastStation("Not connected...");
+    }
+
     public String getConnectedBroadcastStation() {
         return this.connectedBroadcastStation;
     }
