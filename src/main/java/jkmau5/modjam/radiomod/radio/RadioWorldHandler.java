@@ -29,18 +29,14 @@ public class RadioWorldHandler {
      * A map from dimension id to a list of broadcasters
      */
     private Multimap<Integer, TileEntityBroadcaster> radioTiles = ArrayListMultimap.create();
+    private Multimap<Integer, String> radioNames = ArrayListMultimap.create();
 
     public RadioWorldHandler(){
         radioTiles.clear();
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    public String getRadioName(TileEntityBroadcaster radio){
-        return radio.getRadioName();
-    }
-
     public List<TileEntityBroadcaster> getAvailableRadioList(int dimensionId, EntityPlayer player){
-        //World world = player.worldObj.provider.dimensionId;
         Collection<TileEntityBroadcaster> tempRadios = radioTiles.get(dimensionId);
         if(tempRadios == null || tempRadios.isEmpty())
             return null;
@@ -77,7 +73,11 @@ public class RadioWorldHandler {
     }
 
     public void readFromNBT(NBTTagCompound tag, int dimension){
-
+        NBTTagList list = tag.getTagList("RadioList");
+        for(int i = 0; i < list.tagCount(); i++){
+            NBTTagCompound b = (NBTTagCompound) list.tagAt(i);
+            this.radioNames.put(dimension, b.getString("name"));
+        }
     }
 
     public void writeToNBT(NBTTagCompound tag, int dimension){
