@@ -20,7 +20,7 @@ public class TileEntityBroadcaster extends TileEntityRadioNetwork implements IBr
         this.radioName = RadioMod.getUniqueRadioID();
         this.radioInitiated = false;
     }
-
+    
     public void updateEntity(){
         super.updateEntity();
         if(!this.radioInitiated){
