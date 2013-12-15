@@ -1,6 +1,8 @@
 package jkmau5.modjam.radiomod.block;
 
 import jkmau5.modjam.radiomod.RadioMod;
+import jkmau5.modjam.radiomod.gui.EnumGui;
+import jkmau5.modjam.radiomod.gui.GuiOpener;
 import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -33,7 +35,7 @@ public class BlockPlaylist extends Block {
         }
 
         TileEntityPlaylist playlist = (TileEntityPlaylist) tempTile;
-        playlist.breakBlock();
+        playlist.breakBlock(world);
 
         super.breakBlock(world, x, y, z, oldId, oldMeta);
     }
@@ -43,19 +45,18 @@ public class BlockPlaylist extends Block {
         if(world.isRemote)
             return true;
 
+        TileEntity tempTile = world.getBlockTileEntity(x, y, z);
+        if(tempTile == null || !(tempTile instanceof TileEntityPlaylist))
+            return true;
+        TileEntityPlaylist playlist = (TileEntityPlaylist) tempTile;
+
         if(player.getHeldItem() == null) {
-            // Open GUI
+            GuiOpener.openGuiOnClient(EnumGui.PLAYLIST_BLOCK, player, x, y, z);
         }else{
             if(!(player.getHeldItem().getItem() instanceof ItemRecord))
                 return true;
             ItemRecord record = (ItemRecord) player.getHeldItem().getItem();
 
-            TileEntity tempTile = world.getBlockTileEntity(x, y, z);
-            if(tempTile == null || !(tempTile instanceof TileEntityPlaylist))
-                return true;
-
-            TileEntityPlaylist playlist = (TileEntityPlaylist) tempTile;
-            System.out.println(record.recordName);
             if(playlist.addTitle(record.recordName))
                 player.getHeldItem().stackSize--;
         }

@@ -17,11 +17,11 @@ public class Constants {
     public static final String MODID = "RadioMod";
     public static final String VERSION = "@VERSION@";
 
-    public static Map<String, ItemStack> musicTitles = new HashMap<String, ItemStack>();
+    public static Map<String, int[]> musicTitles = new HashMap<String, int[]>();
     public static void initiateTitles() {
         for(ItemStack itemStack : OreDictionary.getOres("record")) {
             ItemRecord record = (ItemRecord) itemStack.getItem();
-            musicTitles.put(record.recordName, itemStack);
+            musicTitles.put(record.recordName, new int[] {itemStack.itemID, itemStack.getItemDamage()});
         }
     }
 
@@ -29,7 +29,7 @@ public class Constants {
         if(!musicTitles.containsKey(title))
             return null;
 
-        ItemStack tempStack = musicTitles.get(title);
-        return new ItemStack(tempStack.itemID, 1, tempStack.getItemDamage());
+        int[] tempIds = musicTitles.get(title);
+        return new ItemStack(tempIds[0], 1, tempIds[1]);
     }
 }
