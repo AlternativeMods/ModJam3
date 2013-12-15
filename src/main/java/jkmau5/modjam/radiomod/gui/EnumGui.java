@@ -12,7 +12,8 @@ import java.util.Map;
 public enum EnumGui {
     BROADCASTER_BLOCK(0),
     MEDIA_PLAYER(1),
-    RADIO_BLOCK(2);
+    RADIO_BLOCK(2),
+    PLAYLIST_BLOCK(3);
 
     public final int guiID;
     private static final Map<Integer, EnumGui> BY_ID = Maps.newHashMap();
