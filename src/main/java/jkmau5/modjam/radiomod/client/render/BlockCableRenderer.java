@@ -36,7 +36,7 @@ public class BlockCableRenderer implements ISimpleBlockRenderingHandler {
 
         TileEntityCable cable = (TileEntityCable) tile;
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if(cable.getConnections().isConnected(dir)) {
+            if(cable.connections.isConnected(dir)){
                 if(dir == ForgeDirection.UP)
                     renderer.setRenderBounds(min, max, min, max, 1, max);
                 else if(dir == ForgeDirection.DOWN)

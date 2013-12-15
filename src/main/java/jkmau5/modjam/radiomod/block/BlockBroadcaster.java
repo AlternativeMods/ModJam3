@@ -37,16 +37,16 @@ public class BlockBroadcaster extends Block {
     }
 
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        if(world.isRemote)
-            return true;
+        if(world.isRemote) return true;
 
         TileEntity tempTile = world.getBlockTileEntity(x, y, z);
         if(tempTile == null || !(tempTile instanceof TileEntityBroadcaster))
             return false;
 
         TileEntityBroadcaster radio = (TileEntityBroadcaster) tempTile;
-        if(radio.getRadioNetwork() != null)
-            player.addChatMessage(radio.getRadioNetwork().toString());
+        if(radio.getNetwork() != null){
+            player.addChatMessage(radio.getNetwork().toString());
+        }
         PacketDispatcher.sendPacketToPlayer(new PacketUpdateRadioName(x, y, z, world.provider.dimensionId, radio.getRadioName()).getPacket(), (Player) player);
 
         GuiOpener.openGuiOnClient(EnumGui.BROADCASTER_BLOCK, player, x, y, z);

@@ -84,4 +84,12 @@ public class TileEntityBroadcaster extends TileEntityRadioNetwork implements IBr
         super.writeToNBT(tagCompound);
         tagCompound.setString("radioName", this.radioName);
     }
+
+    public String getRadioName(){
+        return radioName;
+    }
+
+    public void setRadioName(String radioName){
+        this.radioName = radioName;
+    }
 }
