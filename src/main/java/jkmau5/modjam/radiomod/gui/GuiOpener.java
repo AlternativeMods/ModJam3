@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import jkmau5.modjam.radiomod.network.PacketOpenGui;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
+import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -34,10 +35,10 @@ public class GuiOpener {
         if(gui == EnumGui.RADIO_BLOCK){
             World world = Minecraft.getMinecraft().thePlayer.worldObj;
             TileEntity tempTile = world.getBlockTileEntity(x, y, z);
-            if(tempTile == null)
+            if(tempTile == null || !(tempTile instanceof TileEntityRadio))
                 return;
 
-            Minecraft.getMinecraft().displayGuiScreen(new GuiMediaPlayer(tempTile));
+            Minecraft.getMinecraft().displayGuiScreen(new GuiMediaPlayer((TileEntityRadio) tempTile));
         }
     }
 

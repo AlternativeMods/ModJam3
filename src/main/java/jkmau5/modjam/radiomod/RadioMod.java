@@ -83,8 +83,9 @@ public class RadioMod {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event){
-        LanguageRegistry.addName(blockBroadcaster, "Radio Block");
+        LanguageRegistry.addName(blockBroadcaster, "Broadcaster Block");
         LanguageRegistry.addName(itemMediaPlayer, "Media Player");
+        LanguageRegistry.addName(blockRadio, "Radio Block");
 
         proxy.init();
 

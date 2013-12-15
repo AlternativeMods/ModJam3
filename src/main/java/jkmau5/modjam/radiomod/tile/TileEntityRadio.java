@@ -44,9 +44,9 @@ public class TileEntityRadio extends TileEntity {
 
     @Override
     public Packet getDescriptionPacket() {
-        Packet132TileEntityData tilePacket = new Packet132TileEntityData();
-        writeToNBT(tilePacket.data);
-        return tilePacket;
+        NBTTagCompound tag = new NBTTagCompound();
+        this.writeToNBT(tag);
+        return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, tag);
     }
 
     @Override

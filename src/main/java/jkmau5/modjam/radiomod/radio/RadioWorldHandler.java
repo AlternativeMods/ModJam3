@@ -1,8 +1,8 @@
 package jkmau5.modjam.radiomod.radio;
 
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
+import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +42,10 @@ public class RadioWorldHandler {
         return availableRadios;
     }
 
-    public List<TileEntityBroadcaster> getAvailableRadioList(int dimensionId, TileEntity tile){
+    public List<TileEntityBroadcaster> getAvailableRadioList(int dimensionId, TileEntityRadio tile){
+        if(tile == null)
+            return null;
+
         List<TileEntityBroadcaster> tempRadios = radioTiles.get(dimensionId);
         if(tempRadios == null || tempRadios.isEmpty())
             return null;
@@ -50,7 +53,7 @@ public class RadioWorldHandler {
         List<TileEntityBroadcaster> availableRadios = new ArrayList<TileEntityBroadcaster>();
 
         for(TileEntityBroadcaster availableRadio : tempRadios){
-            if(availableRadio.getDistanceToMe(tile) < 250)  //TODO: Change Probably?
+            if(availableRadio.getDistanceToMe(tile.xCoord, tile.yCoord, tile.zCoord) < 250)  //TODO: Change Probably?
                 availableRadios.add(availableRadio);
         }
         return availableRadios;

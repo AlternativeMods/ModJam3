@@ -43,8 +43,8 @@ public class TileEntityBroadcaster extends TileEntity {
     }
 
     @SideOnly(Side.CLIENT)
-    public int getDistanceToMe(TileEntity tile){
-        return (int) Math.ceil(tile.getDistanceFrom(this.xCoord, this.yCoord, this.zCoord));
+    public int getDistanceToMe(int x, int y, int z){
+        return (int) Math.ceil(this.getDistanceFrom(x, y, z));
     }
 
     public boolean isConnectedToNetwork(){

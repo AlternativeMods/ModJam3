@@ -22,6 +22,7 @@ public class BlockRadio extends Block {
     public BlockRadio(int par1) {
         super(par1, Material.iron);
         setCreativeTab(RadioMod.tabRadioMod);
+        setUnlocalizedName("radiomod.BlockRadio");
     }
 
     public boolean hasTileEntity(int metadata) {

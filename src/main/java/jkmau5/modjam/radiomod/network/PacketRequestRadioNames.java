@@ -7,11 +7,11 @@ import cpw.mods.fml.relauncher.Side;
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.gui.GuiMediaPlayer;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
+import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -30,7 +30,7 @@ public class PacketRequestRadioNames extends PacketBase {
 
     int dimensionId;
     boolean isMediaPlayer;
-    TileEntity tileEntity;
+    TileEntityRadio tileEntity;
 
     public PacketRequestRadioNames(){
     }
@@ -40,7 +40,7 @@ public class PacketRequestRadioNames extends PacketBase {
         this.isMediaPlayer = isMediaPlayer;
     }
 
-    public PacketRequestRadioNames(int dimensionId, TileEntity tileEntity){
+    public PacketRequestRadioNames(int dimensionId, TileEntityRadio tileEntity){
         this.dimensionId = dimensionId;
         this.isMediaPlayer = false;
         this.tileEntity = tileEntity;
