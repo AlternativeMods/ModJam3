@@ -4,9 +4,8 @@ import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SoundManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemRecord;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -26,17 +25,33 @@ public class BlockPlaylist extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9) {
-        if(!par1World.isRemote)
-            return false;
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+        if(world.isRemote)
+            return true;
 
-        SoundManager sndMng = Minecraft.getMinecraft().sndManager;
+        /*SoundManager sndMng = Minecraft.getMinecraft().sndManager;
         String name = sndMng.soundPoolStreaming.getRandomSound().getSoundName();
         System.out.println(name);
         sndMng.stopAllSounds();
-        sndMng.playStreaming(name.replace(".ogg", ""), par2, par3, par4);
+        sndMng.playStreaming(name.replace(".ogg", ""), par2, par3, par4);*/
 
-        return super.onBlockActivated(par1World, par2, par3, par4, par5EntityPlayer, par6, par7, par8, par9);
+        if(player.getHeldItem() == null) {
+            // Open GUI
+        }else{
+            if(!(player.getHeldItem().getItem() instanceof ItemRecord))
+                return true;
+            ItemRecord record = (ItemRecord) player.getHeldItem().getItem();
+
+            TileEntity tempTile = world.getBlockTileEntity(x, y, z);
+            if(tempTile == null || !(tempTile instanceof TileEntityPlaylist))
+                return true;
+
+            TileEntityPlaylist playlist = (TileEntityPlaylist) tempTile;
+            if(playlist.addTitle(record.recordName))
+                player.getHeldItem().stackSize--;
+        }
+
+        return true;
     }
 
     @Override

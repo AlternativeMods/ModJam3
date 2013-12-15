@@ -1,5 +1,7 @@
 package jkmau5.modjam.radiomod.tile;
 
+import jkmau5.modjam.radiomod.Constants;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
@@ -19,14 +21,30 @@ import java.util.List;
 public class TileEntityPlaylist extends TileEntityRadioNetwork {
     private List<String> titles = new ArrayList<String>();
 
-    public void addTitle(String title) {
-        if(!titles.contains(title))
-            titles.add(title);
+    public boolean addTitle(String title) {
+        if(titles.contains(title))
+            return false;
+        titles.add(title);
+        return true;
     }
 
-    public void removeTitle(String title) {
+    public boolean removeTitle(String title) {
         if(titles.contains(title))
             titles.remove(title);
+        dropRecordItemInWorld(title);
+        return true;
+    }
+
+    public void dropRecordItemInWorld(String title) {
+        if(worldObj.isRemote)
+            return;
+
+        double d0 = worldObj.rand.nextFloat() * 0.7F + 1.0F - 0.7F * 0.5D;
+        double d1 = worldObj.rand.nextFloat() * 0.7F + 1.0F - 0.7F * 0.5D;
+        double d2 = worldObj.rand.nextFloat() * 0.7F + 1.0F - 0.7F * 0.5D;
+        EntityItem entityitem = new EntityItem(worldObj, xCoord + d0, yCoord + d1, zCoord + d2, Constants.buildRecordStack(title));
+        entityitem.delayBeforeCanPickup = 10;
+        worldObj.spawnEntityInWorld(entityitem);
     }
 
     @Override

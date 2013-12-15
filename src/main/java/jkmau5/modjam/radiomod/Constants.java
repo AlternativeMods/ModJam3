@@ -17,11 +17,18 @@ public class Constants {
     public static final String MODID = "RadioMod";
     public static final String VERSION = "@VERSION@";
 
-    public static Map<String, String> musicTitles = new HashMap<String, String>();
+    public static Map<String, ItemStack> musicTitles = new HashMap<String, ItemStack>();
     public static void initiateTitles() {
         for(ItemStack itemStack : OreDictionary.getOres("record")) {
             ItemRecord record = (ItemRecord) itemStack.getItem();
-            musicTitles.put(record.recordName, record.getRecordTitle());
+            musicTitles.put(record.recordName, itemStack);
         }
+    }
+
+    public static ItemStack buildRecordStack(String title) {
+        if(!musicTitles.containsKey(title))
+            return null;
+
+        return musicTitles.get(title);
     }
 }
