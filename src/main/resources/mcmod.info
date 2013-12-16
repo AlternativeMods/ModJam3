@@ -1,6 +1,6 @@
 [{
-    "modid" : "${modid}",
-    "name" : "${modid}",
+    "modid" : "RadioMod",
+    "name" : "RadioMod",
     "version" : "${version}",
     "url" : "https://github.com/jkmau5/RadioMod/",
     "credits" : "To all people that voted on our mod",
