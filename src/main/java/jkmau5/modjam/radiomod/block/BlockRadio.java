@@ -61,7 +61,7 @@ public class BlockRadio extends Block {
         this.top = register.registerIcon("RadioMod:radio_top");
         this.front = register.registerIcon("RadioMod:radio_front");
         this.bottom = register.registerIcon("RadioMod:radio_bottom");
-        this.blockIcon = register.registerIcon("RadioMod:radio_sides");
+        this.blockIcon = register.registerIcon("RadioMod:side");
     }
 
     @Override

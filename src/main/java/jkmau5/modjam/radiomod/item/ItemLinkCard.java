@@ -2,12 +2,14 @@ package jkmau5.modjam.radiomod.item;
 
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.tile.TileEntityRadioNetwork;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -19,11 +21,36 @@ import java.util.List;
  */
 public class ItemLinkCard extends Item {
 
+    private Icon inactive;
+    private Icon active;
+
     public ItemLinkCard(int id){
         super(id);
         this.setMaxStackSize(1);
         this.setCreativeTab(RadioMod.tabRadioMod);
         this.setUnlocalizedName("radioMod.linkCard");
+    }
+
+    @Override
+    public void registerIcons(IconRegister register){
+        this.inactive = register.registerIcon("RadioMod:linkcard_inactive");
+        this.active = register.registerIcon("RadioMod:linkcard_active");
+    }
+
+    @Override
+    public Icon getIconIndex(ItemStack stack){
+        NBTTagCompound tag = stack.getTagCompound();
+        if(tag == null){
+            stack.setTagCompound(new NBTTagCompound());
+            stack.getTagCompound().setBoolean("linked", false);
+        }
+        tag = stack.getTagCompound();
+        boolean linked = tag.getBoolean("linked");
+        if(linked){
+            return this.active;
+        }else{
+            return this.inactive;
+        }
     }
 
     @Override

@@ -4,11 +4,15 @@ import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.gui.EnumGui;
 import jkmau5.modjam.radiomod.gui.GuiOpener;
 import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 /**
  * Author: Lordmau5
@@ -17,12 +21,31 @@ import net.minecraft.world.World;
  * You are allowed to change this code,
  * however, not to publish it without my permission.
  */
-public class BlockPlaylist extends BlockRadioNetwork {
+public class BlockPlaylist extends Block {
+
+    private Icon topIcon;
+    private Icon sidesIcon;
 
     public BlockPlaylist(int par1){
         super(par1, Material.iron);
-        setCreativeTab(RadioMod.tabRadioMod);
-        setUnlocalizedName("radiomod.BlockPlaylist");
+        this.setCreativeTab(RadioMod.tabRadioMod);
+        this.setUnlocalizedName("radiomod.BlockPlaylist");
+    }
+
+    @Override
+    public void registerIcons(IconRegister register){
+        this.topIcon = register.registerIcon("RadioMod:playlist");
+        this.sidesIcon = register.registerIcon("RadioMod:side");
+    }
+
+    @Override
+    public Icon getIcon(int side, int meta){
+        switch(ForgeDirection.getOrientation(side)){
+            case UP:
+                return this.topIcon;
+            default:
+                return this.sidesIcon;
+        }
     }
 
     @Override

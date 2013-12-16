@@ -26,6 +26,7 @@ public class ItemMediaPlayer extends Item {
     public ItemMediaPlayer(int par1){
         super(par1);
         setCreativeTab(RadioMod.tabRadioMod);
+        this.setTextureName("RadioMod:mediaplayer");
     }
 
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player){
