@@ -19,7 +19,7 @@ import jkmau5.modjam.radiomod.item.ItemIngredient;
 import jkmau5.modjam.radiomod.item.ItemLinkCard;
 import jkmau5.modjam.radiomod.item.ItemMediaPlayer;
 import jkmau5.modjam.radiomod.network.PacketHandler;
-import jkmau5.modjam.radiomod.radio.RadioWorldHandler;
+import jkmau5.modjam.radiomod.radio.RadioNetworkHandler;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
 import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
@@ -44,7 +44,7 @@ public class RadioMod {
     @Mod.Instance(Constants.MODID)
     public static RadioMod instance;
 
-    public static RadioWorldHandler radioWorldHandler;
+    public static RadioNetworkHandler radioNetworkHandler;
 
     public static final CreativeTabs tabRadioMod = new CreativeTabs("RadioMod");
 
@@ -103,11 +103,11 @@ public class RadioMod {
 
     @Mod.EventHandler
     public void serverStarting(FMLServerStartedEvent event){
-        radioWorldHandler = new RadioWorldHandler();
+        radioNetworkHandler = new RadioNetworkHandler();
     }
 
     @Mod.EventHandler
     public void serverStopping(FMLServerStoppedEvent event){
-        radioWorldHandler = null;
+        radioNetworkHandler = null;
     }
 }

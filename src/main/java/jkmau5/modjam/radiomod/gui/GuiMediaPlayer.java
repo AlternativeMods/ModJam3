@@ -2,7 +2,6 @@ package jkmau5.modjam.radiomod.gui;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import jkmau5.modjam.radiomod.network.PacketRequestRadioNames;
-import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -26,7 +25,7 @@ public class GuiMediaPlayer extends GuiScreen {
 
     private GuiButton connectButton;
 
-    private static List<TileEntityBroadcaster> availableRadios;
+    private static List<String> availableRadios;
     public static NBTTagCompound guiData;
 
     private int xSize = 176;
@@ -36,26 +35,19 @@ public class GuiMediaPlayer extends GuiScreen {
     private int mouseGrabY = 0;
     private static boolean isloading = false;
 
-    private TileEntityRadio tileEntity;
-
     public GuiMediaPlayer(){
         PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId, Minecraft.getMinecraft().thePlayer).getPacket());
         isloading = true;
     }
 
     public GuiMediaPlayer(TileEntityRadio tileEntity){
-        this.tileEntity = tileEntity;
-
         PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId, tileEntity).getPacket());
-
         isloading = true;
     }
 
-    public static void updateRadioStations(List<TileEntityBroadcaster> radios){
+    public static void updateRadioStations(List<String> radios){
         availableRadios = radios;
         isloading = false;
-        if(radios != null)
-            System.out.println("Updated radio stations! New amount: " + radios.size());
     }
 
     public void initGui(){
@@ -90,17 +82,12 @@ public class GuiMediaPlayer extends GuiScreen {
                 Gui.drawRect(x - 1, y - 1, x + this.xSize + 1, y + yS + 1, 0xFFAAAAAA);
                 Gui.drawRect(x, y, x + this.xSize, y + yS, 0xFF000000);
 
-                /*int barHeight = (availableRadios.size() - 5) / yS;
-                //int barY = yS / (this.scrollY == 0 ? 1 : this.scrollY);
-                int barY = this.scrollY / yS;
-                Gui.drawRect(x + (this.xSize - 5), y * barY, x + this.xSize, barHeight, 0xFFFFFFFF);*/
-
                 GL11.glScissor(x * res.getScaleFactor(), this.mc.displayHeight - yS * res.getScaleFactor() - y * res.getScaleFactor(), (this.xSize - 5) * res.getScaleFactor(), yS * res.getScaleFactor());
                 GL11.glTranslated(0, this.scrollY, 0);
                 GL11.glEnable(GL11.GL_SCISSOR_TEST);
                 int index = 0;
-                for(TileEntityBroadcaster radio : availableRadios){
-                    this.fontRenderer.drawString(radio.getRadioName(), x + 3, 3 + y + index * 10, 0xFFFFFFFF);
+                for(String radio : availableRadios){
+                    this.fontRenderer.drawString(radio, x + 3, 3 + y + index * 10, 0xFFFFFFFF);
                     index++;
                 }
                 GL11.glDisable(GL11.GL_SCISSOR_TEST);

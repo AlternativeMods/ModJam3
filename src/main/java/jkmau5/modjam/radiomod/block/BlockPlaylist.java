@@ -7,12 +7,14 @@ import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemRecord;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 
 /**
  * Author: Lordmau5
@@ -23,26 +25,48 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class BlockPlaylist extends Block {
 
-    private Icon topIcon;
+    private Icon topIcon[];
     private Icon sidesIcon;
 
     public BlockPlaylist(int par1){
         super(par1, Material.iron);
         this.setCreativeTab(RadioMod.tabRadioMod);
         this.setUnlocalizedName("radiomod.BlockPlaylist");
+
+        this.maxY = 0.75;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock(){
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(){
+        return false;
+    }
+
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
+        int meta = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
+        world.setBlockMetadataWithNotify(x, y, z, meta, 2);
     }
 
     @Override
     public void registerIcons(IconRegister register){
-        this.topIcon = register.registerIcon("RadioMod:playlist");
-        this.sidesIcon = register.registerIcon("RadioMod:side");
+        this.topIcon = new Icon[4];
+        this.topIcon[0] = register.registerIcon("RadioMod:playlist");
+        this.topIcon[1] = register.registerIcon("RadioMod:playlist_90");
+        this.topIcon[2] = register.registerIcon("RadioMod:playlist_180");
+        this.topIcon[3] = register.registerIcon("RadioMod:playlist_270");
+        this.sidesIcon = register.registerIcon("RadioMod:side_small");
     }
 
     @Override
     public Icon getIcon(int side, int meta){
-        switch(ForgeDirection.getOrientation(side)){
-            case UP:
-                return this.topIcon;
+        switch(side){
+            case 1:
+                return this.topIcon[meta];
             default:
                 return this.sidesIcon;
         }

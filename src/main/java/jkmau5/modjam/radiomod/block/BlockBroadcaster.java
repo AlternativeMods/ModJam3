@@ -17,7 +17,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 
 /**
  * Author: Lordmau5
@@ -71,10 +70,10 @@ public class BlockBroadcaster extends Block {
 
     @Override
     public Icon getIcon(int side, int meta){
-        switch(ForgeDirection.getOrientation(side)){
-            case UP:
+        switch(side){
+            case 1:
                 return this.topIcon[meta];
-            case DOWN:
+            case 0:
                 return this.bottomIcon;
             default:
                 return this.sidesIcon;
@@ -113,7 +112,6 @@ public class BlockBroadcaster extends Block {
         if(tempTile == null || !(tempTile instanceof TileEntityBroadcaster))
             return;
 
-        //RadioMod.radioWorldHandler.removeRadioTile((TileEntityRadio)tempTile);
         super.breakBlock(world, x, y, z, oldId, oldMeta);
     }
 }

@@ -5,7 +5,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import jkmau5.modjam.radiomod.Constants;
 import jkmau5.modjam.radiomod.gui.GuiPlaylist;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -28,11 +27,11 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
 
     private List<String> titles = Lists.newArrayList();
 
-    public List<String> getTitles() {
+    public List<String> getTitles(){
         return titles;
     }
 
-    public boolean addTitle(String title) {
+    public boolean addTitle(String title){
         if(titles.contains(title)) return false;
         this.titles.add(title);
         if(worldObj != null && !worldObj.isRemote){
@@ -41,7 +40,7 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
         return true;
     }
 
-    public boolean removeTitle(String title) {
+    public boolean removeTitle(String title){
         if(titles.contains(title)){
             titles.remove(title);
             dropRecordItemInWorld(worldObj, title);
@@ -59,7 +58,7 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
         }
     }
 
-    public void dropRecordItemInWorld(World world, String title) {
+    public void dropRecordItemInWorld(World world, String title){
         if(world.isRemote) return;
 
         double d0 = world.rand.nextFloat() * 0.7F + 1.0F - 0.7F * 0.5D;
@@ -71,11 +70,11 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
+    public void writeToNBT(NBTTagCompound par1NBTTagCompound){
         super.writeToNBT(par1NBTTagCompound);
 
         NBTTagList tagList = new NBTTagList();
-        for(String title : this.titles) {
+        for(String title : this.titles){
             NBTTagCompound tag = new NBTTagCompound();
             tag.setString("title", title);
             tagList.appendTag(tag);
@@ -84,34 +83,32 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
+    public void readFromNBT(NBTTagCompound par1NBTTagCompound){
         super.readFromNBT(par1NBTTagCompound);
 
         titles = new ArrayList<String>();
         NBTTagList tagList = par1NBTTagCompound.getTagList("titles");
-        for(int i=0; i<tagList.tagCount(); i++) {
+        for(int i = 0; i < tagList.tagCount(); i++){
             NBTTagCompound tag = (NBTTagCompound) tagList.tagAt(i);
             addTitle(tag.getString("title"));
         }
 
-        if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
-            if(Minecraft.getMinecraft().currentScreen instanceof GuiPlaylist) {
-                GuiPlaylist playlistGui = (GuiPlaylist) Minecraft.getMinecraft().currentScreen;
-                if(playlistGui.playlist == this)
-                    playlistGui.updateTitles();
+        if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
+            if(GuiPlaylist.playlist == this){
+                GuiPlaylist.updateTitles();
             }
         }
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public Packet getDescriptionPacket(){
         NBTTagCompound tag = new NBTTagCompound();
         this.writeToNBT(tag);
         return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, tag);
     }
 
     @Override
-    public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
+    public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt){
         readFromNBT(pkt.data);
     }
 }

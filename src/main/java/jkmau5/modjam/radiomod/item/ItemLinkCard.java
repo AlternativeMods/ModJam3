@@ -79,7 +79,9 @@ public class ItemLinkCard extends Item {
             if(newTile == null || !(newTile instanceof TileEntityRadioNetwork)){
                 player.sendChatToPlayer(ChatMessageComponent.createFromTranslationKey("radioMod.linkCard.invalid"));
             }else{
-                radioTile.linkToTile((TileEntityRadioNetwork) newTile);
+                if(radioTile.linkToTile((TileEntityRadioNetwork) newTile)){
+                    player.destroyCurrentEquippedItem();
+                }
             }
         }else{
             tag.setBoolean("linked", true);
