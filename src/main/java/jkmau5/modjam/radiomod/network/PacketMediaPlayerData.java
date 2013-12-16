@@ -8,11 +8,6 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public class PacketMediaPlayerData extends PacketBase {
 
     private NBTTagCompound tag;
@@ -33,5 +28,8 @@ public class PacketMediaPlayerData extends PacketBase {
     public void readPacket(DataInput input) throws IOException{
         this.tag = CompressedStreamTools.read(input);
         GuiMediaPlayer.guiData = this.tag;
+        if(this.tag.hasKey("station")){
+            GuiMediaPlayer.selectedName = this.tag.getString("station");
+        }
     }
 }

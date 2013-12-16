@@ -4,11 +4,6 @@ import com.google.common.collect.Maps;
 
 import java.util.Map;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public enum EnumGui {
     BROADCASTER_BLOCK(0),
     MEDIA_PLAYER(1),
@@ -26,7 +21,7 @@ public enum EnumGui {
         return BY_ID.get(id);
     }
 
-    static {
+    static{
         for(EnumGui gui : values()){
             BY_ID.put(gui.guiID, gui);
         }

@@ -15,11 +15,6 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public abstract class PacketBase {
 
     private static final BiMap<Integer, Class<? extends PacketBase>> packets = HashBiMap.create();
@@ -29,12 +24,15 @@ public abstract class PacketBase {
         packets.put(id, cl);
     }
 
-    static {
+    static{
         registerPacket(0, PacketOpenGui.class);
         registerPacket(1, PacketUpdateRadioName.class);
         registerPacket(2, PacketRequestRadioNames.class);
         registerPacket(3, PacketMediaPlayerData.class);
         registerPacket(4, PacketRemovePlaylistTitle.class);
+        registerPacket(5, PacketSelectRadio.class);
+        registerPacket(6, PacketPlayBroadcastedSound.class);
+        registerPacket(7, PacketPlaySound.class);
     }
 
     public final Packet250CustomPayload getPacket(){
@@ -72,5 +70,6 @@ public abstract class PacketBase {
     }
 
     public abstract void writePacket(DataOutput output) throws IOException;
+
     public abstract void readPacket(DataInput input) throws IOException;
 }

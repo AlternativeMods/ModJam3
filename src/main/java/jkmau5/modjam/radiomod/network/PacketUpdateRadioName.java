@@ -12,13 +12,6 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-/**
- * Author: Lordmau5
- * Date: 13.12.13
- * Time: 18:35
- * You are allowed to change this code,
- * however, not to publish it without my permission.
- */
 public class PacketUpdateRadioName extends PacketBase {
 
     private int x, y, z, dimId;

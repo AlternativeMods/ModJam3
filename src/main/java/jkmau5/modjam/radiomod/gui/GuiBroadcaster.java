@@ -8,14 +8,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import org.lwjgl.input.Keyboard;
 
-/**
- * Author: Lordmau5
- * Date: 13.12.13
- * Time: 16:29
- * You are allowed to change this code,
- * however, not to publish it without my permission.
- */
-public class GuiRadioScreen extends GuiScreen {
+public class GuiBroadcaster extends GuiScreen {
 
     private int tileX, tileY, tileZ;
     private String radioName;
@@ -25,7 +18,7 @@ public class GuiRadioScreen extends GuiScreen {
     private int xSize = 176;
     private int ySize = 166;
 
-    public GuiRadioScreen(int tileX, int tileY, int tileZ, String radioName){
+    public GuiBroadcaster(int tileX, int tileY, int tileZ, String radioName){
         this.tileX = tileX;
         this.tileY = tileY;
         this.tileZ = tileZ;
@@ -84,7 +77,7 @@ public class GuiRadioScreen extends GuiScreen {
         }
     }
 
-    public boolean doesGuiPauseGame() {
+    public boolean doesGuiPauseGame(){
         return false;
     }
 }

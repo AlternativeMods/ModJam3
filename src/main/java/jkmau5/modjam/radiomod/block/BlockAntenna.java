@@ -12,12 +12,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
-/**
- * No description given
- *
- * @author jk-5
- */
-public class BlockAntenna extends BlockRadioNetwork {
+public class BlockAntenna extends Block {
 
     public BlockAntenna(int par1){
         super(par1, Material.iron);
@@ -25,6 +20,7 @@ public class BlockAntenna extends BlockRadioNetwork {
         this.setResistance(7.0F);
         this.setUnlocalizedName("radioMod.blockAntenna");
         this.setCreativeTab(RadioMod.tabRadioMod);
+        this.setLightOpacity(0);
 
         this.minX = 0.3;
         this.maxX = 0.8;
@@ -81,6 +77,9 @@ public class BlockAntenna extends BlockRadioNetwork {
         if(world.getBlockMetadata(x, y, z) == 0 && !this.canBlockStay(world, x, y, z)){
             if(world.getBlockMetadata(x, y, z) == 0) this.dropBlockAsItem(world, x, y, z, 0, 0);
             world.setBlockToAir(x, y, z);
+            if(world.getBlockId(x, y + 1, z) == this.blockID && world.getBlockMetadata(x, y + 1, z) == 1){
+                world.setBlockToAir(x, y + 1, z);
+            }
         }
     }
 

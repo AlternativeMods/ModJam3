@@ -7,21 +7,19 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public class PacketOpenGui extends PacketBase {
 
     private EnumGui gui;
     private int x, y, z;
     private boolean coordsSet = false;
 
-    public PacketOpenGui(){}
+    public PacketOpenGui(){
+    }
+
     public PacketOpenGui(EnumGui gui){
         this.gui = gui;
     }
+
     public PacketOpenGui(EnumGui gui, int x, int y, int z){
         this.gui = gui;
         this.x = x;

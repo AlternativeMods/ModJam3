@@ -6,11 +6,6 @@ import net.minecraft.item.ItemStack;
 
 import java.util.Map;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public enum EnumIngredient {
     RAWANTENNAROD(0),
     ANTENNAROD(1),

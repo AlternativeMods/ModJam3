@@ -10,12 +10,8 @@ import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
+import net.minecraftforge.common.MinecraftForge;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public class ProxyClient extends ProxyCommon {
 
     public static IModelCustom modelAntenna;
@@ -31,5 +27,7 @@ public class ProxyClient extends ProxyCommon {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAntenna.class, antennaRenderer = new TileEntityAntennaRenderer());
 
         MinecraftForgeClient.registerItemRenderer(RadioMod.instance.blockAntenna.blockID, new ItemRendererAntenna());
+
+        MinecraftForge.EVENT_BUS.register(new SoundLoader());
     }
 }

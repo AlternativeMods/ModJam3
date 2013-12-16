@@ -15,34 +15,33 @@ import java.util.Map;
 public class Constants {
 
     public static final String MODID = "RadioMod";
-    public static final String VERSION = "@VERSION@";
 
     public static Map<String, int[]> musicTitles = new HashMap<String, int[]>();
     public static Map<String, String> realMusicTitles = new HashMap<String, String>();
     public static Map<String, String> normalMusicTitles = new HashMap<String, String>();
 
-    public static void initiateTitles() {
-        for(ItemStack itemStack : OreDictionary.getOres("record")) {
+    public static void initiateTitles(){
+        for(ItemStack itemStack : OreDictionary.getOres("record")){
             ItemRecord record = (ItemRecord) itemStack.getItem();
-            musicTitles.put(record.recordName, new int[] {itemStack.itemID, itemStack.getItemDamage()});
+            musicTitles.put(record.recordName, new int[]{itemStack.itemID, itemStack.getItemDamage()});
             realMusicTitles.put(record.recordName, record.getRecordTitle());
             normalMusicTitles.put(record.getRecordTitle(), record.recordName);
         }
     }
 
-    public static String getRealRecordTitle(String recordName) {
+    public static String getRealRecordTitle(String recordName){
         if(realMusicTitles != null && !realMusicTitles.isEmpty() && realMusicTitles.containsKey(recordName))
             return realMusicTitles.get(recordName);
         return "INVALID";
     }
 
-    public static String getNormalRecordTitle(String recordTitle) {
+    public static String getNormalRecordTitle(String recordTitle){
         if(normalMusicTitles != null && !normalMusicTitles.isEmpty() && normalMusicTitles.containsKey(recordTitle))
             return normalMusicTitles.get(recordTitle);
         return "INVALID";
     }
 
-    public static ItemStack buildRecordStack(String title) {
+    public static ItemStack buildRecordStack(String title){
         if(!musicTitles.containsKey(title))
             return null;
 

@@ -15,7 +15,6 @@ apply plugin: 'java'
 apply plugin: 'forge'
 apply plugin: 'maven'
 
-ext.modid = 'RadioMod'
 group = 'jkmau5.modjam'
 version = '0.1-SNAPSHOT'
 archivesBaseName = 'RadioMod'
@@ -24,7 +23,6 @@ minecraft{
     version = '1.6.4-9.11.1.964'
     assetDir = 'runtime/client/assets'
 
-    replace "@MODID@", project.modid
     replace "@VERSION@", project.version
     replaceIn 'Constants.java'
 }
@@ -46,7 +44,7 @@ processResources {
         include 'mcmod.info'
         include 'version.properties'
         include '**/**.lang'
-        expand 'version':project.version, 'mcversion':project.minecraft.version, 'modid':project.modid
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'

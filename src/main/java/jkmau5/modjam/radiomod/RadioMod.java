@@ -4,33 +4,27 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
-<<<<<<< HEAD
-import jkmau5.modjam.radiomod.block.*;
-=======
 import jkmau5.modjam.radiomod.block.BlockAntenna;
 import jkmau5.modjam.radiomod.block.BlockBroadcaster;
+import jkmau5.modjam.radiomod.block.BlockPlaylist;
 import jkmau5.modjam.radiomod.block.BlockRadio;
->>>>>>> origin/jk-5
 import jkmau5.modjam.radiomod.item.ItemIngredient;
 import jkmau5.modjam.radiomod.item.ItemLinkCard;
 import jkmau5.modjam.radiomod.item.ItemMediaPlayer;
 import jkmau5.modjam.radiomod.network.PacketHandler;
-import jkmau5.modjam.radiomod.radio.RadioWorldHandler;
+import jkmau5.modjam.radiomod.radio.RadioNetworkHandler;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
-<<<<<<< HEAD
-import jkmau5.modjam.radiomod.tile.*;
-=======
 import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
+import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
->>>>>>> origin/jk-5
 import net.minecraft.creativetab.CreativeTabs;
 
 import java.util.Random;
@@ -50,7 +44,7 @@ public class RadioMod {
     @Mod.Instance(Constants.MODID)
     public static RadioMod instance;
 
-    public static RadioWorldHandler radioWorldHandler;
+    public static RadioNetworkHandler radioNetworkHandler;
 
     public static final CreativeTabs tabRadioMod = new CreativeTabs("RadioMod");
 
@@ -108,12 +102,12 @@ public class RadioMod {
     }
 
     @Mod.EventHandler
-    public void serverStarting(FMLServerStartedEvent event){
-        radioWorldHandler = new RadioWorldHandler();
+    public void serverStarting(FMLServerAboutToStartEvent event){
+        radioNetworkHandler = new RadioNetworkHandler();
     }
 
     @Mod.EventHandler
     public void serverStopping(FMLServerStoppedEvent event){
-        radioWorldHandler = null;
+        radioNetworkHandler = null;
     }
 }

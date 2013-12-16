@@ -6,11 +6,6 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.AxisAlignedBB;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public class TileEntityAntenna extends TileEntityRadioNetwork {
 
     public float yaw = 0f;

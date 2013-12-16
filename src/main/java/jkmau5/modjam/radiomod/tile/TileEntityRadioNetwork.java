@@ -1,9 +1,8 @@
 package jkmau5.modjam.radiomod.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.radio.RadioNetwork;
-import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 /**
@@ -15,27 +14,44 @@ public class TileEntityRadioNetwork extends TileEntity {
 
     public RadioNetwork network;
 
-    @SideOnly(Side.CLIENT)
-    public int getDistanceToPlayer(){
-        return (int) Math.ceil(Minecraft.getMinecraft().thePlayer.getDistanceSq(this.xCoord, this.yCoord, this.zCoord));
-    }
-
-    @SideOnly(Side.CLIENT)
     public int getDistanceToCoords(int x, int y, int z){
         return (int) Math.ceil(this.getDistanceFrom(x, y, z));
     }
 
-    public void linkToTile(TileEntityRadioNetwork newTile){
+    @Override
+    public void readFromNBT(NBTTagCompound tag){
+        super.readFromNBT(tag);
+        if(tag.hasKey("networkID")){
+            this.network = RadioMod.radioNetworkHandler.getNetworkFromID(tag.getInteger("networkID"));
+            this.network.add(this);
+        }
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag){
+        super.writeToNBT(tag);
+        if(this.network != null){
+            tag.setInteger("networkID", this.network.getID());
+        }
+    }
+
+    public boolean linkToTile(TileEntityRadioNetwork newTile){
         if(this.network == null && newTile.network == null){
             RadioNetwork network = new RadioNetwork();
+            network.grabNextID();
             network.add(this);
-            network.add(newTile);
+            boolean ret = network.add(newTile);
+            if(ret){
+                RadioMod.radioNetworkHandler.addNetwork(network);
+            }
+            return ret;
         }else if(this.network == null){
-            newTile.network.add(this);
+            return newTile.network.add(this);
         }else if(newTile.network == null){
-            this.network.add(newTile);
+            return this.network.add(newTile);
         }else{
-            if(this.network.getNetworkSize() >= newTile.network.getNetworkSize()){
+            return false; //TODO: remove this?
+            /*if(this.network.getNetworkSize() >= newTile.network.getNetworkSize()){
                 //Move all the tiles in the other tile's network to my network
                 for(int i = 0; i < newTile.network.getNetworkSize(); i++){
                     TileEntityRadioNetwork t = newTile.network.getNetworkTiles().get(i);
@@ -51,7 +67,7 @@ public class TileEntityRadioNetwork extends TileEntity {
                     newTile.network.add(t);
                     t.network = this.network;
                 }
-            }
+            }*/
         }
     }
 }

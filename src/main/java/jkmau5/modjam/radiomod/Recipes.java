@@ -7,11 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public class Recipes {
 
     public static void init(){
@@ -22,6 +17,11 @@ public class Recipes {
         addShaped(EnumIngredient.BIGANTENNAFOOT.getStack(1), "r", "r", "r", 'r', EnumIngredient.ANTENNAFOOT.getStack(1));
         addShaped(EnumIngredient.ANTENNAONFOOT.getStack(1), "prr", "f  ", "f  ", 'f', EnumIngredient.BIGANTENNAFOOT.getStack(1), 'p', Item.enderPearl, 'r', EnumIngredient.ANTENNAROD.getStack(1));
         addShaped(new ItemStack(RadioMod.instance.blockAntenna, 1), "rrr", "rar", "rrr", 'r', EnumIngredient.ANTENNAROD.getStack(1), 'a', EnumIngredient.ANTENNAONFOOT.getStack(1));
+
+        addShaped(new ItemStack(RadioMod.instance.blockBroadcaster, 1), "iri", "rdr", "iri", 'd', Block.blockDiamond, 'i', Item.ingotIron, 'r', Item.redstone);
+        addShaped(new ItemStack(RadioMod.instance.blockPlaylist, 1), "dgd", "cjc", "dgd", 'd', Item.diamond, 'g', Item.ingotGold, 'c', Block.chest, 'j', Block.jukebox);
+        addShaped(new ItemStack(RadioMod.instance.blockRadio, 1), "iai", "iji", "iii", 'i', Item.ingotIron, 'a', EnumIngredient.ANTENNAROD.getStack(1), 'j', Block.jukebox);
+        addShaped(new ItemStack(RadioMod.instance.itemLinkCard, 1), "ppp", "rir", "ppp", 'i', Item.ingotIron, 'p', Item.paper, 'r', Item.redstone);
     }
 
     private static void addShaped(ItemStack output, Object... data){
