@@ -30,7 +30,9 @@ public class TileEntityRadioNetwork extends TileEntity {
     @Override
     public void writeToNBT(NBTTagCompound tag){
         super.writeToNBT(tag);
-        if(this.network != null) tag.setInteger("networkID", this.network.getID());
+        if(this.network != null){
+            tag.setInteger("networkID", this.network.getID());
+        }
     }
 
     public boolean linkToTile(TileEntityRadioNetwork newTile){
