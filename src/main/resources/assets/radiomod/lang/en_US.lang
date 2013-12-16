@@ -1,1 +1,12 @@
 itemGroup.RadioMod=RadioMod
+item.radioMod.ingredient.rawantennarod.name=Raw Antenna Rod
+item.radioMod.ingredient.antennarod.name=Antenna Rod
+item.radioMod.ingredient.antennafoot.name=Antenna Foot
+item.radioMod.ingredient.bitantennafoot.name=Big Antenna Foot
+item.radioMod.ingredient.antennaonfoot.name=Antenna On Foot
+item.radioMod.linkCard.name=Link Card
+item.radioMod.mediaPlayer.name=Media Player
+tile.radioMod.blockBroadcaster.name=Broadcaster
+tile.radioMod.blockRadio.name=Radio
+tile.radioMod.blockPlaylist.name=Playlist Block
+tile.radioMod.blockAntenna.name=Antenna

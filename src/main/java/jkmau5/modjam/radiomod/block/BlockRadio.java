@@ -8,6 +8,7 @@ import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.gui.EnumGui;
 import jkmau5.modjam.radiomod.gui.GuiOpener;
 import jkmau5.modjam.radiomod.network.PacketMediaPlayerData;
+import jkmau5.modjam.radiomod.network.PacketPlaySound;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -33,7 +34,7 @@ public class BlockRadio extends Block {
     public BlockRadio(int par1){
         super(par1, Material.iron);
         this.setCreativeTab(RadioMod.tabRadioMod);
-        this.setUnlocalizedName("radiomod.BlockRadio");
+        this.setUnlocalizedName("radioMod.blockRadio");
         this.setHardness(0.8f);
         this.setResistance(3f);
     }
@@ -81,6 +82,12 @@ public class BlockRadio extends Block {
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
         int meta = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
         world.setBlockMetadataWithNotify(x, y, z, meta, 2);
+    }
+
+    @Override
+    public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int par5){
+        super.onBlockDestroyedByPlayer(world, x, y, z, par5);
+        PacketDispatcher.sendPacketToAllAround(x, y, z, 256, world.provider.dimensionId, new PacketPlaySound(null, x, y, z, true).getPacket());
     }
 
     @Override

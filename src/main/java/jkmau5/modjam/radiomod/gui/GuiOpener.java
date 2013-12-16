@@ -2,6 +2,8 @@ package jkmau5.modjam.radiomod.gui;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import jkmau5.modjam.radiomod.network.PacketOpenGui;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
@@ -13,12 +15,14 @@ import net.minecraft.world.World;
 
 public class GuiOpener {
 
+    @SideOnly(Side.CLIENT)
     public static void openGuiCallback(EnumGui gui){
         if(gui == EnumGui.MEDIA_PLAYER){
             Minecraft.getMinecraft().displayGuiScreen(new GuiMediaPlayer());
         }
     }
 
+    @SideOnly(Side.CLIENT)
     public static void openGuiCallback(EnumGui gui, int x, int y, int z){
         if(gui == EnumGui.BROADCASTER_BLOCK){
             World world = Minecraft.getMinecraft().thePlayer.worldObj;

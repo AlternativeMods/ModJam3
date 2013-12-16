@@ -26,6 +26,7 @@ import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 
 import java.util.Random;
 
@@ -46,7 +47,12 @@ public class RadioMod {
 
     public static RadioNetworkHandler radioNetworkHandler;
 
-    public static final CreativeTabs tabRadioMod = new CreativeTabs("RadioMod");
+    public static final CreativeTabs tabRadioMod = new CreativeTabs("RadioMod") {
+        @Override
+        public ItemStack getIconItemStack(){
+            return new ItemStack(RadioMod.instance.blockAntenna);
+        }
+    };
 
     @SidedProxy(modId = Constants.MODID, clientSide = "jkmau5.modjam.radiomod.client.ProxyClient", serverSide = "jkmau5.modjam.radiomod.server.ProxyCommon")
     public static ProxyCommon proxy;
@@ -93,12 +99,11 @@ public class RadioMod {
         LanguageRegistry.addName(itemMediaPlayer, "Media Player");
         LanguageRegistry.addName(blockRadio, "Radio Block");
         LanguageRegistry.addName(blockPlaylist, "Playlist Block");
+        LanguageRegistry.addName(this.blockAntenna, "Antenna");
 
         proxy.init();
 
         TickRegistry.registerTickHandler(new RadioTickHandler(), Side.SERVER); //TODO: remove?
-
-        Constants.initiateTitles();
     }
 
     @Mod.EventHandler

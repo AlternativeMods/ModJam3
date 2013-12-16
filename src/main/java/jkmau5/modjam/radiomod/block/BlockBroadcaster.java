@@ -27,7 +27,7 @@ public class BlockBroadcaster extends Block {
     public BlockBroadcaster(int par1){
         super(par1, Material.iron);
         this.setCreativeTab(RadioMod.tabRadioMod);
-        this.setUnlocalizedName("radiomod.BlockBroadcaster");
+        this.setUnlocalizedName("radioMod.blockBroadcaster");
 
         this.maxY = 0.75f;
     }

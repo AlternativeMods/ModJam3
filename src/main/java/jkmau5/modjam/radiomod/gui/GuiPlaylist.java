@@ -42,14 +42,14 @@ public class GuiPlaylist extends GuiScreen {
 
         buttonList.add(new GuiButton(0, this.width / 2, this.height / 8, 100, 20, "Play"));
 
-        this.actualHeight = height;
+        actualHeight = height;
         initTitles();
     }
 
     @Override
     protected void actionPerformed(GuiButton button){
         if(button.id == 0 && !this.selectedIndex.isEmpty()){
-            PacketDispatcher.sendPacketToServer(new PacketPlayBroadcastedSound(this.selectedIndex, this.playlist.network.getID()).getPacket());
+            PacketDispatcher.sendPacketToServer(new PacketPlayBroadcastedSound(this.selectedIndex, playlist.xCoord, playlist.yCoord, playlist.zCoord, playlist.worldObj.provider.dimensionId).getPacket());
         }
     }
 
@@ -91,7 +91,7 @@ public class GuiPlaylist extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTick){
         int x = (this.width - this.xSize) / 2;
-        int y = (this.actualHeight - this.ySize) / 2;
+        int y = (actualHeight - this.ySize) / 2;
         if(playlist != null && playlist.getTitles() != null){
             this.scrollY = Math.min(this.scrollY, 0);
             this.scrollY = Math.max(this.scrollY, 47 - (playlist.getTitles().size() * 10 + 2));
@@ -104,7 +104,7 @@ public class GuiPlaylist extends GuiScreen {
         this.ySize = 116;
         if(playlist != null && playlist.getTitles() != null && !playlist.getTitles().isEmpty()){
             GL11.glPushMatrix();
-            int yS = (this.actualHeight / 5);
+            int yS = (actualHeight / 5);
             Gui.drawRect(x - 1, y - 1, x + this.xSize + 1, y + yS + 1, 0xFFAAAAAA);
             Gui.drawRect(x, y, x + this.xSize, y + yS, 0xFF000000);
 
@@ -138,7 +138,7 @@ public class GuiPlaylist extends GuiScreen {
     }
 
     private void removeIfClickingRemove(int xMouse, int yMouse){
-        if(selectedIndex == "") return;
+        if(selectedIndex.isEmpty()) return;
         int realX = (this.width - this.xSize) / 2;
         if(xMouse >= realX + this.xSize - 16 && xMouse < realX + this.xSize - 6){
             int y = getYStartForTitle();
@@ -153,8 +153,8 @@ public class GuiPlaylist extends GuiScreen {
         super.mouseClicked(x, y, button);
         if(button == 0){
             int realX = (this.width - this.xSize) / 2;
-            int realY = (this.actualHeight - this.ySize) / 2;
-            int yS = this.actualHeight / 5;
+            int realY = (actualHeight - this.ySize) / 2;
+            int yS = actualHeight / 5;
             if(x > realX && x < realX + this.xSize && y > realY && y < realY + yS){
                 removeIfClickingRemove(x, y - scrollY);
                 selectedIndex = getIndexId(y - scrollY);

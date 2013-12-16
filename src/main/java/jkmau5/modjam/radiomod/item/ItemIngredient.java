@@ -21,7 +21,7 @@ public class ItemIngredient extends Item {
         super(id);
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
-        this.setUnlocalizedName("ingredient");
+        this.setUnlocalizedName("radioMod.ingredient");
         this.setCreativeTab(RadioMod.tabRadioMod);
     }
 

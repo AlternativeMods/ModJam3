@@ -25,7 +25,7 @@ public class Constants {
             ItemRecord record = (ItemRecord) itemStack.getItem();
             musicTitles.put(record.recordName, new int[]{itemStack.itemID, itemStack.getItemDamage()});
             realMusicTitles.put(record.recordName, record.getRecordTitle());
-            normalMusicTitles.put(record.getRecordTitle(), record.recordName);
+            normalMusicTitles.put(record.getItemDisplayName(itemStack), record.recordName);
         }
     }
 

@@ -2,7 +2,6 @@ package jkmau5.modjam.radiomod.radio;
 
 import com.google.common.collect.Lists;
 import jkmau5.modjam.radiomod.Config;
-import jkmau5.modjam.radiomod.Constants;
 import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityRadioNetwork;
@@ -108,8 +107,8 @@ public class RadioNetwork {
     }
 
     public void playSound(String soundName){
-        soundName = Constants.getNormalRecordTitle(soundName);
-        if(soundName.equals("INVALID")) return;
+        //soundName = Constants.getNormalRecordTitle(soundName);
+        //if(soundName.equals("INVALID")) return;
         for(IRadioListener listener : this.listeners){
             listener.playSong(soundName);
         }

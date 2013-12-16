@@ -20,11 +20,12 @@ public class BlockPlaylist extends Block {
 
     private Icon topIcon[];
     private Icon sidesIcon;
+    private Icon bottomIcon;
 
     public BlockPlaylist(int par1){
         super(par1, Material.iron);
         this.setCreativeTab(RadioMod.tabRadioMod);
-        this.setUnlocalizedName("radiomod.BlockPlaylist");
+        this.setUnlocalizedName("radioMod.blockPlaylist");
 
         this.maxY = 0.75;
     }
@@ -53,11 +54,14 @@ public class BlockPlaylist extends Block {
         this.topIcon[2] = register.registerIcon("RadioMod:playlist_180");
         this.topIcon[3] = register.registerIcon("RadioMod:playlist_270");
         this.sidesIcon = register.registerIcon("RadioMod:side_small");
+        this.bottomIcon = register.registerIcon("RadioMod:side");
     }
 
     @Override
     public Icon getIcon(int side, int meta){
         switch(side){
+            case 0:
+                return this.bottomIcon;
             case 1:
                 return this.topIcon[meta];
             default:

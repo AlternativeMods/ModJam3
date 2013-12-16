@@ -29,5 +29,7 @@ public class ProxyClient extends ProxyCommon {
         MinecraftForgeClient.registerItemRenderer(RadioMod.instance.blockAntenna.blockID, new ItemRendererAntenna());
 
         MinecraftForge.EVENT_BUS.register(new SoundLoader());
+
+        Constants.initiateTitles();
     }
 }

@@ -1,5 +1,6 @@
 package jkmau5.modjam.radiomod.tile;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.radio.RadioNetwork;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,7 +22,7 @@ public class TileEntityRadioNetwork extends TileEntity {
     @Override
     public void readFromNBT(NBTTagCompound tag){
         super.readFromNBT(tag);
-        if(tag.hasKey("networkID")){
+        if(FMLCommonHandler.instance().getEffectiveSide().isServer() && tag.hasKey("networkID")){
             this.network = RadioMod.radioNetworkHandler.getNetworkFromID(tag.getInteger("networkID"));
             this.network.add(this);
         }
@@ -30,7 +31,7 @@ public class TileEntityRadioNetwork extends TileEntity {
     @Override
     public void writeToNBT(NBTTagCompound tag){
         super.writeToNBT(tag);
-        if(this.network != null){
+        if(FMLCommonHandler.instance().getEffectiveSide().isServer() && this.network != null){
             tag.setInteger("networkID", this.network.getID());
         }
     }

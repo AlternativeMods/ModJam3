@@ -100,7 +100,6 @@ public class TileEntityRadio extends TileEntity implements IRadioListener {
     @Override
     public void playSong(String name){
         PacketDispatcher.sendPacketToAllAround(this.xCoord, this.yCoord, this.zCoord, 256, this.worldObj.provider.dimensionId, new PacketPlaySound(name, this.xCoord, this.yCoord, this.zCoord).getPacket());
-        //this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, name, 1, 1);
     }
 
     @Override
