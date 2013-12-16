@@ -1,21 +1,19 @@
 package jkmau5.modjam.radiomod.tile;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import jkmau5.modjam.radiomod.RadioMod;
+import jkmau5.modjam.radiomod.radio.IRadioListener;
+import jkmau5.modjam.radiomod.radio.RadioNetwork;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 
-/**
- * Author: Lordmau5
- * Date: 15.12.13
- * Time: 11:05
- * You are allowed to change this code,
- * however, not to publish it without my permission.
- */
-public class TileEntityRadio extends TileEntity {
+public class TileEntityRadio extends TileEntity implements IRadioListener {
 
     private String connectedBroadcastStation;
+    private boolean isListener = false;
 
     public TileEntityRadio(){
         setConnectedBroadcastStation("Not connected...");
@@ -27,6 +25,41 @@ public class TileEntityRadio extends TileEntity {
 
     public void setConnectedBroadcastStation(String connectedBroadcastStation){
         this.connectedBroadcastStation = connectedBroadcastStation;
+    }
+
+    @Override
+    public boolean canUpdate(){
+        return FMLCommonHandler.instance().getEffectiveSide().isServer();
+    }
+
+    @Override
+    public void updateEntity(){
+        super.updateEntity();
+        if(!this.isListener && this.connectedBroadcastStation != null){
+            RadioNetwork network = RadioMod.radioNetworkHandler.getNetworkFromName(this.connectedBroadcastStation);
+            network.addListener(this);
+            this.isListener = true;
+        }
+    }
+
+    @Override
+    public void invalidate(){
+        super.invalidate();
+        if(this.isListener && this.connectedBroadcastStation != null){
+            RadioNetwork network = RadioMod.radioNetworkHandler.getNetworkFromName(this.connectedBroadcastStation);
+            network.removeListener(this);
+            this.isListener = false;
+        }
+    }
+
+    @Override
+    public void onChunkUnload(){
+        super.onChunkUnload();
+        if(this.isListener && this.connectedBroadcastStation != null){
+            RadioNetwork network = RadioMod.radioNetworkHandler.getNetworkFromName(this.connectedBroadcastStation);
+            network.removeListener(this);
+            this.isListener = false;
+        }
     }
 
     @Override
@@ -57,5 +90,15 @@ public class TileEntityRadio extends TileEntity {
 
     public void writeGuiData(NBTTagCompound tag){
         tag.setString("station", this.connectedBroadcastStation);
+    }
+
+    @Override
+    public void playSong(String name){
+        this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, name, 1, 1);
+    }
+
+    @Override
+    public void playOutOfRange(){
+        this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "RadioMod:noise", 1, 1);
     }
 }

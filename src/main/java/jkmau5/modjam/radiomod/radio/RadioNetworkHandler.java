@@ -43,4 +43,13 @@ public class RadioNetworkHandler {
     public void addNetwork(RadioNetwork network){
         this.networks.add(network);
     }
+
+    public RadioNetwork getNetworkFromName(String name){
+        for(RadioNetwork network : networks){
+            if(network.getBroadcaster() != null && network.getBroadcaster().getRadioName().equals(name)){
+                return network;
+            }
+        }
+        return null;
+    }
 }

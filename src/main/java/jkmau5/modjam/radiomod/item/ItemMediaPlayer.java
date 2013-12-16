@@ -40,9 +40,10 @@ public class ItemMediaPlayer extends Item {
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedToolTips){
         if(stack.getTagCompound() == null) stack.setTagCompound(new NBTTagCompound());
         NBTTagCompound tag = stack.getTagCompound();
-        String name = tag.getString("station");
-        if(name != null){
-            list.add("Radio station: " + name);
+        if(tag.hasKey("station")){
+            list.add("Radio station: " + tag.getString("station"));
+        }else{
+            list.add("Use right click to select a radio station");
         }
     }
 }

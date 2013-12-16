@@ -2,9 +2,11 @@ package jkmau5.modjam.radiomod.gui;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import jkmau5.modjam.radiomod.Constants;
+import jkmau5.modjam.radiomod.network.PacketPlayBroadcastedSound;
 import jkmau5.modjam.radiomod.network.PacketRemovePlaylistTitle;
 import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Mouse;
@@ -45,8 +47,17 @@ public class GuiPlaylist extends GuiScreen {
     public void initGui(){
         super.initGui();
 
+        buttonList.add(new GuiButton(0, this.width / 2, this.height / 8, 100, 20, "Play"));
+
         this.actualHeight = height;
         initTitles();
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button){
+        if(button.id == 0 && !this.selectedIndex.isEmpty()){
+            PacketDispatcher.sendPacketToServer(new PacketPlayBroadcastedSound(this.selectedIndex, this.playlist.network.getID()).getPacket());
+        }
     }
 
     public static void initTitles(){

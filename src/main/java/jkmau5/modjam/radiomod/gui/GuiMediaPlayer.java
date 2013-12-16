@@ -2,6 +2,7 @@ package jkmau5.modjam.radiomod.gui;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import jkmau5.modjam.radiomod.network.PacketRequestRadioNames;
+import jkmau5.modjam.radiomod.network.PacketSelectRadio;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -25,6 +26,9 @@ public class GuiMediaPlayer extends GuiScreen {
 
     private GuiButton connectButton;
 
+    private boolean isMediaPlayer;
+    private TileEntityRadio tileEntity;
+
     private static List<String> availableRadios;
     public static NBTTagCompound guiData;
 
@@ -33,14 +37,17 @@ public class GuiMediaPlayer extends GuiScreen {
     private int scrollY = 0;
     private static boolean isloading = false;
 
-    private String selectedName = null;
+    public static String selectedName = null;
 
     public GuiMediaPlayer(){
+        this.isMediaPlayer = true;
         PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId, Minecraft.getMinecraft().thePlayer).getPacket());
         isloading = true;
     }
 
     public GuiMediaPlayer(TileEntityRadio tileEntity){
+        this.tileEntity = tileEntity;
+        this.isMediaPlayer = false;
         PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId, tileEntity).getPacket());
         isloading = true;
     }
@@ -53,6 +60,19 @@ public class GuiMediaPlayer extends GuiScreen {
     public void initGui(){
         buttonList.add(connectButton = new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 12, "No radio selected"));
         this.onSelectionChanged();
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button){
+        if(button.id == 0){
+            if(selectedName != null){
+                if(this.isMediaPlayer){
+                    PacketDispatcher.sendPacketToServer(new PacketSelectRadio(selectedName).getPacket());
+                }else{
+                    PacketDispatcher.sendPacketToServer(new PacketSelectRadio(selectedName, this.tileEntity).getPacket());
+                }
+            }
+        }
     }
 
     @Override
@@ -83,7 +103,7 @@ public class GuiMediaPlayer extends GuiScreen {
                 GL11.glEnable(GL11.GL_SCISSOR_TEST);
                 int index = 0;
                 for(String radio : availableRadios){
-                    if(radio.equals(this.selectedName)){
+                    if(radio.equals(selectedName)){
                         Gui.drawRect(x + 2, y + 2 + index * 10, x + this.xSize - 2, y + 2 + (index + 1) * 10, 0xFF00AA00);
                     }
                     this.fontRenderer.drawString(radio, x + 3, 3 + y + index * 10, 0xFFFFFFFF);
@@ -107,7 +127,7 @@ public class GuiMediaPlayer extends GuiScreen {
             int realY = (this.height - this.ySize) / 2;
             int yS = this.height / 5;
             if(x > realX && x < realX + this.xSize && y > realY && y < realY + yS){
-                this.selectedName = this.getNameFromY(y - this.scrollY);
+                selectedName = this.getNameFromY(y - this.scrollY);
                 this.onSelectionChanged();
             }
         }
@@ -124,7 +144,7 @@ public class GuiMediaPlayer extends GuiScreen {
     }
 
     public void onSelectionChanged(){
-        if(this.selectedName == null){
+        if(selectedName == null){
             this.connectButton.displayString = "No radio selected";
         }else{
             this.connectButton.displayString = "Listen to this radio";

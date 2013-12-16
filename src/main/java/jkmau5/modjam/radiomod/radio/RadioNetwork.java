@@ -2,6 +2,7 @@ package jkmau5.modjam.radiomod.radio;
 
 import com.google.common.collect.Lists;
 import jkmau5.modjam.radiomod.Config;
+import jkmau5.modjam.radiomod.Constants;
 import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityRadioNetwork;
@@ -26,6 +27,7 @@ public class RadioNetwork {
 
     private int ID = -1;
     private final List<TileEntityRadioNetwork> networkTiles = Lists.newArrayList();
+    private final List<IRadioListener> listeners = Lists.newArrayList();
     private TileEntityBroadcaster broadcaster;
 
     /**
@@ -44,6 +46,18 @@ public class RadioNetwork {
             this.broadcaster = (TileEntityBroadcaster) tile;
         }
         return true;
+    }
+
+    public void addListener(IRadioListener listener){
+        if(!this.listeners.contains(listener)){
+            this.listeners.add(listener);
+        }
+    }
+
+    public void removeListener(IRadioListener listener){
+        if(this.listeners.contains(listener)){
+            this.listeners.remove(listener);
+        }
     }
 
     /**
@@ -91,5 +105,13 @@ public class RadioNetwork {
             }
         }
         return false;
+    }
+
+    public void playSound(String soundName){
+        soundName = Constants.getNormalRecordTitle(soundName);
+        if(soundName.equals("INVALID")) return;
+        for(IRadioListener listener : this.listeners){
+            listener.playSong(soundName);
+        }
     }
 }

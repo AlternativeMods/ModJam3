@@ -29,12 +29,13 @@ public abstract class PacketBase {
         packets.put(id, cl);
     }
 
-    static {
+    static{
         registerPacket(0, PacketOpenGui.class);
         registerPacket(1, PacketUpdateRadioName.class);
         registerPacket(2, PacketRequestRadioNames.class);
         registerPacket(3, PacketMediaPlayerData.class);
         registerPacket(4, PacketRemovePlaylistTitle.class);
+        registerPacket(5, PacketUpdateRadioName.class);
     }
 
     public final Packet250CustomPayload getPacket(){
@@ -72,5 +73,6 @@ public abstract class PacketBase {
     }
 
     public abstract void writePacket(DataOutput output) throws IOException;
+
     public abstract void readPacket(DataInput input) throws IOException;
 }
