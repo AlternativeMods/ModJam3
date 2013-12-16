@@ -39,4 +39,8 @@ public class RadioNetworkHandler {
     public List<RadioNetwork> getNetworks(){
         return networks;
     }
+
+    public void addNetwork(RadioNetwork network){
+        this.networks.add(network);
+    }
 }

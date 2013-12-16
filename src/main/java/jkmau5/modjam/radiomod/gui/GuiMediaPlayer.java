@@ -31,9 +31,9 @@ public class GuiMediaPlayer extends GuiScreen {
     private int xSize = 176;
     private int ySize = 166;
     private int scrollY = 0;
-    private boolean isScrolling = false;
-    private int mouseGrabY = 0;
     private static boolean isloading = false;
+
+    private String selectedName = null;
 
     public GuiMediaPlayer(){
         PacketDispatcher.sendPacketToServer(new PacketRequestRadioNames(Minecraft.getMinecraft().theWorld.provider.dimensionId, Minecraft.getMinecraft().thePlayer).getPacket());
@@ -52,17 +52,13 @@ public class GuiMediaPlayer extends GuiScreen {
 
     public void initGui(){
         buttonList.add(connectButton = new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 12, "No radio selected"));
-
-        //TODO: Add clickable-list of the available radios
+        this.onSelectionChanged();
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTick){
         int x = (this.width - this.xSize) / 2;
         int y = (this.height - this.ySize) / 2;
-        if(this.isScrolling){
-            this.scrollY = mouseY - this.mouseGrabY;
-        }
         if(availableRadios != null){
             this.scrollY = Math.min(this.scrollY, 0);
             this.scrollY = Math.max(this.scrollY, 47 - (availableRadios.size() * 10 + 2));
@@ -76,7 +72,7 @@ public class GuiMediaPlayer extends GuiScreen {
         if(isloading){
             this.fontRenderer.drawString("Loading...", x, y, 0xFFCCCCCC);
         }else{
-            if(availableRadios != null) {
+            if(availableRadios != null){
                 GL11.glPushMatrix();
                 int yS = (this.height / 5);
                 Gui.drawRect(x - 1, y - 1, x + this.xSize + 1, y + yS + 1, 0xFFAAAAAA);
@@ -87,6 +83,9 @@ public class GuiMediaPlayer extends GuiScreen {
                 GL11.glEnable(GL11.GL_SCISSOR_TEST);
                 int index = 0;
                 for(String radio : availableRadios){
+                    if(radio.equals(this.selectedName)){
+                        Gui.drawRect(x + 2, y + 2 + index * 10, x + this.xSize - 2, y + 2 + (index + 1) * 10, 0xFF00AA00);
+                    }
                     this.fontRenderer.drawString(radio, x + 3, 3 + y + index * 10, 0xFFFFFFFF);
                     index++;
                 }
@@ -104,20 +103,35 @@ public class GuiMediaPlayer extends GuiScreen {
     protected void mouseClicked(int x, int y, int button){
         super.mouseClicked(x, y, button);
         if(button == 0){
-            //TODO: check coords!
-            //this.mouseGrabY = y - this.scrollY;
-            //this.isScrolling = true;
+            int realX = (this.width - this.xSize) / 2;
+            int realY = (this.height - this.ySize) / 2;
+            int yS = this.height / 5;
+            if(x > realX && x < realX + this.xSize && y > realY && y < realY + yS){
+                this.selectedName = this.getNameFromY(y - this.scrollY);
+                this.onSelectionChanged();
+            }
+        }
+    }
+
+    public String getNameFromY(int y){
+        int i = 0;
+        for(String name : availableRadios){
+            int pos = 2 + ((this.height - 116) / 2) + (i * 10);
+            if(y >= pos && y < pos + 10) return name;
+            i++;
+        }
+        return null;
+    }
+
+    public void onSelectionChanged(){
+        if(this.selectedName == null){
+            this.connectButton.displayString = "No radio selected";
+        }else{
+            this.connectButton.displayString = "Listen to this radio";
         }
     }
 
     @Override
-    protected void mouseMovedOrUp(int x, int y, int button){
-        super.mouseMovedOrUp(x, y, button);
-        if(button == 0){
-            this.isScrolling = false;
-        }
-    }
-
     public boolean doesGuiPauseGame(){
         return false;
     }

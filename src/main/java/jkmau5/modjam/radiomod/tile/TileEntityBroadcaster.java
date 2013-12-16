@@ -22,11 +22,6 @@ public class TileEntityBroadcaster extends TileEntityRadioNetwork {
     }
 
     @Override
-    public boolean canUpdate(){
-        return false;
-    }
-
-    @Override
     public void readFromNBT(NBTTagCompound tag){
         super.readFromNBT(tag);
         this.radioName = tag.getString("radioName");

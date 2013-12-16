@@ -46,8 +46,13 @@ public class PacketRequestRadioNames extends PacketBase {
     @Override
     public void writePacket(DataOutput output) throws IOException{
         if(FMLCommonHandler.instance().getEffectiveSide().isServer()){
-            List<String> radioList = RadioMod.radioNetworkHandler.getAvailableRadioNames(this.player.worldObj, (int) this.player.posX, (int) this.player.posY, (int) this.player.posZ);
-            if(radioList != null && !radioList.isEmpty()){
+            List<String> radioList;
+            if(this.isMediaPlayer){
+                radioList = RadioMod.radioNetworkHandler.getAvailableRadioNames(this.player.worldObj, (int) this.player.posX, (int) this.player.posY, (int) this.player.posZ);
+            }else{
+                radioList = RadioMod.radioNetworkHandler.getAvailableRadioNames(this.tileEntity.worldObj, this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord);
+            }
+            if(!radioList.isEmpty()){
                 output.writeInt(radioList.size());
                 for(String radio : radioList){
                     output.writeUTF(radio);

@@ -28,15 +28,13 @@ public class GuiPlaylist extends GuiScreen {
     private int xSize = 176;
     private int ySize = 166;
     private int scrollY = 0;
-    private boolean isScrolling = false;
-    private int mouseGrabY = 0;
     private String selectedIndex = "";
     private static List<String> titleList = new ArrayList<String>();
     private static Map<String, Integer> titleCoordinates = new HashMap<String, Integer>();
 
     public static TileEntityPlaylist playlist;
 
-    public GuiPlaylist(TileEntityPlaylist playlist) {
+    public GuiPlaylist(TileEntityPlaylist playlist){
         this.playlist = playlist;
 
         titleList = new ArrayList<String>();
@@ -44,17 +42,17 @@ public class GuiPlaylist extends GuiScreen {
     }
 
     @Override
-    public void initGui() {
+    public void initGui(){
         super.initGui();
 
         this.actualHeight = height;
         initTitles();
     }
 
-    public static void initTitles() {
-        if(playlist.getTitles() != null && !playlist.getTitles().isEmpty()) {
+    public static void initTitles(){
+        if(playlist.getTitles() != null && !playlist.getTitles().isEmpty()){
             List<String> titles = playlist.getTitles();
-            for(int i=0; i<titles.size(); i++) {
+            for(int i = 0; i < titles.size(); i++){
                 String realTitle = Constants.getRealRecordTitle(titles.get(i));
 
                 int fromPos = 2 + ((actualHeight - 116) / 2) + (i * 10);
@@ -64,15 +62,15 @@ public class GuiPlaylist extends GuiScreen {
         }
     }
 
-    public static void updateTitles() {
+    public static void updateTitles(){
         titleList = new ArrayList<String>();
         titleCoordinates = new HashMap<String, Integer>();
 
         initTitles();
     }
 
-    public String getIndexId(int yClick) {
-        for(String title : titleList) {
+    public String getIndexId(int yClick){
+        for(String title : titleList){
             int titlePos = titleCoordinates.get(title);
 
             if(yClick >= titlePos && yClick < titlePos + 10)
@@ -82,7 +80,7 @@ public class GuiPlaylist extends GuiScreen {
     }
 
     @Override
-    public boolean doesGuiPauseGame() {
+    public boolean doesGuiPauseGame(){
         return false;
     }
 
@@ -90,9 +88,6 @@ public class GuiPlaylist extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTick){
         int x = (this.width - this.xSize) / 2;
         int y = (this.actualHeight - this.ySize) / 2;
-        if(this.isScrolling){
-            this.scrollY = mouseY - this.mouseGrabY;
-        }
         if(playlist != null && playlist.getTitles() != null){
             this.scrollY = Math.min(this.scrollY, 0);
             this.scrollY = Math.max(this.scrollY, 47 - (playlist.getTitles().size() * 10 + 2));
@@ -103,16 +98,11 @@ public class GuiPlaylist extends GuiScreen {
         ScaledResolution res = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
 
         this.ySize = 116;
-        if(playlist != null && playlist.getTitles() != null && !playlist.getTitles().isEmpty()) {
+        if(playlist != null && playlist.getTitles() != null && !playlist.getTitles().isEmpty()){
             GL11.glPushMatrix();
             int yS = (this.actualHeight / 5);
             Gui.drawRect(x - 1, y - 1, x + this.xSize + 1, y + yS + 1, 0xFFAAAAAA);
             Gui.drawRect(x, y, x + this.xSize, y + yS, 0xFF000000);
-
-            /*int barHeight = (availableRadios.size() - 5) / yS;
-            //int barY = yS / (this.scrollY == 0 ? 1 : this.scrollY);
-            int barY = this.scrollY / yS;
-            Gui.drawRect(x + (this.xSize - 5), y * barY, x + this.xSize, barHeight, 0xFFFFFFFF);*/
 
             GL11.glScissor(x * res.getScaleFactor(), this.mc.displayHeight - yS * res.getScaleFactor() - y * res.getScaleFactor(), (this.xSize - 5) * res.getScaleFactor(), yS * res.getScaleFactor());
             GL11.glTranslated(0, this.scrollY, 0);
@@ -136,19 +126,19 @@ public class GuiPlaylist extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTick);
     }
 
-    private int getYStartForTitle() {
+    private int getYStartForTitle(){
         if(!titleCoordinates.containsKey(selectedIndex))
             return -1;
 
         return titleCoordinates.get(selectedIndex);
     }
 
-    private void removeIfClickingRemove(int xMouse, int yMouse) {
+    private void removeIfClickingRemove(int xMouse, int yMouse){
         if(selectedIndex == "") return;
         int realX = (this.width - this.xSize) / 2;
-        if(xMouse >= realX + this.xSize - 16 && xMouse < realX + this.xSize - 6) {
+        if(xMouse >= realX + this.xSize - 16 && xMouse < realX + this.xSize - 6){
             int y = getYStartForTitle();
-            if(yMouse >= y + 2 && yMouse <= y + 8) {
+            if(yMouse >= y + 2 && yMouse <= y + 8){
                 PacketDispatcher.sendPacketToServer(new PacketRemovePlaylistTitle(playlist.worldObj.provider.dimensionId, playlist.xCoord, playlist.yCoord, playlist.zCoord, selectedIndex).getPacket());
             }
         }
@@ -160,12 +150,10 @@ public class GuiPlaylist extends GuiScreen {
         if(button == 0){
             int realX = (this.width - this.xSize) / 2;
             int realY = (this.actualHeight - this.ySize) / 2;
-            int yS = (this.actualHeight / 5);
-            if(x > realX && x < realX + this.xSize) {
-                if(y > realY && y < realY + yS) {
-                    removeIfClickingRemove(x, y - scrollY);
-                    selectedIndex = getIndexId(y - scrollY);
-                }
+            int yS = this.actualHeight / 5;
+            if(x > realX && x < realX + this.xSize && y > realY && y < realY + yS){
+                removeIfClickingRemove(x, y - scrollY);
+                selectedIndex = getIndexId(y - scrollY);
             }
         }
     }

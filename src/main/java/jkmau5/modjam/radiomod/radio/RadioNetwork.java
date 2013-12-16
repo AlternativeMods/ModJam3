@@ -77,7 +77,7 @@ public class RadioNetwork {
         int range = 75 + (Math.max(y - 127, 1) / 3);
         if(world.isRaining()) range *= 0.8;
         if(world.isThundering()) range *= 0.7;
-        return range;
+        return range * range;
     }
 
     public boolean areCoordsInRange(World world, int x, int y, int z){
