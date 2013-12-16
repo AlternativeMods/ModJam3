@@ -12,11 +12,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public class BlockAntenna extends Block {
 
     public BlockAntenna(int par1){

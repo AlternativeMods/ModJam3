@@ -18,13 +18,6 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-/**
- * Author: Lordmau5
- * Date: 13.12.13
- * Time: 16:02
- * You are allowed to change this code,
- * however, not to publish it without my permission.
- */
 public class BlockBroadcaster extends Block {
 
     private Icon topIcon[];

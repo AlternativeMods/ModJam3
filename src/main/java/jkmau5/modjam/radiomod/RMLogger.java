@@ -5,16 +5,11 @@ import cpw.mods.fml.common.FMLLog;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public class RMLogger {
 
     private static final Logger logger = Logger.getLogger("RadioMod");
 
-    static {
+    static{
         FMLLog.makeLog("RadioMod");
     }
 

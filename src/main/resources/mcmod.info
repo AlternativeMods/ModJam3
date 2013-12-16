@@ -9,7 +9,7 @@
         "jk-5"
     ],
     "description": "Bringing radio broadcasting to minecraft",
-    "logoFile" : "",
+    "logoFile" : "/assets/radiomod/textures/logo.png",
     "updateUrl" : "",
     "parent" : "",
     "screenshots": [],

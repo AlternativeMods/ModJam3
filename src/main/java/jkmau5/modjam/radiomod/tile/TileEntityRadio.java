@@ -1,7 +1,9 @@
 package jkmau5.modjam.radiomod.tile;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import jkmau5.modjam.radiomod.RadioMod;
+import jkmau5.modjam.radiomod.network.PacketPlaySound;
 import jkmau5.modjam.radiomod.radio.IRadioListener;
 import jkmau5.modjam.radiomod.radio.RadioNetwork;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,8 +37,9 @@ public class TileEntityRadio extends TileEntity implements IRadioListener {
     @Override
     public void updateEntity(){
         super.updateEntity();
-        if(!this.isListener && this.connectedBroadcastStation != null){
+        if(!this.isListener && this.connectedBroadcastStation != null && !this.connectedBroadcastStation.isEmpty()){
             RadioNetwork network = RadioMod.radioNetworkHandler.getNetworkFromName(this.connectedBroadcastStation);
+            if(network == null) return;
             network.addListener(this);
             this.isListener = true;
         }
@@ -45,8 +48,9 @@ public class TileEntityRadio extends TileEntity implements IRadioListener {
     @Override
     public void invalidate(){
         super.invalidate();
-        if(this.isListener && this.connectedBroadcastStation != null){
+        if(this.isListener && this.connectedBroadcastStation != null && !this.connectedBroadcastStation.isEmpty()){
             RadioNetwork network = RadioMod.radioNetworkHandler.getNetworkFromName(this.connectedBroadcastStation);
+            if(network == null) return;
             network.removeListener(this);
             this.isListener = false;
         }
@@ -55,8 +59,9 @@ public class TileEntityRadio extends TileEntity implements IRadioListener {
     @Override
     public void onChunkUnload(){
         super.onChunkUnload();
-        if(this.isListener && this.connectedBroadcastStation != null){
+        if(this.isListener && this.connectedBroadcastStation != null && !this.connectedBroadcastStation.isEmpty()){
             RadioNetwork network = RadioMod.radioNetworkHandler.getNetworkFromName(this.connectedBroadcastStation);
+            if(network == null) return;
             network.removeListener(this);
             this.isListener = false;
         }
@@ -94,7 +99,8 @@ public class TileEntityRadio extends TileEntity implements IRadioListener {
 
     @Override
     public void playSong(String name){
-        this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, name, 1, 1);
+        PacketDispatcher.sendPacketToAllAround(this.xCoord, this.yCoord, this.zCoord, 256, this.worldObj.provider.dimensionId, new PacketPlaySound(name, this.xCoord, this.yCoord, this.zCoord).getPacket());
+        //this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, name, 1, 1);
     }
 
     @Override

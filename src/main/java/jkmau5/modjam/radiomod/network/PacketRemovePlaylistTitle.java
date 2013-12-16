@@ -12,21 +12,16 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-/**
- * Author: Lordmau5
- * Date: 15.12.13
- * Time: 19:26
- * You are allowed to change this code,
- * however, not to publish it without my permission.
- */
 public class PacketRemovePlaylistTitle extends PacketBase {
 
     int dimensionId;
     int x, y, z;
     String title;
 
-    public PacketRemovePlaylistTitle() {}
-    public PacketRemovePlaylistTitle(int dimensionId, int x, int y, int z, String title) {
+    public PacketRemovePlaylistTitle(){
+    }
+
+    public PacketRemovePlaylistTitle(int dimensionId, int x, int y, int z, String title){
         this.dimensionId = dimensionId;
         this.x = x;
         this.y = y;
@@ -36,8 +31,8 @@ public class PacketRemovePlaylistTitle extends PacketBase {
     }
 
     @Override
-    public void writePacket(DataOutput output) throws IOException {
-        if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+    public void writePacket(DataOutput output) throws IOException{
+        if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
             output.writeInt(dimensionId);
             output.writeInt(x);
             output.writeInt(y);
@@ -48,8 +43,8 @@ public class PacketRemovePlaylistTitle extends PacketBase {
     }
 
     @Override
-    public void readPacket(DataInput input) throws IOException {
-        if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+    public void readPacket(DataInput input) throws IOException{
+        if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){
             this.dimensionId = input.readInt();
             this.x = input.readInt();
             this.y = input.readInt();

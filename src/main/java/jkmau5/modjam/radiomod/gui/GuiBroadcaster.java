@@ -8,13 +8,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import org.lwjgl.input.Keyboard;
 
-/**
- * Author: Lordmau5
- * Date: 13.12.13
- * Time: 16:29
- * You are allowed to change this code,
- * however, not to publish it without my permission.
- */
 public class GuiBroadcaster extends GuiScreen {
 
     private int tileX, tileY, tileZ;
@@ -84,7 +77,7 @@ public class GuiBroadcaster extends GuiScreen {
         }
     }
 
-    public boolean doesGuiPauseGame() {
+    public boolean doesGuiPauseGame(){
         return false;
     }
 }

@@ -11,11 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public class GuiOpener {
 
     public static void openGuiCallback(EnumGui gui){

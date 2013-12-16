@@ -7,11 +7,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public class TileEntityAntennaRenderer extends TileEntitySpecialRenderer {
 
     private final ResourceLocation texture = new ResourceLocation("radiomod", "models/Antenna.png");

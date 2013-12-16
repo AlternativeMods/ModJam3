@@ -16,13 +16,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Author: Lordmau5
- * Date: 14.12.13
- * Time: 11:30
- * You are allowed to change this code,
- * however, not to publish it without my permission.
- */
 public class PacketRequestRadioNames extends PacketBase {
 
     int dimensionId;
@@ -37,6 +30,7 @@ public class PacketRequestRadioNames extends PacketBase {
         this.isMediaPlayer = true;
         this.player = player;
     }
+
     public PacketRequestRadioNames(int dimensionId, TileEntityRadio tileEntity){
         this.dimensionId = dimensionId;
         this.isMediaPlayer = false;

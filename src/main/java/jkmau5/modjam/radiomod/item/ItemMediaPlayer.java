@@ -2,7 +2,6 @@ package jkmau5.modjam.radiomod.item;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
-import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.gui.EnumGui;
 import jkmau5.modjam.radiomod.gui.GuiOpener;
 import jkmau5.modjam.radiomod.network.PacketMediaPlayerData;
@@ -14,18 +13,11 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-/**
- * Author: Lordmau5
- * Date: 13.12.13
- * Time: 16:31
- * You are allowed to change this code,
- * however, not to publish it without my permission.
- */
 public class ItemMediaPlayer extends Item {
 
     public ItemMediaPlayer(int par1){
         super(par1);
-        setCreativeTab(RadioMod.tabRadioMod);
+        //setCreativeTab(RadioMod.tabRadioMod);
         this.setTextureName("RadioMod:mediaplayer");
     }
 

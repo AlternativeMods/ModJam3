@@ -9,11 +9,6 @@ import net.minecraft.util.Icon;
 
 import java.util.List;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public class ItemIngredient extends Item {
 
     private Icon antenna;

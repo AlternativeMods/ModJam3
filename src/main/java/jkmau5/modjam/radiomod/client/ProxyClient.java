@@ -12,11 +12,6 @@ import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.common.MinecraftForge;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public class ProxyClient extends ProxyCommon {
 
     public static IModelCustom modelAntenna;

@@ -6,13 +6,6 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 
-/**
- * Author: Lordmau5
- * Date: 13.12.13
- * Time: 16:05
- * You are allowed to change this code,
- * however, not to publish it without my permission.
- */
 public class TileEntityBroadcaster extends TileEntityRadioNetwork {
 
     protected String radioName;

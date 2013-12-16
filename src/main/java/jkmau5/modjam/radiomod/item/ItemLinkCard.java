@@ -14,11 +14,6 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public class ItemLinkCard extends Item {
 
     private Icon inactive;

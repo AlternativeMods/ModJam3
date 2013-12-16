@@ -11,11 +11,6 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public class PacketSelectRadio extends PacketBase {
 
     public String selectedName;

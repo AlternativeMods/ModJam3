@@ -6,11 +6,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-/**
- * No description given
- *
- * @author jk-5
- */
 public class PacketHandler implements IPacketHandler {
 
     @Override
