@@ -17,7 +17,7 @@ import net.minecraftforge.common.ForgeDirection;
  *
  * @author jk-5
  */
-public class BlockAntenna extends Block {
+public class BlockAntenna extends BlockRadioNetwork {
 
     public BlockAntenna(int par1){
         super(par1, Material.iron);

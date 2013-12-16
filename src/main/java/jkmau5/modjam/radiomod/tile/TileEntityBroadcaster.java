@@ -3,8 +3,6 @@ package jkmau5.modjam.radiomod.tile;
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.radio.IBroadcaster;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
 
 /**
  * Author: Lordmau5
@@ -22,32 +20,12 @@ public class TileEntityBroadcaster extends TileEntityRadioNetwork implements IBr
         this.radioName = RadioMod.getUniqueRadioID();
         this.radioInitiated = false;
     }
-
-    public boolean isConnectedToNetwork(){
-        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
-            TileEntity tempTile = worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
-            if(tempTile != null && tempTile instanceof TileEntityCable && getNetwork() == ((TileEntityCable) tempTile).getNetwork())
-                return true;
-        }
-        return false;
-    }
-
-    public void tryConnectToSurroundings(){
-        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
-            TileEntity tempTile = worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
-            if(tempTile != null && tempTile instanceof TileEntityCable && ((TileEntityCable) tempTile).getNetwork().getBroadcaster() == null){
-                ((TileEntityCable) tempTile).getNetwork().setBroadcaster(this);
-                return;
-            }
-        }
-    }
-
+    
     public void updateEntity(){
         super.updateEntity();
         if(!this.radioInitiated){
             this.radioInitiated = true;
             RadioMod.radioWorldHandler.addRadioTile(this);
-            this.tryConnectToSurroundings();
         }
     }
 
@@ -83,5 +61,13 @@ public class TileEntityBroadcaster extends TileEntityRadioNetwork implements IBr
     public void writeToNBT(NBTTagCompound tagCompound){
         super.writeToNBT(tagCompound);
         tagCompound.setString("radioName", this.radioName);
+    }
+
+    public String getRadioName(){
+        return radioName;
+    }
+
+    public void setRadioName(String radioName){
+        this.radioName = radioName;
     }
 }

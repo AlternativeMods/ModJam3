@@ -1,6 +1,5 @@
 package jkmau5.modjam.radiomod.tile;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import jkmau5.modjam.radiomod.radio.RadioNetwork;
@@ -14,63 +13,7 @@ import net.minecraft.tileentity.TileEntity;
  */
 public class TileEntityRadioNetwork extends TileEntity {
 
-    private RadioNetwork network;
-    private boolean networkInitiated = false;
-
-    public void initiateNetwork(){
-        this.network = new RadioNetwork(this);
-        this.networkInitiated = true;
-    }
-
-    public void destroyNetwork(){
-        this.network.remove(this);
-        this.network = null;
-        this.networkInitiated = false;
-    }
-
-    @Override
-    public boolean canUpdate(){
-        return FMLCommonHandler.instance().getEffectiveSide().isServer();
-    }
-
-    @Override
-    public void updateEntity(){
-        super.updateEntity();
-
-        if(!this.networkInitiated){
-            this.initiateNetwork();
-        }
-    }
-
-    @Override
-    public void validate(){
-        super.validate();
-        this.networkInitiated = false;
-    }
-
-    @Override
-    public void invalidate(){
-        super.invalidate();
-        this.destroyNetwork();
-    }
-
-    @Override
-    public void onChunkUnload(){
-        super.onChunkUnload();
-        this.destroyNetwork();
-    }
-
-    public void setNetwork(RadioNetwork network){
-        this.network = network;
-    }
-
-    public boolean isNetworkInitiated(){
-        return networkInitiated;
-    }
-
-    public RadioNetwork getNetwork(){
-        return network;
-    }
+    public RadioNetwork network;
 
     @SideOnly(Side.CLIENT)
     public int getDistanceToPlayer(){
@@ -80,5 +23,35 @@ public class TileEntityRadioNetwork extends TileEntity {
     @SideOnly(Side.CLIENT)
     public int getDistanceToCoords(int x, int y, int z){
         return (int) Math.ceil(this.getDistanceFrom(x, y, z));
+    }
+
+    public void linkToTile(TileEntityRadioNetwork newTile){
+        if(this.network == null && newTile.network == null){
+            RadioNetwork network = new RadioNetwork();
+            network.add(this);
+            network.add(newTile);
+        }else if(this.network == null){
+            newTile.network.add(this);
+        }else if(newTile.network == null){
+            this.network.add(newTile);
+        }else{
+            if(this.network.getNetworkSize() >= newTile.network.getNetworkSize()){
+                //Move all the tiles in the other tile's network to my network
+                for(int i = 0; i < newTile.network.getNetworkSize(); i++){
+                    TileEntityRadioNetwork t = newTile.network.getNetworkTiles().get(i);
+                    newTile.network.getNetworkTiles().remove(t);
+                    this.network.add(t);
+                    t.network = this.network;
+                }
+            }else{
+                //Move all the tiles in this tile's network to the other tile's network
+                for(int i = 0; i < this.network.getNetworkSize(); i++){
+                    TileEntityRadioNetwork t = this.network.getNetworkTiles().get(i);
+                    this.network.getNetworkTiles().remove(t);
+                    newTile.network.add(t);
+                    t.network = this.network;
+                }
+            }
+        }
     }
 }
