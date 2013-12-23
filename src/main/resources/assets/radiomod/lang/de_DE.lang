@@ -1,0 +1,12 @@
+itemGroup.RadioMod=RadioMod
+item.radioMod.ingredient.rawantennarod.name=Roher Antennenstab
+item.radioMod.ingredient.antennarod.name=Antennenstab
+item.radioMod.ingredient.antennafoot.name=Antennenfuß
+item.radioMod.ingredient.bitantennafoot.name=Großer Antennenfuß
+item.radioMod.ingredient.antennaonfoot.name=Antenne auf Fuß
+item.radioMod.linkCard.name=Verbindungskarte
+item.radioMod.mediaPlayer.name=Media Player
+tile.radioMod.blockBroadcaster.name=Broadcaster
+tile.radioMod.blockRadio.name=Radio
+tile.radioMod.blockPlaylist.name=Playlist-Block
+tile.radioMod.blockAntenna.name=Antenne
