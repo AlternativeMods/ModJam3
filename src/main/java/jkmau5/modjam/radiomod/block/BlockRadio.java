@@ -85,8 +85,8 @@ public class BlockRadio extends Block {
     }
 
     @Override
-    public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int par5){
-        super.onBlockDestroyedByPlayer(world, x, y, z, par5);
+    public void onBlockPreDestroy(World world, int x, int y, int z, int par5){
+        super.onBlockPreDestroy(world, x, y, z, par5);
         PacketDispatcher.sendPacketToAllAround(x, y, z, 256, world.provider.dimensionId, new PacketPlaySound(null, x, y, z, true).getPacket());
     }
 
