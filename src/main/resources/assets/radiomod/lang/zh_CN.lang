@@ -1,0 +1,12 @@
+itemGroup.RadioMod=无线电
+item.radioMod.ingredient.rawantennarod.name=原始天线
+item.radioMod.ingredient.antennarod.name=天线
+item.radioMod.ingredient.antennafoot.name=天线脚
+item.radioMod.ingredient.bitantennafoot.name=大型天线脚
+item.radioMod.ingredient.antennaonfoot.name=脚架天线
+item.radioMod.linkCard.name=连接卡
+item.radioMod.mediaPlayer.name=媒体播放器
+tile.radioMod.blockBroadcaster.name=广播
+tile.radioMod.blockRadio.name=收音机
+tile.radioMod.blockPlaylist.name=播放列表方块
+tile.radioMod.blockAntenna.name=天线
