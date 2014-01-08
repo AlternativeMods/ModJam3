@@ -1,9 +1,12 @@
 package jkmau5.modjam.radiomod.client;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import jkmau5.modjam.radiomod.Constants;
 import jkmau5.modjam.radiomod.RadioMod;
+import jkmau5.modjam.radiomod.client.render.BlockCableRenderer;
 import jkmau5.modjam.radiomod.client.render.ItemRendererAntenna;
+import jkmau5.modjam.radiomod.client.render.ItemRendererCable;
 import jkmau5.modjam.radiomod.client.render.TileEntityAntennaRenderer;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
 import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
@@ -14,6 +17,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class ProxyClient extends ProxyCommon {
 
+    public static final int renderID_Cable = RenderingRegistry.getNextAvailableRenderId();
     public static IModelCustom modelAntenna;
 
     public static TileEntityAntennaRenderer antennaRenderer;
@@ -26,7 +30,10 @@ public class ProxyClient extends ProxyCommon {
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAntenna.class, antennaRenderer = new TileEntityAntennaRenderer());
 
+        RenderingRegistry.registerBlockHandler(new BlockCableRenderer());
+
         MinecraftForgeClient.registerItemRenderer(RadioMod.instance.blockAntenna.blockID, new ItemRendererAntenna());
+        MinecraftForgeClient.registerItemRenderer(RadioMod.instance.blockCable.blockID, new ItemRendererCable());
 
         MinecraftForge.EVENT_BUS.register(new SoundLoader());
 
