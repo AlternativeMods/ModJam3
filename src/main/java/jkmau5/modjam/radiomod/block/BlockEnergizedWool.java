@@ -30,7 +30,7 @@ public class BlockEnergizedWool extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister register){
-        this.icon = register.registerIcon("RadioMod:energized_wool");
+        this.icon = register.registerIcon("RadioMod:energizedwool");
     }
 
     @Override
