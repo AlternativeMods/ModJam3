@@ -11,20 +11,14 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
-import jkmau5.modjam.radiomod.block.BlockAntenna;
-import jkmau5.modjam.radiomod.block.BlockBroadcaster;
-import jkmau5.modjam.radiomod.block.BlockPlaylist;
-import jkmau5.modjam.radiomod.block.BlockRadio;
+import jkmau5.modjam.radiomod.block.*;
 import jkmau5.modjam.radiomod.item.ItemIngredient;
 import jkmau5.modjam.radiomod.item.ItemLinkCard;
 import jkmau5.modjam.radiomod.item.ItemMediaPlayer;
 import jkmau5.modjam.radiomod.network.PacketHandler;
 import jkmau5.modjam.radiomod.radio.RadioNetworkHandler;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
-import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
-import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
-import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
-import jkmau5.modjam.radiomod.tile.TileEntityRadio;
+import jkmau5.modjam.radiomod.tile.*;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
@@ -41,6 +35,8 @@ public class RadioMod {
     public ItemLinkCard itemLinkCard;
     public BlockRadio blockRadio;
     public BlockPlaylist blockPlaylist;
+    public BlockCable blockCable;
+    public BlockEnergizedWool blockEnergizedWool;
 
     @Mod.Instance(Constants.MODID)
     public static RadioMod instance;
@@ -70,15 +66,20 @@ public class RadioMod {
         blockAntenna = new BlockAntenna(2501);
         blockRadio = new BlockRadio(2503);
         blockPlaylist = new BlockPlaylist(2504);
+        blockCable = new BlockCable(2505);
+        blockEnergizedWool = new BlockEnergizedWool(2506);
         GameRegistry.registerBlock(blockBroadcaster, "BlockBroadcaster");
         GameRegistry.registerBlock(blockAntenna, "BlockAntenna");
         GameRegistry.registerBlock(blockRadio, "BlockRadio");
         GameRegistry.registerBlock(blockPlaylist, "BlockPlaylist");
+        GameRegistry.registerBlock(blockCable, "BlockCable");
+        GameRegistry.registerBlock(blockEnergizedWool, "BlockEnergizedWool");
 
         GameRegistry.registerTileEntity(TileEntityBroadcaster.class, "TileBroadcaster");
         GameRegistry.registerTileEntity(TileEntityAntenna.class, "TileAntenna");
         GameRegistry.registerTileEntity(TileEntityRadio.class, "TileRadio");
         GameRegistry.registerTileEntity(TileEntityPlaylist.class, "TilePlaylist");
+        GameRegistry.registerTileEntity(TileEntityCable.class, "TileCable");
 
         proxy.preInit();
 
@@ -99,7 +100,9 @@ public class RadioMod {
         LanguageRegistry.addName(itemMediaPlayer, "Media Player");
         LanguageRegistry.addName(blockRadio, "Radio Block");
         LanguageRegistry.addName(blockPlaylist, "Playlist Block");
-        LanguageRegistry.addName(this.blockAntenna, "Antenna");
+        LanguageRegistry.addName(blockAntenna, "Antenna");
+        LanguageRegistry.addName(blockCable, "Cable");
+        LanguageRegistry.addName(blockEnergizedWool, "Energized Wool");
 
         proxy.init();
 

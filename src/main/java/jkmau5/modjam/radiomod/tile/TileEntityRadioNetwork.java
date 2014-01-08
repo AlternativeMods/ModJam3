@@ -36,6 +36,10 @@ public class TileEntityRadioNetwork extends TileEntity {
         }
     }
 
+    public RadioNetwork getNetwork(){
+        return this.network;
+    }
+
     public boolean linkToTile(TileEntityRadioNetwork newTile){
         if(this.network == null && newTile.network == null){
             RadioNetwork network = new RadioNetwork();
