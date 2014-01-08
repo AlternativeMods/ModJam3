@@ -2,8 +2,6 @@ package jkmau5.modjam.radiomod.tile;
 
 import jkmau5.modjam.radiomod.radio.IRadioCable;
 import jkmau5.modjam.radiomod.util.CableConnections;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -34,10 +32,8 @@ public class TileEntityCable extends TileEntityRadioNetwork implements IRadioCab
         tag.setInteger("ID", this.CableID);
     }
 
-    private void refreshConnections(){
+    public void refreshConnections(){
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
-            TileEntity tile = this.worldObj.getBlockTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
-
             boolean connect= isValidTileAtPosition(this,
                     this.worldObj,
                     this.xCoord + dir.offsetX,
@@ -48,19 +44,6 @@ public class TileEntityCable extends TileEntityRadioNetwork implements IRadioCab
     }
 
     @Override
-    public void onNeighborBlockChange(){
-        this.refreshConnections();
-        this.updateCable(this.xCoord, this.yCoord, this.zCoord);
-        super.onNeighborBlockChange();
-    }
-
-    @Override
-    public void onBlockPlacedBy(EntityLivingBase ent, ItemStack is){
-        this.refreshConnections();
-        this.updateCable(this.xCoord, this.yCoord, this.zCoord);
-        super.onBlockPlacedBy(ent, is);
-    }
-
     public void removeCable(int x, int y, int z){
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
             if ((IRadioCable) worldObj.getBlockTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ) instanceof TileEntityRadioNetwork){

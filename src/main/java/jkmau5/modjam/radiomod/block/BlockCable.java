@@ -3,6 +3,7 @@ package jkmau5.modjam.radiomod.block;
 import jkmau5.modjam.radiomod.Constants;
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.client.ProxyClient;
+import jkmau5.modjam.radiomod.radio.IRadioCable;
 import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityCable;
@@ -11,7 +12,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
@@ -22,6 +25,8 @@ import java.util.List;
 
 /**
  * Created by matthias on 1/7/14.
+ *
+ * The cables used to create networks
  */
 public class BlockCable extends Block{
 
@@ -43,6 +48,14 @@ public class BlockCable extends Block{
 
     public TileEntity createTileEntity(World world, int metadata){
         return new TileEntityCable();
+    }
+
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase ent, ItemStack is){
+        TileEntity tile = world.getBlockTileEntity(x,y,z);
+        ((IRadioCable) tile).updateCable(x, y, z);
+        ((TileEntityCable) tile).refreshConnections();
+        super.onBlockPlacedBy(world, x, y, z, ent, is);
     }
 
     public int getRenderType(){

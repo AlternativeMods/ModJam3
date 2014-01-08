@@ -5,21 +5,29 @@ import cpw.mods.fml.common.network.Player;
 import jkmau5.modjam.radiomod.gui.EnumGui;
 import jkmau5.modjam.radiomod.gui.GuiOpener;
 import jkmau5.modjam.radiomod.network.PacketMediaPlayerData;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
 import java.util.List;
 
 public class ItemMediaPlayer extends Item {
 
+    private Icon icon;
+
     public ItemMediaPlayer(int par1){
         super(par1);
         //setCreativeTab(RadioMod.tabRadioMod);
         this.setUnlocalizedName("radioMod.mediaPlayer");
-        this.setTextureName("RadioMod:mediaplayer");
+    }
+
+    @Override
+    public void registerIcons(IconRegister register){
+        this.icon = register.registerIcon("RadioMod:mediaplayer");
     }
 
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player){
