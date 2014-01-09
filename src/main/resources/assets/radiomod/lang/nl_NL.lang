@@ -1,0 +1,16 @@
+itemGroup.RadioMod=RadioMod
+item.radioMod.ingredient.rawantennarod.name=Ruwe Antennestaaf
+item.radioMod.ingredient.antennarod.name=Antennestaaf
+item.radioMod.ingredient.antennafoot.name=Antennevoet
+item.radioMod.ingredient.bitantennafoot.name=Grote Antennevoet
+item.radioMod.ingredient.antennaonfoot.name=Antenne op Voet
+item.radioMod.ingredient.energizedstring.name=Energetische Draad
+item.radioMod.ingredient.energizedingot.name=Energetische Staaf
+item.radioMod.linkCard.name=Linkkaart
+item.radioMod.mediaPlayer.name=Mediaspeler
+tile.radioMod.blockBroadcaster.name=Zender
+tile.radioMod.blockRadio.name=Radio
+tile.radioMod.blockPlaylist.name=Afspeellijs Blok
+tile.radioMod.blockAntenna.name=Antenne
+tile.radioMod.blockCable.name=Energetische Kabel
+tile.radioMod.blockEnergizedWool.name=Energetische Wol

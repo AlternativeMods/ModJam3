@@ -70,6 +70,7 @@ public class BlockAntenna extends Block {
             world.setBlockToAir(x, y - 1, z);
             if(!par6EntityPlayer.capabilities.isCreativeMode) this.dropBlockAsItem(world, x, y - 1, z, 0, 0);
         }
+        ((TileEntityAntenna) world.getBlockTileEntity(x, y, z)).removeCable(x, y, z);
     }
 
     @Override

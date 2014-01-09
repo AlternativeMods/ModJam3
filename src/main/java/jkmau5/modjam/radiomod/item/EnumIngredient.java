@@ -11,7 +11,9 @@ public enum EnumIngredient {
     ANTENNAROD(1),
     ANTENNAFOOT(2),
     BIGANTENNAFOOT(3),
-    ANTENNAONFOOT(4);
+    ANTENNAONFOOT(4),
+    ENERGIZEDSTRING(5),
+    ENERGIZEDINGOT(6);
 
     public final int subid;
     public final String unlocalizedName;

@@ -88,6 +88,7 @@ public class ItemLinkCard extends Item {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips){
         NBTTagCompound tag = stack.getTagCompound();
         if(tag == null){
