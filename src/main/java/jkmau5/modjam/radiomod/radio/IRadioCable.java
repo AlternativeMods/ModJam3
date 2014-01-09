@@ -9,5 +9,5 @@ public interface IRadioCable {
     void removeCable(int x, int y, int z);
     void updateCable(int x, int y, int z);
     int getStepsToBroadcaster();
-    int getCableID();
+    String getCableID();
 }

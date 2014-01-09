@@ -41,17 +41,17 @@ public class BlockCableRenderer implements ISimpleBlockRenderingHandler {
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
             if (isValidTileAtPosition(cable, cable.getWorldObj(), x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)){
                 if (dir == ForgeDirection.UP)
-                    renderer.setRenderBounds(min, max, min, max, 1, max);
+                    renderer.setRenderBounds(min, min, min, max, 1, max);
                 else if (dir == ForgeDirection.DOWN)
-                    renderer.setRenderBounds(min, 0, min, max, min, max);
+                    renderer.setRenderBounds(min, 0, min, max, max, max);
                 else if(dir == ForgeDirection.NORTH)
                     renderer.setRenderBounds(min, min, 0, max, max, min);
                 else if(dir == ForgeDirection.SOUTH)
-                    renderer.setRenderBounds(min, min, max, max, max, 1);
+                    renderer.setRenderBounds(min, min, min, max, max, 1);
                 else if(dir == ForgeDirection.EAST)
                     renderer.setRenderBounds(max, min, min, 1, max, max);
                 else if(dir == ForgeDirection.WEST)
-                    renderer.setRenderBounds(0, min, min, min, max, max);
+                    renderer.setRenderBounds(0, min, min, max, max, max);
 
                 renderer.renderStandardBlock(block, x, y, z);
             }
@@ -65,17 +65,17 @@ public class BlockCableRenderer implements ISimpleBlockRenderingHandler {
         if (tile == null)
             return false;
         if (tile instanceof TileEntityCable){
-            if(((TileEntityCable) tile).getCableID() != cable.getCableID() && ((TileEntityCable) tile).getCableID() != 0) return false;
+            if(((TileEntityCable) tile).getCableID() != cable.getCableID() && ((TileEntityCable) tile).getCableID() != "") return false;
             return true;}
         if (tile instanceof TileEntityPlaylist){
-            if (((TileEntityPlaylist) tile).getCableID() != cable.getCableID() && ((TileEntityPlaylist) tile).getCableID() != 0) return false;
+            if (((TileEntityPlaylist) tile).getCableID() != cable.getCableID() && ((TileEntityPlaylist) tile).getCableID() != "") return false;
             return true;}
         if (tile instanceof TileEntityAntenna){
-            if(((TileEntityAntenna) tile).getCableID() != cable.getCableID() && ((TileEntityAntenna) tile).getCableID() != 0) return false;
+            if(((TileEntityAntenna) tile).getCableID() != cable.getCableID() && ((TileEntityAntenna) tile).getCableID() != "") return false;
             return true;}
         if (tile instanceof TileEntityBroadcaster){
             TileEntityBroadcaster broadcaster = (TileEntityBroadcaster) tile;
-            if (broadcaster.getNetwork().getID() == cable.getCableID()) return true;
+            if (broadcaster.getRadioID() == cable.getCableID()) return true;
         }
         return false;
     }

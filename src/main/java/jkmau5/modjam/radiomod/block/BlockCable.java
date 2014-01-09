@@ -20,6 +20,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class BlockCable extends Block{
     }
 
     public void registerIcons(IconRegister par1IconRegister){
-        this.blockIcon = par1IconRegister.registerIcon(Constants.MODID.toLowerCase() + ":" + getUnlocalizedName().substring(14));
+        this.blockIcon = par1IconRegister.registerIcon("RadioMod:energizedcable");
     }
 
     public boolean hasTileEntity(int metadata){
@@ -63,14 +64,6 @@ public class BlockCable extends Block{
     }
 
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
-        if (world.isRemote) return true;
-
-        TileEntity tempTile = world.getBlockTileEntity(x, y, z);
-        if(tempTile == null || !(tempTile instanceof TileEntityCable)) return false;
-
-        TileEntityCable cable = (TileEntityCable) tempTile;
-        player.addChatMessage(cable.getNetwork().toString());
-
         return false;
     }
 
@@ -103,13 +96,22 @@ public class BlockCable extends Block{
         float maxX = 0.625F;
         float maxY = 0.625F;
         float maxZ = 0.625F;
-
-        if(isValidTileAtPosition(cable, world, x - 1, y, z)) minX = 0F;
-        if(isValidTileAtPosition(cable, world, x + 1, y, z)) maxX = 1F;
-        if(isValidTileAtPosition(cable, world, x, y - 1, z)) minY = 0F;
-        if(isValidTileAtPosition(cable, world, x, y + 1, z)) minY = 1F;
-        if(isValidTileAtPosition(cable, world, x, y, z - 1)) minZ = 0F;
-        if(isValidTileAtPosition(cable, world, x, y, z + 1)) minZ = 1F;
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
+            if (isValidTileAtPosition(cable, cable.getWorldObj(), x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)){
+                if (dir == ForgeDirection.UP)
+                    maxY = 1F;
+                else if (dir == ForgeDirection.DOWN)
+                    minY = 0F;
+                else if(dir == ForgeDirection.NORTH)
+                    minZ = 0F;
+                else if(dir == ForgeDirection.SOUTH)
+                    maxZ = 1F;
+                else if(dir == ForgeDirection.EAST)
+                    maxX = 1F;
+                else if(dir == ForgeDirection.WEST)
+                    minX = 0F;
+            }
+        }
 
         this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
     }
@@ -122,19 +124,16 @@ public class BlockCable extends Block{
         }
     }
 
-    public boolean isValidTileAtPosition(TileEntityCable cable, IBlockAccess world, int x, int y, int z) {
+    public boolean isValidTileAtPosition(TileEntityCable cable, IBlockAccess world, int x, int y, int z){
         TileEntity tile = world.getBlockTileEntity(x, y, z);
         if (tile == null)
             return false;
-        if (tile instanceof TileEntityCable)
-            return true;
-        if (tile instanceof TileEntityPlaylist)
-            return true;
-        if (tile instanceof TileEntityAntenna)
-            return true;
+        if (tile instanceof IRadioCable){
+            if(((IRadioCable) tile).getCableID() != cable.getCableID() && ((TileEntityCable) tile).getCableID() != "") return false;
+            return true;}
         if (tile instanceof TileEntityBroadcaster){
             TileEntityBroadcaster broadcaster = (TileEntityBroadcaster) tile;
-            if (broadcaster.getNetwork() == cable.getNetwork()) return true;
+            if (broadcaster.getRadioID() == cable.getCableID() || cable.getCableID() == "") return true;
         }
         return false;
     }

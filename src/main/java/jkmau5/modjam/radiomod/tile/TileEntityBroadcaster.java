@@ -9,9 +9,11 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 public class TileEntityBroadcaster extends TileEntityRadioNetwork {
 
     protected String radioName;
+    private String RadioID;
 
     public TileEntityBroadcaster(){
         this.radioName = RadioMod.getUniqueRadioID();
+        this.RadioID = radioName;
     }
 
     @Override
@@ -45,4 +47,6 @@ public class TileEntityBroadcaster extends TileEntityRadioNetwork {
     public void setRadioName(String radioName){
         this.radioName = radioName;
     }
+
+    public String getRadioID(){ return RadioID; }
 }

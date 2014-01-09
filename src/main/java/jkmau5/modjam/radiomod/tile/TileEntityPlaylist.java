@@ -28,8 +28,8 @@ import java.util.List;
  */
 public class TileEntityPlaylist extends TileEntityRadioNetwork implements IRadioCable {
 
-    private int Length;
-    private int CableID;
+    private int Length = 0;
+    private String CableID = "";
 
     private List<String> titles = Lists.newArrayList();
 
@@ -78,8 +78,6 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork implements IRadio
     @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound){
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("length", this.Length);
-        par1NBTTagCompound.setInteger("ID", this.CableID);
         NBTTagList tagList = new NBTTagList();
         for(String title : this.titles){
             NBTTagCompound tag = new NBTTagCompound();
@@ -87,12 +85,14 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork implements IRadio
             tagList.appendTag(tag);
         }
         par1NBTTagCompound.setTag("titles", tagList);
+        par1NBTTagCompound.setInteger("length", this.Length);
+        par1NBTTagCompound.setString("ID", this.CableID);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound){
         super.readFromNBT(par1NBTTagCompound);
-        this.CableID = par1NBTTagCompound.getInteger("ID");
+        this.CableID = par1NBTTagCompound.getString("ID");
         this.Length = par1NBTTagCompound.getInteger("length");
 
         titles = new ArrayList<String>();
@@ -134,28 +134,28 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork implements IRadio
             if (isValidTileAtPosition(this, this.getWorldObj(), x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)){
                 TileEntity tile = worldObj.getBlockTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
                 if ((tile instanceof TileEntityCable) &&
-                        (((TileEntityCable) tile).getCableID() != 0) &&
+                        (((TileEntityCable) tile).getCableID() != "") &&
                         (((TileEntityCable) tile).getNetwork() == this.getNetwork())){
                     TileEntityCable cable = (TileEntityCable) tile;
                     if ((cable.getStepsToBroadcaster() != 0) && (cable.getStepsToBroadcaster() < this.Length))
                         this.Length = cable.getStepsToBroadcaster() + 1;
                 }
                 if ((tile instanceof TileEntityPlaylist) &&
-                        (((TileEntityPlaylist) tile).getCableID() != 0) &&
+                        (((TileEntityPlaylist) tile).getCableID() != "") &&
                         (((TileEntityPlaylist) tile).getNetwork() == this.getNetwork())){
                     TileEntityPlaylist playlist = (TileEntityPlaylist) tile;
                     if ((playlist.getStepsToBroadcaster() != 0) && (playlist.getStepsToBroadcaster() < this.Length))
                         this.Length = playlist.getStepsToBroadcaster() + 1;
                 }
                 if ((tile instanceof TileEntityAntenna) &&
-                        (((TileEntityAntenna) tile).getCableID() != 0) &&
+                        (((TileEntityAntenna) tile).getCableID() != "") &&
                         (((TileEntityAntenna) tile).getNetwork() == this.getNetwork())){
                     TileEntityAntenna antenna = (TileEntityAntenna) tile;
                     if ((antenna.getStepsToBroadcaster() != 0) && (antenna.getStepsToBroadcaster() < this.Length))
                         this.Length = antenna.getStepsToBroadcaster();
                 }
                 if ((tile instanceof TileEntityBroadcaster) &&
-                        (((TileEntityBroadcaster) tile).getNetwork() == this.getNetwork() || this.getNetwork().getID() == 0)){
+                        (((TileEntityBroadcaster) tile).getNetwork() == this.getNetwork() || this.getCableID() == "")){
                     TileEntityBroadcaster broadcaster = (TileEntityBroadcaster) tile;
                     this.network = broadcaster.getNetwork();
                     this.Length = 1;
@@ -167,24 +167,24 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork implements IRadio
             if (isValidTileAtPosition(this, this.getWorldObj(), x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)){
                 TileEntity tile = worldObj.getBlockTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
                 if ((tile instanceof TileEntityCable) &&
-                        ((((TileEntityCable) tile).getCableID() == 0) ||
+                        ((((TileEntityCable) tile).getCableID() == "") ||
                                 (((TileEntityCable) tile).getNetwork() == this.getNetwork()))){
                     TileEntityCable cable = (TileEntityCable) tile;
-                    if ((cable.getStepsToBroadcaster() == 0) || (cable.getStepsToBroadcaster() > this.Length))
+                    if ((cable.getStepsToBroadcaster() == 0 && this.CableID != "") || (cable.getStepsToBroadcaster() > this.Length))
                         cable.updateCable(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
                 }
                 if ((tile instanceof TileEntityPlaylist) &&
-                        ((((TileEntityPlaylist) tile).getCableID() == 0) ||
+                        ((((TileEntityPlaylist) tile).getCableID() == "") ||
                                 (((TileEntityPlaylist) tile).getNetwork() == this.getNetwork()))){
                     TileEntityPlaylist playlist = (TileEntityPlaylist) tile;
-                    if ((playlist.getStepsToBroadcaster() == 0) || (playlist.getStepsToBroadcaster() > this.Length))
+                    if ((playlist.getStepsToBroadcaster() == 0 && this.CableID != "") || (playlist.getStepsToBroadcaster() > this.Length))
                         playlist.updateCable(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
                 }
                 if ((tile instanceof TileEntityAntenna) &&
-                        ((((TileEntityAntenna) tile).getCableID() == 0) ||
+                        ((((TileEntityAntenna) tile).getCableID() == "") ||
                                 (((TileEntityAntenna) tile).getNetwork() == this.getNetwork()))){
                     TileEntityAntenna antenna = (TileEntityAntenna) tile;
-                    if ((antenna.getStepsToBroadcaster() == 0) || (antenna.getStepsToBroadcaster() > this.Length))
+                    if ((antenna.getStepsToBroadcaster() == 0 && this.CableID != "") || (antenna.getStepsToBroadcaster() > this.Length))
                         antenna.updateCable(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
                 }
             }
@@ -197,23 +197,23 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork implements IRadio
         if (tile == null)
             return false;
         if (tile instanceof TileEntityCable){
-            if(((TileEntityCable) tile).getCableID() != cable.getCableID() && ((TileEntityCable) tile).getCableID() != 0) return false;
+            if(((TileEntityCable) tile).getCableID() != cable.getCableID() && ((TileEntityCable) tile).getCableID() != "") return false;
             return true;}
         if (tile instanceof TileEntityPlaylist){
-            if (((TileEntityPlaylist) tile).getCableID() != cable.getCableID() && ((TileEntityPlaylist) tile).getCableID() != 0) return false;
+            if (((TileEntityPlaylist) tile).getCableID() != cable.getCableID() && ((TileEntityPlaylist) tile).getCableID() != "") return false;
             return true;}
         if (tile instanceof TileEntityAntenna){
-            if(((TileEntityAntenna) tile).getCableID() != cable.getCableID() && ((TileEntityAntenna) tile).getCableID() != 0) return false;
+            if(((TileEntityAntenna) tile).getCableID() != cable.getCableID() && ((TileEntityAntenna) tile).getCableID() != "") return false;
             return true;}
         if (tile instanceof TileEntityBroadcaster){
             TileEntityBroadcaster broadcaster = (TileEntityBroadcaster) tile;
-            if (broadcaster.getNetwork().getID() == cable.getCableID()) return true;
+            if (broadcaster.getRadioID() == cable.getCableID()) return true;
         }
         return false;
     }
 
-    public int getCableID(){
-        return this.getNetwork().getID();
+    public String getCableID(){
+        return this.CableID;
     }
 
     public int getStepsToBroadcaster(){

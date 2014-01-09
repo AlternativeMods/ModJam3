@@ -18,11 +18,13 @@ public class Recipes {
         addShaped(EnumIngredient.ANTENNAONFOOT.getStack(1), "prr", "f  ", "f  ", 'f', EnumIngredient.BIGANTENNAFOOT.getStack(1), 'p', Item.enderPearl, 'r', EnumIngredient.ANTENNAROD.getStack(1));
         addShaped(new ItemStack(RadioMod.instance.blockAntenna, 1), "rrr", "rar", "rrr", 'r', EnumIngredient.ANTENNAROD.getStack(1), 'a', EnumIngredient.ANTENNAONFOOT.getStack(1));
 
+
         //Cable
         addShaped(EnumIngredient.ENERGIZEDSTRING.getStack(1), " r ", "rsr", " r ", 'r', Item.redstone, 's', Item.silk);
         addShaped(new ItemStack(RadioMod.instance.blockEnergizedWool, 1), "sss", "sss", "sss", 's', EnumIngredient.ENERGIZEDSTRING.getStack(1));
-        addSmelting(new ItemStack(RadioMod.instance.blockEnergizedWool, 1), EnumIngredient.ENERGIZEDINGOT.getStack(1), 0f);
-        addShaped(new ItemStack(RadioMod.instance.blockCable), "iii", "eee", "iii", 'i', Item.ingotIron, 'e', EnumIngredient.ENERGIZEDINGOT);
+        addSmelting(new ItemStack(RadioMod.instance.blockEnergizedWool), EnumIngredient.ENERGIZEDINGOT.getStack(1), 0f);
+        addShaped(new ItemStack(RadioMod.instance.blockCable), "iii", "eee", "iii", 'i', Item.ingotIron, 'e', EnumIngredient.ENERGIZEDINGOT.getStack(1));
+
 
         //Other
         addShaped(new ItemStack(RadioMod.instance.blockBroadcaster, 1), "iri", "rdr", "iri", 'd', Block.blockDiamond, 'i', Item.ingotIron, 'r', Item.redstone);
