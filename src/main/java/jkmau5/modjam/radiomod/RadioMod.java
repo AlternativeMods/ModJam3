@@ -10,6 +10,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
 import jkmau5.modjam.radiomod.block.BlockAntenna;
 import jkmau5.modjam.radiomod.block.BlockBroadcaster;
@@ -25,10 +26,14 @@ import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
+import jkmau5.modjam.radiomod.world.gen.structure.ComponentVillageStudio;
+import jkmau5.modjam.radiomod.world.gen.structure.VillageStudioHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.gen.structure.MapGenStructureIO;
 
 import java.util.Random;
+import java.util.logging.Level;
 
 @Mod(modid = Constants.MODID)
 @NetworkMod(clientSideRequired = true, channels = {Constants.MODID}, packetHandler = PacketHandler.class)
@@ -81,6 +86,16 @@ public class RadioMod {
         GameRegistry.registerTileEntity(TileEntityPlaylist.class, "TilePlaylist");
 
         proxy.preInit();
+
+        // adds the studio creator handler
+        VillagerRegistry.instance().registerVillageCreationHandler(new VillageStudioHandler());
+
+        try{
+            MapGenStructureIO.func_143031_a(ComponentVillageStudio.class, "RadioMod:VillageStudioStructure");
+        }
+        catch(Throwable e){
+            RMLogger.log(Level.SEVERE, "There was a problem in creating the ComponentVillageStudio.class");
+        }
 
         //TODO: Actual audio / radio block, that plays music... or at least should play music
         itemMediaPlayer = new ItemMediaPlayer(5000);
