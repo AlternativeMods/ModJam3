@@ -11,7 +11,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +99,13 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
             if(GuiPlaylist.playlist == this){
                 GuiPlaylist.updateTitles();
             }
+        }
+    }
+
+    public void selectNetworkFromBroadcaster(World world) {
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
+            TileEntity tile = world.getBlockTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+            if (tile instanceof TileEntityBroadcaster) this.network = ((TileEntityBroadcaster) tile).network;
         }
     }
 
