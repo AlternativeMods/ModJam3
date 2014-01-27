@@ -8,6 +8,7 @@ It adds Broadcaster blocks, those act as an radiostation, and Playlist blocks, i
 You can broadcast your music using the Antenna, and connect all of these with Cables (planned).
 
 Upcoming features/nerfs:
-+cables
-+more crafting
--remove LinkCards
+
++ cables
++ more crafting
+- remove Link Cards
