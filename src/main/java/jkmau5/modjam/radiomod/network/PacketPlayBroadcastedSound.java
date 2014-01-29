@@ -1,13 +1,11 @@
 package jkmau5.modjam.radiomod.network;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
+import io.netty.buffer.ByteBuf;
 import jkmau5.modjam.radiomod.Constants;
 import jkmau5.modjam.radiomod.tile.TileEntityRadioNetwork;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.DimensionManager;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
 
 /**
  * No description given
@@ -19,9 +17,7 @@ public class PacketPlayBroadcastedSound extends PacketBase {
     public String soundName;
     public int x, y, z, dimid;
 
-    public PacketPlayBroadcastedSound(){
-    }
-
+    public PacketPlayBroadcastedSound(){}
     public PacketPlayBroadcastedSound(String soundName, int x, int y, int z, int dimid){
         this.soundName = soundName;
         this.x = x;
@@ -30,22 +26,22 @@ public class PacketPlayBroadcastedSound extends PacketBase {
     }
 
     @Override
-    public void writePacket(DataOutput output) throws IOException{
-        output.writeInt(this.x);
-        output.writeInt(this.y);
-        output.writeInt(this.z);
-        output.writeInt(this.dimid);
-        output.writeUTF(Constants.getNormalRecordTitle(this.soundName));
+    public void encode(ByteBuf buffer){
+        buffer.writeInt(this.x);
+        buffer.writeInt(this.y);
+        buffer.writeInt(this.z);
+        buffer.writeInt(this.dimid);
+        ByteBufUtils.writeUTF8String(buffer, Constants.getNormalRecordTitle(this.soundName));
     }
 
     @Override
-    public void readPacket(DataInput input) throws IOException{
-        this.x = input.readInt();
-        this.y = input.readInt();
-        this.z = input.readInt();
-        this.dimid = input.readInt();
-        this.soundName = input.readUTF();
-        TileEntity tile = DimensionManager.getWorld(this.dimid).getBlockTileEntity(x, y, z);
+    public void decode(ByteBuf buffer){
+        this.x = buffer.readInt();
+        this.y = buffer.readInt();
+        this.z = buffer.readInt();
+        this.dimid = buffer.readInt();
+        this.soundName = ByteBufUtils.readUTF8String(buffer);
+        TileEntity tile = DimensionManager.getWorld(this.dimid).func_147438_o(x, y, z);
         if(tile == null || !(tile instanceof TileEntityRadioNetwork)) return;
         ((TileEntityRadioNetwork) tile).network.playSound(this.soundName);
     }

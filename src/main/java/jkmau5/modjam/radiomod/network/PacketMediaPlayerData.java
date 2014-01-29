@@ -1,32 +1,27 @@
 package jkmau5.modjam.radiomod.network;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
+import io.netty.buffer.ByteBuf;
 import jkmau5.modjam.radiomod.gui.GuiMediaPlayer;
-import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
 
 public class PacketMediaPlayerData extends PacketBase {
 
     private NBTTagCompound tag;
 
-    public PacketMediaPlayerData(){
-    }
-
+    public PacketMediaPlayerData(){}
     public PacketMediaPlayerData(NBTTagCompound tag){
         this.tag = tag;
     }
 
     @Override
-    public void writePacket(DataOutput output) throws IOException{
-        CompressedStreamTools.write(this.tag, output);
+    public void encode(ByteBuf buffer){
+        ByteBufUtils.writeTag(buffer, this.tag);
     }
 
     @Override
-    public void readPacket(DataInput input) throws IOException{
-        this.tag = CompressedStreamTools.read(input);
+    public void decode(ByteBuf buffer){
+        this.tag = ByteBufUtils.readTag(buffer);
         GuiMediaPlayer.guiData = this.tag;
         if(this.tag.hasKey("station")){
             GuiMediaPlayer.selectedName = this.tag.getString("station");

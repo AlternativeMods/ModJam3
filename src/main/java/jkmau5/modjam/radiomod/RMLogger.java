@@ -1,17 +1,12 @@
 package jkmau5.modjam.radiomod;
 
-import cpw.mods.fml.common.FMLLog;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class RMLogger {
 
-    private static final Logger logger = Logger.getLogger("RadioMod");
-
-    static{
-        FMLLog.makeLog("RadioMod");
-    }
+    private static final Logger logger = LogManager.getLogger("RadioMod");
 
     public static void log(Level level, String format, Object... data){
         logger.log(level, String.format(format, data));
@@ -21,11 +16,11 @@ public class RMLogger {
         logger.log(level, String.format(format, data), ex);
     }
 
-    public static void severe(Throwable ex, String format, Object... data){
-        log(Level.SEVERE, ex, format, data);
+    public static void error(Throwable ex, String format, Object... data){
+        log(Level.ERROR, ex, format, data);
     }
 
-    public static void severe(String format, Object... data){
-        log(Level.SEVERE, format, data);
+    public static void error(String format, Object... data){
+        log(Level.ERROR, format, data);
     }
 }

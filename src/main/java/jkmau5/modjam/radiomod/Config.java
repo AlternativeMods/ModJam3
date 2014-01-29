@@ -1,7 +1,7 @@
 package jkmau5.modjam.radiomod;
 
-import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.Property;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 
 import java.io.File;
 

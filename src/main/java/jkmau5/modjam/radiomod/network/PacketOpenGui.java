@@ -1,11 +1,8 @@
 package jkmau5.modjam.radiomod.network;
 
+import io.netty.buffer.ByteBuf;
 import jkmau5.modjam.radiomod.gui.EnumGui;
 import jkmau5.modjam.radiomod.gui.GuiOpener;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
 
 public class PacketOpenGui extends PacketBase {
 
@@ -29,24 +26,24 @@ public class PacketOpenGui extends PacketBase {
     }
 
     @Override
-    public void writePacket(DataOutput output) throws IOException{
-        output.writeInt(this.gui.guiID);
-        output.writeBoolean(this.coordsSet);
+    public void encode(ByteBuf buffer){
+        buffer.writeInt(this.gui.guiID);
+        buffer.writeBoolean(this.coordsSet);
         if(this.coordsSet){
-            output.writeInt(this.x);
-            output.writeInt(this.y);
-            output.writeInt(this.z);
+            buffer.writeInt(this.x);
+            buffer.writeInt(this.y);
+            buffer.writeInt(this.z);
         }
     }
 
     @Override
-    public void readPacket(DataInput input) throws IOException{
-        int id = input.readInt();
-        this.coordsSet = input.readBoolean();
+    public void decode(ByteBuf buffer){
+        int id = buffer.readInt();
+        this.coordsSet = buffer.readBoolean();
         if(this.coordsSet){
-            this.x = input.readInt();
-            this.y = input.readInt();
-            this.z = input.readInt();
+            this.x = buffer.readInt();
+            this.y = buffer.readInt();
+            this.z = buffer.readInt();
             EnumGui gui = EnumGui.fromID(id);
             if(gui == null) return;
             this.gui = gui;

@@ -1,26 +1,11 @@
 package jkmau5.modjam.radiomod.network;
 
-import com.google.common.collect.Lists;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
-import jkmau5.modjam.radiomod.RadioMod;
-import jkmau5.modjam.radiomod.gui.GuiMediaPlayer;
-import jkmau5.modjam.radiomod.tile.TileEntityRadio;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
+/*public class PacketRequestRadioNames extends PacketBase {
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-import java.util.List;
-
-public class PacketRequestRadioNames extends PacketBase {
-
-    int dimensionId;
-    boolean isMediaPlayer;
-    TileEntityRadio tileEntity;
+    public int dimensionId;
+    public boolean isMediaPlayer;
+    public TileEntityRadio tileEntity;
+    public EntityPlayer player;
 
     public PacketRequestRadioNames(){
     }
@@ -38,31 +23,31 @@ public class PacketRequestRadioNames extends PacketBase {
     }
 
     @Override
-    public void writePacket(DataOutput output) throws IOException{
+    public void encode(ByteBuf buffer){
         if(FMLCommonHandler.instance().getEffectiveSide().isServer()){
             List<String> radioList;
             if(this.isMediaPlayer){
                 radioList = RadioMod.radioNetworkHandler.getAvailableRadioNames(this.player.worldObj, (int) this.player.posX, (int) this.player.posY, (int) this.player.posZ);
             }else{
-                radioList = RadioMod.radioNetworkHandler.getAvailableRadioNames(this.tileEntity.worldObj, this.tileEntity.xCoord, this.tileEntity.yCoord, this.tileEntity.zCoord);
+                radioList = RadioMod.radioNetworkHandler.getAvailableRadioNames(this.tileEntity.func_145831_w(), this.tileEntity.field_145851_c, this.tileEntity.field_145848_d, this.tileEntity.field_145849_e);
             }
             if(!radioList.isEmpty()){
-                output.writeInt(radioList.size());
+                buffer.writeInt(radioList.size());
                 for(String radio : radioList){
-                    output.writeUTF(radio);
+                    ByteBufUtils.writeUTF8String(buffer, radio);
                 }
             }else{
-                output.writeInt(0);
+                buffer.writeInt(0);
             }
         }else{
-            output.writeBoolean(this.isMediaPlayer);
+            buffer.writeBoolean(this.isMediaPlayer);
             if(!this.isMediaPlayer){
-                output.writeInt(this.tileEntity.worldObj.provider.dimensionId);
-                output.writeInt(this.tileEntity.xCoord);
-                output.writeInt(this.tileEntity.yCoord);
-                output.writeInt(this.tileEntity.zCoord);
+                buffer.writeInt(this.tileEntity.func_145831_w().provider.dimensionId);
+                buffer.writeInt(this.tileEntity.field_145851_c);
+                buffer.writeInt(this.tileEntity.field_145848_d);
+                buffer.writeInt(this.tileEntity.field_145849_e);
             }else{
-                output.writeInt(this.player.worldObj.provider.dimensionId);
+                buffer.writeInt(this.player.worldObj.provider.dimensionId);
             }
         }
     }
@@ -93,4 +78,4 @@ public class PacketRequestRadioNames extends PacketBase {
             }
         }
     }
-}
+}*/

@@ -1,16 +1,14 @@
 package jkmau5.modjam.radiomod.network;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
+import io.netty.buffer.ByteBuf;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
 
 public class PacketUpdateRadioName extends PacketBase {
 
@@ -29,31 +27,33 @@ public class PacketUpdateRadioName extends PacketBase {
     }
 
     @Override
-    public void writePacket(DataOutput output) throws IOException{
-        output.writeInt(this.x);
-        output.writeInt(this.y);
-        output.writeInt(this.z);
-        output.writeInt(this.dimId);
-        output.writeUTF(this.radioName);
+    public void encode(ByteBuf buffer){
+        buffer.writeInt(this.x);
+        buffer.writeInt(this.y);
+        buffer.writeInt(this.z);
+        buffer.writeInt(this.dimId);
+        ByteBufUtils.writeUTF8String(buffer, this.radioName);
     }
 
     @Override
-    public void readPacket(DataInput input) throws IOException{
-        this.x = input.readInt();
-        this.y = input.readInt();
-        this.z = input.readInt();
-        this.dimId = input.readInt();
-        this.radioName = input.readUTF();
+    public void decode(ByteBuf buffer){
+        this.x = buffer.readInt();
+        this.y = buffer.readInt();
+        this.z = buffer.readInt();
+        this.dimId = buffer.readInt();
+        this.radioName = ByteBufUtils.readUTF8String(buffer);
 
         Side effectiveSide = FMLCommonHandler.instance().getEffectiveSide();
         World world = DimensionManager.getWorld(dimId);
-        if(effectiveSide == Side.CLIENT)
+        if(effectiveSide == Side.CLIENT){
             world = Minecraft.getMinecraft().theWorld;
+        }
 
-        TileEntity tempTile = world.getBlockTileEntity(x, y, z);
-        if(tempTile == null || !(tempTile instanceof TileEntityBroadcaster))
+        TileEntity tile = world.func_147438_o(x, y, z);
+        if(tile == null || !(tile instanceof TileEntityBroadcaster)){
             return;
-        TileEntityBroadcaster radio = (TileEntityBroadcaster) tempTile;
+        }
+        TileEntityBroadcaster radio = (TileEntityBroadcaster) tile;
 
         radio.setRadioName(radioName);
     }

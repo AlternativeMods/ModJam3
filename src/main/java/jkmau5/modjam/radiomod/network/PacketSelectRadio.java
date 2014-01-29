@@ -1,25 +1,12 @@
 package jkmau5.modjam.radiomod.network;
 
-import jkmau5.modjam.radiomod.tile.TileEntityRadio;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-
-public class PacketSelectRadio extends PacketBase {
+/*public class PacketSelectRadio extends PacketBase {
 
     public String selectedName;
     public boolean isMediaPlayer;
     public TileEntityRadio tileEntity;
 
-    public PacketSelectRadio(){
-    }
-
+    public PacketSelectRadio(){}
     public PacketSelectRadio(String selected){
         this.selectedName = selected;
         this.isMediaPlayer = true;
@@ -32,24 +19,24 @@ public class PacketSelectRadio extends PacketBase {
     }
 
     @Override
-    public void writePacket(DataOutput output) throws IOException{
-        output.writeBoolean(this.isMediaPlayer);
-        output.writeUTF(this.selectedName);
+    public void encode(ByteBuf buffer){
+        buffer.writeBoolean(this.isMediaPlayer);
+        ByteBufUtils.writeUTF8String(buffer, this.selectedName);
         if(!this.isMediaPlayer){
-            output.writeInt(this.tileEntity.worldObj.provider.dimensionId);
-            output.writeInt(this.tileEntity.xCoord);
-            output.writeInt(this.tileEntity.yCoord);
-            output.writeInt(this.tileEntity.zCoord);
+            buffer.writeInt(this.tileEntity.func_145831_w().provider.dimensionId);
+            buffer.writeInt(this.tileEntity.field_145851_c);
+            buffer.writeInt(this.tileEntity.field_145848_d);
+            buffer.writeInt(this.tileEntity.field_145849_e);
         }
     }
 
     @Override
-    public void readPacket(DataInput input) throws IOException{
-        this.isMediaPlayer = input.readBoolean();
-        this.selectedName = input.readUTF();
+    public void decode(ByteBuf buffer){
+        this.isMediaPlayer = buffer.readBoolean();
+        this.selectedName = ByteBufUtils.readUTF8String(buffer);
         if(!this.isMediaPlayer){
-            World world = DimensionManager.getWorld(input.readInt());
-            TileEntity tile = world.getBlockTileEntity(input.readInt(), input.readInt(), input.readInt());
+            World world = DimensionManager.getWorld(buffer.readInt());
+            TileEntity tile = world.func_147438_o(buffer.readInt(), buffer.readInt(), buffer.readInt());
             if(tile == null || !(tile instanceof TileEntityRadio)) return;
             this.tileEntity = (TileEntityRadio) tile;
             this.tileEntity.setConnectedBroadcastStation(this.selectedName);
@@ -60,4 +47,4 @@ public class PacketSelectRadio extends PacketBase {
             tag.setString("station", this.selectedName);
         }
     }
-}
+}*/

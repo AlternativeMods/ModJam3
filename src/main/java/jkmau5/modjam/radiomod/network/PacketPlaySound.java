@@ -1,10 +1,8 @@
 package jkmau5.modjam.radiomod.network;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
 
 public class PacketPlaySound extends PacketBase {
 
@@ -12,9 +10,7 @@ public class PacketPlaySound extends PacketBase {
     private int x, y, z;
     private boolean stop;
 
-    public PacketPlaySound(){
-    }
-
+    public PacketPlaySound(){}
     public PacketPlaySound(String name, int x, int y, int z){
         this.name = name;
         this.x = x;
@@ -32,21 +28,21 @@ public class PacketPlaySound extends PacketBase {
     }
 
     @Override
-    public void writePacket(DataOutput output) throws IOException{
-        output.writeBoolean(this.stop);
-        if(!this.stop) output.writeUTF(this.name);
-        output.writeInt(this.x);
-        output.writeInt(this.y);
-        output.writeInt(this.z);
+    public void encode(ByteBuf buffer){
+        buffer.writeBoolean(this.stop);
+        if(!this.stop) ByteBufUtils.writeUTF8String(buffer, this.name);
+        buffer.writeInt(this.x);
+        buffer.writeInt(this.y);
+        buffer.writeInt(this.z);
     }
 
     @Override
-    public void readPacket(DataInput input) throws IOException{
-        boolean stop = input.readBoolean();
+    public void decode(ByteBuf buffer){
+        boolean stop = buffer.readBoolean();
         if(stop){
-            Minecraft.getMinecraft().renderGlobal.playRecord(null, input.readInt(), input.readInt(), input.readInt());
+            Minecraft.getMinecraft().renderGlobal.playRecord(null, buffer.readInt(), buffer.readInt(), buffer.readInt());
         }else{
-            Minecraft.getMinecraft().renderGlobal.playRecord(input.readUTF(), input.readInt(), input.readInt(), input.readInt());
+            Minecraft.getMinecraft().renderGlobal.playRecord(ByteBufUtils.readUTF8String(buffer), buffer.readInt(), buffer.readInt(), buffer.readInt());
         }
     }
 }

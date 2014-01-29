@@ -6,12 +6,9 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
-import cpw.mods.fml.relauncher.Side;
 import jkmau5.modjam.radiomod.block.BlockAntenna;
 import jkmau5.modjam.radiomod.block.BlockBroadcaster;
 import jkmau5.modjam.radiomod.block.BlockPlaylist;
@@ -19,7 +16,6 @@ import jkmau5.modjam.radiomod.block.BlockRadio;
 import jkmau5.modjam.radiomod.item.ItemIngredient;
 import jkmau5.modjam.radiomod.item.ItemLinkCard;
 import jkmau5.modjam.radiomod.item.ItemMediaPlayer;
-import jkmau5.modjam.radiomod.network.PacketHandler;
 import jkmau5.modjam.radiomod.radio.RadioNetworkHandler;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
 import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
@@ -29,14 +25,12 @@ import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import jkmau5.modjam.radiomod.world.gen.structure.ComponentVillageStudio;
 import jkmau5.modjam.radiomod.world.gen.structure.VillageStudioHandler;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 
 import java.util.Random;
-import java.util.logging.Level;
 
-@Mod(modid = Constants.MODID)
-@NetworkMod(clientSideRequired = true, channels = {Constants.MODID}, packetHandler = PacketHandler.class)
+@Mod(modid = Constants.MODID, name = Constants.MODID, version = "0.3-SNAPSHOT")
 public class RadioMod {
 
     public BlockBroadcaster blockBroadcaster;
@@ -54,8 +48,8 @@ public class RadioMod {
 
     public static final CreativeTabs tabRadioMod = new CreativeTabs("RadioMod") {
         @Override
-        public ItemStack getIconItemStack(){
-            return new ItemStack(RadioMod.instance.blockAntenna);
+        public Item getTabIconItem(){
+            return Item.func_150898_a(RadioMod.instance.blockAntenna);
         }
     };
 
@@ -70,6 +64,8 @@ public class RadioMod {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event){
         Config.load(event.getSuggestedConfigurationFile());
+
+
 
         blockBroadcaster = new BlockBroadcaster(2500);
         blockAntenna = new BlockAntenna(2501);
@@ -87,17 +83,14 @@ public class RadioMod {
 
         proxy.preInit();
 
-        // adds the studio creator handler
         VillagerRegistry.instance().registerVillageCreationHandler(new VillageStudioHandler());
 
         try{
             MapGenStructureIO.func_143031_a(ComponentVillageStudio.class, "RadioMod:VillageStudioStructure");
-        }
-        catch(Throwable e){
-            RMLogger.log(Level.SEVERE, "There was a problem in creating the ComponentVillageStudio.class");
+        }catch(Throwable e){
+            RMLogger.error(e, "There was a problem while registering the VillageStudio component");
         }
 
-        //TODO: Actual audio / radio block, that plays music... or at least should play music
         itemMediaPlayer = new ItemMediaPlayer(5000);
         itemIngredient = new ItemIngredient(5001);
         itemLinkCard = new ItemLinkCard(5002);
@@ -117,8 +110,6 @@ public class RadioMod {
         LanguageRegistry.addName(this.blockAntenna, "Antenna");
 
         proxy.init();
-
-        TickRegistry.registerTickHandler(new RadioTickHandler(), Side.SERVER); //TODO: remove?
     }
 
     @Mod.EventHandler

@@ -1,63 +1,59 @@
 package jkmau5.modjam.radiomod.network;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
+import io.netty.buffer.ByteBuf;
 import jkmau5.modjam.radiomod.Constants;
 import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-
 public class PacketRemovePlaylistTitle extends PacketBase {
 
-    int dimensionId;
-    int x, y, z;
-    String title;
+    public int dimensionId;
+    public int x, y, z;
+    public String title;
 
-    public PacketRemovePlaylistTitle(){
-    }
-
+    public PacketRemovePlaylistTitle(){}
     public PacketRemovePlaylistTitle(int dimensionId, int x, int y, int z, String title){
         this.dimensionId = dimensionId;
         this.x = x;
         this.y = y;
         this.z = z;
-
         this.title = title;
     }
 
     @Override
-    public void writePacket(DataOutput output) throws IOException{
+    public void encode(ByteBuf buffer){
         if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
-            output.writeInt(dimensionId);
-            output.writeInt(x);
-            output.writeInt(y);
-            output.writeInt(z);
-
-            output.writeUTF(title);
+            buffer.writeInt(this.dimensionId);
+            buffer.writeInt(this.x);
+            buffer.writeInt(this.y);
+            buffer.writeInt(this.z);
+            ByteBufUtils.writeUTF8String(buffer, this.title);
         }
     }
 
     @Override
-    public void readPacket(DataInput input) throws IOException{
+    public void decode(ByteBuf buffer){
         if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER){
-            this.dimensionId = input.readInt();
-            this.x = input.readInt();
-            this.y = input.readInt();
-            this.z = input.readInt();
-            this.title = input.readUTF();
+            this.dimensionId = buffer.readInt();
+            this.x = buffer.readInt();
+            this.y = buffer.readInt();
+            this.z = buffer.readInt();
+            this.title = ByteBufUtils.readUTF8String(buffer);
 
             World world = DimensionManager.getWorld(dimensionId);
-            if(world == null)
+            if(world == null){
                 return;
+            }
 
-            TileEntity tempTile = world.getBlockTileEntity(x, y, z);
-            if(tempTile == null || !(tempTile instanceof TileEntityPlaylist))
+            TileEntity tempTile = world.func_147438_o(x, y, z);
+            if(tempTile == null || !(tempTile instanceof TileEntityPlaylist)){
                 return;
+            }
 
             TileEntityPlaylist playlist = (TileEntityPlaylist) tempTile;
             playlist.removeTitle(Constants.getNormalRecordTitle(title));
