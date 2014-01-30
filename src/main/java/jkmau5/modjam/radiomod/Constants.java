@@ -1,10 +1,10 @@
 package jkmau5.modjam.radiomod;
 
+import com.google.common.collect.Maps;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,36 +16,36 @@ public class Constants {
 
     public static final String MODID = "RadioMod";
 
-    public static Map<String, int[]> musicTitles = new HashMap<String, int[]>();
-    public static Map<String, String> realMusicTitles = new HashMap<String, String>();
-    public static Map<String, String> normalMusicTitles = new HashMap<String, String>();
+    public static Map<String, ItemStack> musicTitles = Maps.newHashMap();
+    public static Map<String, String> realMusicTitles = Maps.newHashMap();
+    public static Map<String, String> normalMusicTitles = Maps.newHashMap();
 
     public static void initiateTitles(){
         for(ItemStack itemStack : OreDictionary.getOres("record")){
-            ItemRecord record = (ItemRecord) itemStack.getItem();
-            musicTitles.put(record.recordName, new int[]{itemStack.itemID, itemStack.getItemDamage()});
-            realMusicTitles.put(record.recordName, record.getRecordTitle());
-            normalMusicTitles.put(record.getItemDisplayName(itemStack), record.recordName);
+            if(itemStack.getItem() instanceof  ItemRecord){
+                ItemRecord record = (ItemRecord) itemStack.getItem();
+                musicTitles.put(record.field_150929_a, itemStack);
+                realMusicTitles.put(record.field_150929_a, record.func_150927_i());
+                normalMusicTitles.put(record.getItemStackDisplayName(itemStack), record.field_150929_a);
+            }
         }
     }
 
     public static String getRealRecordTitle(String recordName){
-        if(realMusicTitles != null && !realMusicTitles.isEmpty() && realMusicTitles.containsKey(recordName))
+        if(realMusicTitles.containsKey(recordName)){
             return realMusicTitles.get(recordName);
+        }
         return "INVALID";
     }
 
     public static String getNormalRecordTitle(String recordTitle){
-        if(normalMusicTitles != null && !normalMusicTitles.isEmpty() && normalMusicTitles.containsKey(recordTitle))
+        if(normalMusicTitles.containsKey(recordTitle)){
             return normalMusicTitles.get(recordTitle);
+        }
         return "INVALID";
     }
 
     public static ItemStack buildRecordStack(String title){
-        if(!musicTitles.containsKey(title))
-            return null;
-
-        int[] tempIds = musicTitles.get(title);
-        return new ItemStack(tempIds[0], 1, tempIds[1]);
+        return musicTitles.get(title).copy();
     }
 }
