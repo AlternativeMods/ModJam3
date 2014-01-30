@@ -96,10 +96,10 @@ public class RadioNetwork {
     public boolean areCoordsInRange(World world, int x, int y, int z){
         for(int i = 0; i < this.networkTiles.size(); i++){
             TileEntityRadioNetwork tile = this.networkTiles.get(i);
-            if(world != tile.worldObj) continue;
+            if(world != tile.func_145831_w()) continue;
             if(tile instanceof TileEntityAntenna){
                 int dist = tile.getDistanceToCoords(x, y, z);
-                int range = this.getMaxRangeForCoords(tile.worldObj, x, y, z);
+                int range = this.getMaxRangeForCoords(tile.func_145831_w(), x, y, z);
                 if(dist <= range) return true;
             }
         }

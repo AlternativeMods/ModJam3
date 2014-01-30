@@ -7,7 +7,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import jkmau5.modjam.radiomod.block.BlockAntenna;
 import jkmau5.modjam.radiomod.block.BlockBroadcaster;
@@ -16,17 +15,16 @@ import jkmau5.modjam.radiomod.block.BlockRadio;
 import jkmau5.modjam.radiomod.item.ItemIngredient;
 import jkmau5.modjam.radiomod.item.ItemLinkCard;
 import jkmau5.modjam.radiomod.item.ItemMediaPlayer;
+import jkmau5.modjam.radiomod.network.NetworkHandler;
 import jkmau5.modjam.radiomod.radio.RadioNetworkHandler;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
 import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
 import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
-import jkmau5.modjam.radiomod.world.gen.structure.ComponentVillageStudio;
 import jkmau5.modjam.radiomod.world.gen.structure.VillageStudioHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.world.gen.structure.MapGenStructureIO;
 
 import java.util.Random;
 
@@ -65,12 +63,12 @@ public class RadioMod {
     public void preInit(FMLPreInitializationEvent event){
         Config.load(event.getSuggestedConfigurationFile());
 
+        NetworkHandler.registerChannels(event.getSide());
 
-
-        blockBroadcaster = new BlockBroadcaster(2500);
-        blockAntenna = new BlockAntenna(2501);
-        blockRadio = new BlockRadio(2503);
-        blockPlaylist = new BlockPlaylist(2504);
+        blockBroadcaster = new BlockBroadcaster();
+        blockAntenna = new BlockAntenna();
+        blockRadio = new BlockRadio();
+        blockPlaylist = new BlockPlaylist();
         GameRegistry.registerBlock(blockBroadcaster, "BlockBroadcaster");
         GameRegistry.registerBlock(blockAntenna, "BlockAntenna");
         GameRegistry.registerBlock(blockRadio, "BlockRadio");
@@ -86,14 +84,14 @@ public class RadioMod {
         VillagerRegistry.instance().registerVillageCreationHandler(new VillageStudioHandler());
 
         try{
-            MapGenStructureIO.func_143031_a(ComponentVillageStudio.class, "RadioMod:VillageStudioStructure");
+            //MapGenStructureIO.func_143031_a(ComponentVillageStudio.class, "RadioMod:VillageStudioStructure");
         }catch(Throwable e){
             RMLogger.error(e, "There was a problem while registering the VillageStudio component");
         }
 
-        itemMediaPlayer = new ItemMediaPlayer(5000);
-        itemIngredient = new ItemIngredient(5001);
-        itemLinkCard = new ItemLinkCard(5002);
+        itemMediaPlayer = new ItemMediaPlayer();
+        itemIngredient = new ItemIngredient();
+        itemLinkCard = new ItemLinkCard();
         GameRegistry.registerItem(itemMediaPlayer, "ItemMediaPlayer");
         GameRegistry.registerItem(itemIngredient, "ItemIngredient");
         GameRegistry.registerItem(itemLinkCard, "ItemLinkCard");
@@ -103,12 +101,6 @@ public class RadioMod {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event){
-        LanguageRegistry.addName(blockBroadcaster, "Broadcaster Block");
-        LanguageRegistry.addName(itemMediaPlayer, "Media Player");
-        LanguageRegistry.addName(blockRadio, "Radio Block");
-        LanguageRegistry.addName(blockPlaylist, "Playlist Block");
-        LanguageRegistry.addName(this.blockAntenna, "Antenna");
-
         proxy.init();
     }
 

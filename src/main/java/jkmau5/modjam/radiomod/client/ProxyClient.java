@@ -7,10 +7,11 @@ import jkmau5.modjam.radiomod.client.render.ItemRendererAntenna;
 import jkmau5.modjam.radiomod.client.render.TileEntityAntennaRenderer;
 import jkmau5.modjam.radiomod.server.ProxyCommon;
 import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
+import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-import net.minecraftforge.common.MinecraftForge;
 
 public class ProxyClient extends ProxyCommon {
 
@@ -22,13 +23,11 @@ public class ProxyClient extends ProxyCommon {
     public void init(){
         super.init();
 
-        modelAntenna = AdvancedModelLoader.loadModel("/assets/" + Constants.MODID.toLowerCase() + "/models/Antenna.tcn");
+        modelAntenna = AdvancedModelLoader.loadModel(new ResourceLocation("radiomod", "/models/Antenna.tcn"));
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAntenna.class, antennaRenderer = new TileEntityAntennaRenderer());
 
-        MinecraftForgeClient.registerItemRenderer(RadioMod.instance.blockAntenna.blockID, new ItemRendererAntenna());
-
-        MinecraftForge.EVENT_BUS.register(new SoundLoader());
+        MinecraftForgeClient.registerItemRenderer(Item.func_150898_a(RadioMod.instance.blockAntenna), new ItemRendererAntenna());
 
         Constants.initiateTitles();
     }

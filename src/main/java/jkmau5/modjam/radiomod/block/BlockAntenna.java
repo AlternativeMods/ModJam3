@@ -8,7 +8,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -102,7 +101,8 @@ public class BlockAntenna extends Block {
         }
     }
 
-    @Override
+    //FIXME: This method seems to have disappeared from the 1.7 srg list
+    /*@Override
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z){
         int meta = world.getBlockMetadata(x, y, z);
         if(meta == 0){
@@ -111,7 +111,7 @@ public class BlockAntenna extends Block {
             return AxisAlignedBB.getAABBPool().getAABB(x + this.field_149759_B, y - 1, z + this.field_149754_D, x + this.field_149755_E, y + 1, z + this.field_149757_G);
         }
         return super.getSelectedBoundingBoxFromPool(world, x, y, z);
-    }
+    }*/
 
     @Override
     public int func_149645_b(){

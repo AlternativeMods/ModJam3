@@ -1,16 +1,13 @@
 package jkmau5.modjam.radiomod.tile;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityAntenna extends TileEntityRadioNetwork {
 
     public float yaw = 0f;
 
-    @Override
+    /*@Override
     public Packet getDescriptionPacket(){
         NBTTagCompound tag = new NBTTagCompound();
         this.writeToNBT(tag);
@@ -20,7 +17,9 @@ public class TileEntityAntenna extends TileEntityRadioNetwork {
     @Override
     public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt){
         this.readFromNBT(pkt.data);
-    }
+    }*/
+
+    //TODO: Write some TileEntity packet stuff
 
     @Override
     public void readFromNBT(NBTTagCompound tag){
@@ -36,6 +35,6 @@ public class TileEntityAntenna extends TileEntityRadioNetwork {
 
     @Override
     public AxisAlignedBB getRenderBoundingBox(){
-        return AxisAlignedBB.getAABBPool().getAABB(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 2, zCoord + 2);
+        return AxisAlignedBB.getAABBPool().getAABB(this.field_145851_c - 1, this.field_145848_d, this.field_145849_e - 1, this.field_145851_c + 2, this.field_145848_d + 2, this.field_145849_e + 2);
     }
 }

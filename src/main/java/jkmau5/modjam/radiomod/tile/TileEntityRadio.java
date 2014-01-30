@@ -1,15 +1,10 @@
 package jkmau5.modjam.radiomod.tile;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import jkmau5.modjam.radiomod.RadioMod;
-import jkmau5.modjam.radiomod.network.PacketPlaySound;
 import jkmau5.modjam.radiomod.radio.IRadioListener;
 import jkmau5.modjam.radiomod.radio.RadioNetwork;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityRadio extends TileEntity implements IRadioListener {
@@ -35,8 +30,8 @@ public class TileEntityRadio extends TileEntity implements IRadioListener {
     }
 
     @Override
-    public void updateEntity(){
-        super.updateEntity();
+    public void func_145845_h(){
+        super.func_145845_h();
         if(!this.isListener && this.connectedBroadcastStation != null && !this.connectedBroadcastStation.isEmpty()){
             RadioNetwork network = RadioMod.radioNetworkHandler.getNetworkFromName(this.connectedBroadcastStation);
             if(network == null) return;
@@ -46,8 +41,8 @@ public class TileEntityRadio extends TileEntity implements IRadioListener {
     }
 
     @Override
-    public void invalidate(){
-        super.invalidate();
+    public void func_145843_s(){
+        super.func_145843_s();
         if(this.isListener && this.connectedBroadcastStation != null && !this.connectedBroadcastStation.isEmpty()){
             RadioNetwork network = RadioMod.radioNetworkHandler.getNetworkFromName(this.connectedBroadcastStation);
             if(network == null) return;
@@ -68,20 +63,20 @@ public class TileEntityRadio extends TileEntity implements IRadioListener {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompound){
-        super.readFromNBT(tagCompound);
+    public void func_145839_a(NBTTagCompound tag){
+        super.func_145839_a(tag);
 
-        setConnectedBroadcastStation(tagCompound.getString("connectedBroadcastStation"));
+        setConnectedBroadcastStation(tag.getString("connectedBroadcastStation"));
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound){
-        super.writeToNBT(tagCompound);
+    public void func_145841_b(NBTTagCompound tag){
+        super.func_145841_b(tag);
 
-        tagCompound.setString("connectedBroadcastStation", getConnectedBroadcastStation());
+        tag.setString("connectedBroadcastStation", getConnectedBroadcastStation());
     }
 
-    @Override
+    /*@Override
     public Packet getDescriptionPacket(){
         NBTTagCompound tag = new NBTTagCompound();
         this.writeToNBT(tag);
@@ -95,15 +90,15 @@ public class TileEntityRadio extends TileEntity implements IRadioListener {
 
     public void writeGuiData(NBTTagCompound tag){
         tag.setString("station", this.connectedBroadcastStation);
-    }
+    }*/
 
     @Override
     public void playSong(String name){
-        PacketDispatcher.sendPacketToAllAround(this.xCoord, this.yCoord, this.zCoord, 256, this.worldObj.provider.dimensionId, new PacketPlaySound(name, this.xCoord, this.yCoord, this.zCoord).getPacket());
+        //PacketDispatcher.sendPacketToAllAround(this.xCoord, this.yCoord, this.zCoord, 256, this.worldObj.provider.dimensionId, new PacketPlaySound(name, this.xCoord, this.yCoord, this.zCoord).getPacket());
     }
 
     @Override
     public void playOutOfRange(){
-        this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "RadioMod:noise", 1, 1);
+        this.func_145831_w().playSoundEffect(this.field_145851_c, this.field_145848_d, this.field_145849_e, "RadioMod:noise", 1, 1);
     }
 }

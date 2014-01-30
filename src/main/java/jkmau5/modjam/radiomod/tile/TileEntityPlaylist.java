@@ -8,12 +8,9 @@ import jkmau5.modjam.radiomod.gui.GuiPlaylist;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +33,8 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
     public boolean addTitle(String title){
         if(titles.contains(title)) return false;
         this.titles.add(title);
-        if(worldObj != null && !worldObj.isRemote){
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        if(this.func_145831_w() != null && !this.func_145831_w().isRemote){
+            this.func_145831_w().func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
         }
         return true;
     }
@@ -45,9 +42,9 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
     public boolean removeTitle(String title){
         if(titles.contains(title)){
             titles.remove(title);
-            dropRecordItemInWorld(worldObj, title);
-            if(worldObj != null && !worldObj.isRemote){
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            dropRecordItemInWorld(this.func_145831_w(), title);
+            if(this.func_145831_w() != null && !this.func_145831_w().isRemote){
+                this.func_145831_w().func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
             }
             return true;
         }
@@ -56,7 +53,7 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
 
     public void breakBlock(){
         for(String title : this.titles){
-            dropRecordItemInWorld(this.worldObj, title);
+            dropRecordItemInWorld(this.func_145831_w(), title);
         }
     }
 
@@ -66,8 +63,8 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
         double d0 = world.rand.nextFloat() * 0.7F + 1.0F - 0.7F * 0.5D;
         double d1 = world.rand.nextFloat() * 0.7F + 1.0F - 0.7F * 0.5D;
         double d2 = world.rand.nextFloat() * 0.7F + 1.0F - 0.7F * 0.5D;
-        EntityItem entityitem = new EntityItem(world, xCoord + d0, yCoord + d1, zCoord + d2, Constants.buildRecordStack(title));
-        entityitem.delayBeforeCanPickup = 10;
+        EntityItem entityitem = new EntityItem(world, this.field_145851_c + d0, this.field_145848_d + d1, this.field_145849_e + d2, Constants.buildRecordStack(title));
+        entityitem.field_145804_b = 10;
         world.spawnEntityInWorld(entityitem);
     }
 
@@ -89,9 +86,9 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
         super.readFromNBT(par1NBTTagCompound);
 
         titles = new ArrayList<String>();
-        NBTTagList tagList = par1NBTTagCompound.getTagList("titles");
+        NBTTagList tagList = par1NBTTagCompound.func_150295_c("titles", 10 /*NBTTagCompound*/);
         for(int i = 0; i < tagList.tagCount(); i++){
-            NBTTagCompound tag = (NBTTagCompound) tagList.tagAt(i);
+            NBTTagCompound tag = tagList.func_150305_b(i);
             addTitle(tag.getString("title"));
         }
 
@@ -104,12 +101,12 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
 
     public void selectNetworkFromBroadcaster(World world) {
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
-            TileEntity tile = world.getBlockTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+            TileEntity tile = world.func_147438_o(this.field_145851_c + dir.offsetX, this.field_145848_d + dir.offsetY, this.field_145849_e + dir.offsetZ);
             if (tile instanceof TileEntityBroadcaster) this.network = ((TileEntityBroadcaster) tile).network;
         }
     }
 
-    @Override
+    /*@Override
     public Packet getDescriptionPacket(){
         NBTTagCompound tag = new NBTTagCompound();
         this.writeToNBT(tag);
@@ -119,5 +116,5 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
     @Override
     public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt){
         readFromNBT(pkt.data);
-    }
+    }*/
 }

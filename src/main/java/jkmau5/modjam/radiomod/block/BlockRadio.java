@@ -1,42 +1,32 @@
 package jkmau5.modjam.radiomod.block;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import jkmau5.modjam.radiomod.RadioMod;
-import jkmau5.modjam.radiomod.gui.EnumGui;
-import jkmau5.modjam.radiomod.gui.GuiOpener;
-import jkmau5.modjam.radiomod.network.PacketMediaPlayerData;
-import jkmau5.modjam.radiomod.network.PacketPlaySound;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class BlockRadio extends Block {
 
-    @SideOnly(Side.CLIENT)
-    private Icon top;
-    @SideOnly(Side.CLIENT)
-    private Icon front;
-    @SideOnly(Side.CLIENT)
-    private Icon bottom;
+    @SideOnly(Side.CLIENT) private IIcon top;
+    @SideOnly(Side.CLIENT) private IIcon front;
+    @SideOnly(Side.CLIENT) private IIcon bottom;
 
-    public BlockRadio(int par1){
-        super(par1, Material.iron);
-        this.setCreativeTab(RadioMod.tabRadioMod);
-        this.setUnlocalizedName("radioMod.blockRadio");
-        this.setHardness(0.8f);
-        this.setResistance(3f);
+    public BlockRadio(){
+        super(Material.field_151573_f);
+        this.func_149647_a(RadioMod.tabRadioMod);
+        this.func_149663_c("radioMod.blockRadio");
+        this.func_149711_c(0.8f);
+        this.func_149752_b(3f);
     }
 
     @Override
@@ -51,16 +41,16 @@ public class BlockRadio extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister register){
+    public void func_149651_a(IIconRegister register){
         this.top = register.registerIcon("RadioMod:radio_top");
         this.front = register.registerIcon("RadioMod:radio_front");
         this.bottom = register.registerIcon("RadioMod:radio_bottom");
-        this.blockIcon = register.registerIcon("RadioMod:side");
+        this.field_149761_L = register.registerIcon("RadioMod:side");
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getIcon(int side, int meta){
+    public IIcon func_149691_a(int side, int meta){
         if(side == 1){
             return this.top;
         }else if(side == 0){
@@ -74,31 +64,33 @@ public class BlockRadio extends Block {
         }else if(meta == 1 && side == 4){
             return this.front;
         }else{
-            return this.blockIcon;
+            return this.field_149761_L;
         }
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
+    public void func_149689_a(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
         int meta = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
         world.setBlockMetadataWithNotify(x, y, z, meta, 2);
     }
 
     @Override
-    public void onBlockPreDestroy(World world, int x, int y, int z, int par5){
-        super.onBlockPreDestroy(world, x, y, z, par5);
-        PacketDispatcher.sendPacketToAllAround(x, y, z, 256, world.provider.dimensionId, new PacketPlaySound(null, x, y, z, true).getPacket());
+    public void func_149725_f(World world, int x, int y, int z, int par5){
+        super.func_149725_f(world, x, y, z, par5);
+        //TODO: Fix packets
+        //PacketDispatcher.sendPacketToAllAround(x, y, z, 256, world.provider.dimensionId, new PacketPlaySound(null, x, y, z, true).getPacket());
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9){
-        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+    public boolean func_149727_a(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9){
+        TileEntity tileEntity = world.func_147438_o(x, y, z);
         if(tileEntity == null || !(tileEntity instanceof TileEntityRadio)) return true;
         if(!world.isRemote){
-            NBTTagCompound tag = new NBTTagCompound();
-            ((TileEntityRadio) tileEntity).writeGuiData(tag);
-            PacketDispatcher.sendPacketToPlayer(new PacketMediaPlayerData(tag).getPacket(), (Player) player);
-            GuiOpener.openGuiOnClient(EnumGui.RADIO_BLOCK, player, x, y, z);
+            //NBTTagCompound tag = new NBTTagCompound();
+            //((TileEntityRadio) tileEntity).writeGuiData(tag);
+            //TODO: Rewrite GUI SYSTEM
+            //PacketDispatcher.sendPacketToPlayer(new PacketMediaPlayerData(tag).getPacket(), (Player) player);
+            //GuiOpener.openGuiOnClient(EnumGui.RADIO_BLOCK, player, x, y, z);
         }
         return true;
     }

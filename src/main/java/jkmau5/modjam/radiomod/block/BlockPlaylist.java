@@ -6,52 +6,52 @@ import jkmau5.modjam.radiomod.gui.GuiOpener;
 import jkmau5.modjam.radiomod.tile.TileEntityPlaylist;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 
 public class BlockPlaylist extends Block {
 
-    private Icon topIcon[];
-    private Icon sidesIcon;
-    private Icon bottomIcon;
+    private IIcon topIcon[];
+    private IIcon sidesIcon;
+    private IIcon bottomIcon;
 
-    public BlockPlaylist(int par1){
-        super(par1, Material.iron);
-        this.setCreativeTab(RadioMod.tabRadioMod);
-        this.setUnlocalizedName("radioMod.blockPlaylist");
+    public BlockPlaylist(){
+        super(Material.field_151573_f);
+        this.func_149647_a(RadioMod.tabRadioMod);
+        this.func_149663_c("radioMod.blockPlaylist");
 
-        this.maxY = 0.75;
+        this.field_149756_F = 0.75;
     }
 
     @Override
-    public boolean renderAsNormalBlock(){
+    public boolean func_149686_d(){
         return false;
     }
 
     @Override
-    public boolean isOpaqueCube(){
+    public boolean func_149662_c(){
         return false;
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
+    public void func_149689_a(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
         int meta = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
         world.setBlockMetadataWithNotify(x, y, z, meta, 2);
-        TileEntity tile = world.getBlockTileEntity(x, y, z);
+
+        TileEntity tile = world.func_147438_o(x, y, z);
         ((TileEntityPlaylist) tile).selectNetworkFromBroadcaster(world);
     }
 
     @Override
-    public void registerIcons(IconRegister register){
-        this.topIcon = new Icon[4];
+    public void func_149651_a(IIconRegister register){
+        this.topIcon = new IIcon[4];
         this.topIcon[0] = register.registerIcon("RadioMod:playlist");
         this.topIcon[1] = register.registerIcon("RadioMod:playlist_90");
         this.topIcon[2] = register.registerIcon("RadioMod:playlist_180");
@@ -61,7 +61,7 @@ public class BlockPlaylist extends Block {
     }
 
     @Override
-    public Icon getIcon(int side, int meta){
+    public IIcon func_149691_a(int side, int meta){
         switch(side){
             case 0:
                 return this.bottomIcon;
@@ -73,35 +73,39 @@ public class BlockPlaylist extends Block {
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, int oldId, int oldMeta){
-        super.breakBlock(world, x, y, z, oldId, oldMeta);
-        TileEntity tempTile = world.getBlockTileEntity(x, y, z);
+    public void func_149749_a(World world, int x, int y, int z, Block old, int oldMeta){
+        super.func_149749_a(world, x, y, z, old, oldMeta);
+        TileEntity tempTile = world.func_147438_o(x, y, z);
         if(tempTile == null || !(tempTile instanceof TileEntityPlaylist)){
-            super.breakBlock(world, x, y, z, oldId, oldMeta);
+            super.func_149749_a(world, x, y, z, old, oldMeta);
             return;
         }
         ((TileEntityPlaylist) tempTile).breakBlock();
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
-        if(world.isRemote)
+    public boolean func_149727_a(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
+        if(world.isRemote){
             return true;
+        }
 
-        TileEntity tempTile = world.getBlockTileEntity(x, y, z);
-        if(tempTile == null || !(tempTile instanceof TileEntityPlaylist))
+        TileEntity tempTile = world.func_147438_o(x, y, z);
+        if(tempTile == null || !(tempTile instanceof TileEntityPlaylist)){
             return true;
+        }
         TileEntityPlaylist playlist = (TileEntityPlaylist) tempTile;
 
         if(player.getHeldItem() == null){
             GuiOpener.openGuiOnClient(EnumGui.PLAYLIST_BLOCK, player, x, y, z);
         }else{
-            if(!(player.getHeldItem().getItem() instanceof ItemRecord))
+            if(!(player.getHeldItem().getItem() instanceof ItemRecord)){
                 return true;
+            }
             ItemRecord record = (ItemRecord) player.getHeldItem().getItem();
 
-            if(playlist.addTitle(record.recordName))
+            if(playlist.addTitle(record.field_150929_a)){
                 player.getHeldItem().stackSize--;
+            }
         }
 
         return true;

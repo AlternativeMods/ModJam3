@@ -1,10 +1,5 @@
 package jkmau5.modjam.radiomod.item;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
-import jkmau5.modjam.radiomod.gui.EnumGui;
-import jkmau5.modjam.radiomod.gui.GuiOpener;
-import jkmau5.modjam.radiomod.network.PacketMediaPlayerData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,8 +10,8 @@ import java.util.List;
 
 public class ItemMediaPlayer extends Item {
 
-    public ItemMediaPlayer(int par1){
-        super(par1);
+    public ItemMediaPlayer(){
+        super();
         //setCreativeTab(RadioMod.tabRadioMod);
         this.setUnlocalizedName("radioMod.mediaPlayer");
         this.setTextureName("RadioMod:mediaplayer");
@@ -24,8 +19,9 @@ public class ItemMediaPlayer extends Item {
 
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player){
         if(itemStack.getTagCompound() == null) itemStack.setTagCompound(new NBTTagCompound());
-        PacketDispatcher.sendPacketToPlayer(new PacketMediaPlayerData(itemStack.getTagCompound()).getPacket(), (Player) player);
-        GuiOpener.openGuiOnClient(EnumGui.MEDIA_PLAYER, player);
+        //TODO: Fix GUI stuff
+        //PacketDispatcher.sendPacketToPlayer(new PacketMediaPlayerData(itemStack.getTagCompound()).getPacket(), (Player) player);
+        //GuiOpener.openGuiOnClient(EnumGui.MEDIA_PLAYER, player);
         return itemStack;
     }
 

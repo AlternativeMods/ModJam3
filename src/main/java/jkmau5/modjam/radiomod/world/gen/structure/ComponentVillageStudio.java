@@ -1,37 +1,35 @@
 package jkmau5.modjam.radiomod.world.gen.structure;
 
-import jkmau5.modjam.radiomod.RMLogger;
-import jkmau5.modjam.radiomod.RadioMod;
+/*import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.tile.TileEntityAntenna;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.ComponentVillage;
-import net.minecraft.world.gen.structure.ComponentVillageStartPiece;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.StructureVillagePieces;
 
 import java.util.List;
-import java.util.Random;
+import java.util.Random;*/
 
 /**
  * Created by mattashii on 1/13/14.
  *
  * the studio implemented in the villages
  */
-public class ComponentVillageStudio extends ComponentVillage {
+/*public class ComponentVillageStudio extends StructureVillagePieces.Village {
     private int averageGroundLevel = -1;
 
     public ComponentVillageStudio(){
 
     }
 
-    public ComponentVillageStudio(ComponentVillageStartPiece startPiece, int par1, Random random, StructureBoundingBox structureBoundingBox, int par5){
+    public ComponentVillageStudio(StructureVillagePieces.Start startPiece, int par1, Random random, StructureBoundingBox structureBoundingBox, int par5){
         super(startPiece, par1);
         this.coordBaseMode = par5;
         this.boundingBox = structureBoundingBox;
     }
 
-    public static ComponentVillageStudio buildComponent(ComponentVillageStartPiece villagePiece, List pieces, Random random, int p1, int p2, int p3, int p4, int p5){
+    public static ComponentVillageStudio buildComponent(StructureVillagePieces.Start villagePiece, List pieces, Random random, int p1, int p2, int p3, int p4, int p5){
         StructureBoundingBox structureBoundingBox = StructureBoundingBox.getComponentToAddBoundingBox(p1, p2, p3, 0, 0, 0, 10, 17, 11, p4);
         return canVillageGoDeeper(structureBoundingBox) && StructureComponent.findIntersecting(pieces, structureBoundingBox) == null ? new ComponentVillageStudio(villagePiece, p5, random, structureBoundingBox, p4) : null;
     }
@@ -310,4 +308,4 @@ public class ComponentVillageStudio extends ComponentVillage {
         }
         return -1;
     }
-}
+}*/

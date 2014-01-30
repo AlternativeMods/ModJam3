@@ -2,38 +2,38 @@ package jkmau5.modjam.radiomod.item;
 
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.tile.TileEntityRadioNetwork;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatMessageComponent;
-import net.minecraft.util.Icon;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import java.util.List;
 
 public class ItemLinkCard extends Item {
 
-    private Icon inactive;
-    private Icon active;
+    private IIcon inactive;
+    private IIcon active;
 
-    public ItemLinkCard(int id){
-        super(id);
+    public ItemLinkCard(){
+        super();
         this.setMaxStackSize(1);
         this.setCreativeTab(RadioMod.tabRadioMod);
         this.setUnlocalizedName("radioMod.linkCard");
     }
 
     @Override
-    public void registerIcons(IconRegister register){
+    public void registerIcons(IIconRegister register){
         this.inactive = register.registerIcon("RadioMod:linkcard_inactive");
         this.active = register.registerIcon("RadioMod:linkcard_active");
     }
 
     @Override
-    public Icon getIconIndex(ItemStack stack){
+    public IIcon getIconIndex(ItemStack stack){
         NBTTagCompound tag = stack.getTagCompound();
         if(tag == null){
             stack.setTagCompound(new NBTTagCompound());
@@ -51,15 +51,15 @@ public class ItemLinkCard extends Item {
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
         if(world.isRemote){
-            if(world.getBlockId(x, y, z) == RadioMod.instance.blockAntenna.blockID){
+            if(world.func_147439_a(x, y, z) == RadioMod.instance.blockAntenna){
                 player.swingItem();
             }
             return false;
         }
-        if(world.getBlockId(x, y, z) == RadioMod.instance.blockAntenna.blockID && world.getBlockMetadata(x, y, z) == 1){
+        if(world.func_147439_a(x, y, z) == RadioMod.instance.blockAntenna && world.getBlockMetadata(x, y, z) == 1){
             y--;
         }
-        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        TileEntity tile = world.func_147438_o(x, y, z);
         if(tile == null || !(tile instanceof TileEntityRadioNetwork)) return true;
         TileEntityRadioNetwork radioTile = (TileEntityRadioNetwork) tile;
         NBTTagCompound tag = stack.getTagCompound();
@@ -70,9 +70,9 @@ public class ItemLinkCard extends Item {
         tag = stack.getTagCompound();
         boolean linked = tag.getBoolean("linked");
         if(linked){
-            TileEntity newTile = world.getBlockTileEntity(tag.getInteger("linkedX"), tag.getInteger("linkedY"), tag.getInteger("linkedZ"));
+            TileEntity newTile = world.func_147438_o(tag.getInteger("linkedX"), tag.getInteger("linkedY"), tag.getInteger("linkedZ"));
             if(newTile == null || !(newTile instanceof TileEntityRadioNetwork)){
-                player.sendChatToPlayer(ChatMessageComponent.createFromTranslationKey("radioMod.linkCard.invalid"));
+                player.func_146105_b(new ChatComponentTranslation("radioMod.linkCard.invalid"));
             }else{
                 if(radioTile.linkToTile((TileEntityRadioNetwork) newTile)){
                     player.destroyCurrentEquippedItem();

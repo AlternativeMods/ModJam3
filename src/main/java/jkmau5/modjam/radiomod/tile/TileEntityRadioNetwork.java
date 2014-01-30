@@ -16,12 +16,12 @@ public class TileEntityRadioNetwork extends TileEntity {
     public RadioNetwork network;
 
     public int getDistanceToCoords(int x, int y, int z){
-        return (int) Math.ceil(this.getDistanceFrom(x, y, z));
+        return (int) Math.ceil(this.func_145835_a(x, y, z));
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag){
-        super.readFromNBT(tag);
+    public void func_145839_a(NBTTagCompound tag){
+        super.func_145839_a(tag);
         if(FMLCommonHandler.instance().getEffectiveSide().isServer() && tag.hasKey("networkID")){
             this.network = RadioMod.radioNetworkHandler.getNetworkFromID(tag.getInteger("networkID"));
             this.network.add(this);
@@ -29,8 +29,8 @@ public class TileEntityRadioNetwork extends TileEntity {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag){
-        super.writeToNBT(tag);
+    public void func_145841_b(NBTTagCompound tag){
+        super.func_145841_b(tag);
         if(FMLCommonHandler.instance().getEffectiveSide().isServer() && this.network != null){
             tag.setInteger("networkID", this.network.getID());
         }

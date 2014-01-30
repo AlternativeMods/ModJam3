@@ -1,24 +1,24 @@
 package jkmau5.modjam.radiomod.item;
 
 import jkmau5.modjam.radiomod.RadioMod;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 
 import java.util.List;
 
 public class ItemIngredient extends Item {
 
-    private Icon antenna;
-    private Icon antennarod;
-    private Icon rawantennarod;
-    private Icon bigantennafoot;
-    private Icon smallantennafoot;
+    private IIcon antenna;
+    private IIcon antennarod;
+    private IIcon rawantennarod;
+    private IIcon bigantennafoot;
+    private IIcon smallantennafoot;
 
-    public ItemIngredient(int id){
-        super(id);
+    public ItemIngredient(){
+        super();
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
         this.setUnlocalizedName("radioMod.ingredient");
@@ -31,7 +31,7 @@ public class ItemIngredient extends Item {
     }
 
     @Override
-    public void registerIcons(IconRegister register){
+    public void registerIcons(IIconRegister register){
         this.antenna = register.registerIcon("RadioMod:antenna");
         this.antennarod = register.registerIcon("RadioMod:antennarod");
         this.rawantennarod = register.registerIcon("RadioMod:rawantennarod");
@@ -40,7 +40,7 @@ public class ItemIngredient extends Item {
     }
 
     @Override
-    public Icon getIconFromDamage(int meta){
+    public IIcon getIconFromDamage(int meta){
         switch(EnumIngredient.fromID(meta)){
             case ANTENNAONFOOT:
                 return this.antenna;
@@ -58,9 +58,9 @@ public class ItemIngredient extends Item {
     }
 
     @Override
-    public void getSubItems(int id, CreativeTabs par2CreativeTabs, List list){
+    public void func_150895_a(Item item, CreativeTabs par2CreativeTabs, List list){
         for(EnumIngredient ingredient : EnumIngredient.values()){
-            list.add(new ItemStack(id, 1, ingredient.subid));
+            list.add(new ItemStack(item, 1, ingredient.subid));
         }
     }
 }
