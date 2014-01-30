@@ -6,10 +6,14 @@ import cpw.mods.fml.common.network.FMLOutboundHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
+import jkmau5.modjam.radiomod.network.handlers.GuiReturnDataHandler;
 import jkmau5.modjam.radiomod.network.handlers.OpenGuiHandler;
 import jkmau5.modjam.radiomod.network.handlers.TileEntityDataHandler;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.Packet;
 
 import java.util.EnumMap;
@@ -29,7 +33,7 @@ public class NetworkHandler {
         ChannelPipeline pipeline = channels.get(Side.SERVER).pipeline();
         String targetName = channels.get(Side.SERVER).findChannelHandlerNameForType(PacketCodec.class);
 
-        //Add handlers here
+        pipeline.addAfter(targetName, "GuiReturnDataHandler", new GuiReturnDataHandler());
 
         if(side.isClient()){
             registerClientHandlers();
@@ -60,5 +64,9 @@ public class NetworkHandler {
         FMLEmbeddedChannel channel = channels.get(Side.CLIENT);
         channel.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
         channel.writeOutbound(packet);
+    }
+
+    public static EntityPlayerMP getPlayer(ChannelHandlerContext ctx){
+        return ((NetHandlerPlayServer) ctx.channel().attr(NetworkRegistry.NET_HANDLER).get()).field_147369_b;
     }
 }
