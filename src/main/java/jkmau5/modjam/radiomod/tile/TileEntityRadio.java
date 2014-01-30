@@ -1,27 +1,61 @@
 package jkmau5.modjam.radiomod.tile;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.ByteBufUtils;
+import io.netty.buffer.ByteBuf;
 import jkmau5.modjam.radiomod.RadioMod;
+import jkmau5.modjam.radiomod.gui.GuiRadio;
+import jkmau5.modjam.radiomod.gui.RMGui;
 import jkmau5.modjam.radiomod.radio.IRadioListener;
 import jkmau5.modjam.radiomod.radio.RadioNetwork;
+import lombok.Getter;
+import lombok.Setter;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityRadio extends TileEntity implements IRadioListener {
+import java.util.List;
 
-    private String connectedBroadcastStation;
+public class TileEntityRadio extends RMTileEntity implements IRadioListener, IGuiTileEntity, IGuiReturnHandler {
+
+    @Getter @Setter private String connectedBroadcastStation;
     private boolean isListener = false;
 
     public TileEntityRadio(){
-        setConnectedBroadcastStation("Not connected...");
+        this.setConnectedBroadcastStation("Not connected...");
     }
 
-    public String getConnectedBroadcastStation(){
-        return this.connectedBroadcastStation;
+    @Override
+    public void readGuiReturnData(ByteBuf buffer){
+        boolean selected = buffer.readBoolean();
+        if(selected){
+            String selectedName = ByteBufUtils.readUTF8String(buffer);
+            this.setConnectedBroadcastStation(selectedName);
+        }else{
+            this.setConnectedBroadcastStation(null);
+        }
     }
 
-    public void setConnectedBroadcastStation(String connectedBroadcastStation){
-        this.connectedBroadcastStation = connectedBroadcastStation;
+    @Override
+    public void writeGuiData(ByteBuf buffer){
+        buffer.writeBoolean(this.connectedBroadcastStation != null);
+        if(this.connectedBroadcastStation != null){
+            ByteBufUtils.writeUTF8String(buffer, this.connectedBroadcastStation);
+        }
+        List<String> available = this.getAvailableRadios();
+        ByteBufUtils.writeVarInt(buffer, available.size(), 4);
+        for(int i = 0; i < available.size(); i++){
+            ByteBufUtils.writeUTF8String(buffer, available.get(i));
+        }
+    }
+
+    @Override
+    public boolean canPlayerOpenGui(EntityPlayer player){
+        return true;
+    }
+
+    @Override
+    public RMGui getGui(){
+        return new GuiRadio(this);
     }
 
     @Override
@@ -76,22 +110,6 @@ public class TileEntityRadio extends TileEntity implements IRadioListener {
         tag.setString("connectedBroadcastStation", getConnectedBroadcastStation());
     }
 
-    /*@Override
-    public Packet getDescriptionPacket(){
-        NBTTagCompound tag = new NBTTagCompound();
-        this.writeToNBT(tag);
-        return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, tag);
-    }
-
-    @Override
-    public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt){
-        readFromNBT(pkt.data);
-    }
-
-    public void writeGuiData(NBTTagCompound tag){
-        tag.setString("station", this.connectedBroadcastStation);
-    }*/
-
     @Override
     public void playSong(String name){
         //PacketDispatcher.sendPacketToAllAround(this.xCoord, this.yCoord, this.zCoord, 256, this.worldObj.provider.dimensionId, new PacketPlaySound(name, this.xCoord, this.yCoord, this.zCoord).getPacket());
@@ -100,5 +118,9 @@ public class TileEntityRadio extends TileEntity implements IRadioListener {
     @Override
     public void playOutOfRange(){
         this.func_145831_w().playSoundEffect(this.field_145851_c, this.field_145848_d, this.field_145849_e, "RadioMod:noise", 1, 1);
+    }
+
+    private List<String> getAvailableRadios(){
+        return RadioMod.radioNetworkHandler.getAvailableRadioNames(this.func_145831_w(), this.field_145851_c, this.field_145848_d, this.field_145849_e);
     }
 }

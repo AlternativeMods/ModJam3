@@ -30,6 +30,10 @@ minecraft{
     replaceIn 'Constants.java'
 }
 
+dependencies {
+    compile 'org.projectlombok:lombok:1.12.2'
+}
+
 jar {
     manifest {
         attributes 'Version': project.version

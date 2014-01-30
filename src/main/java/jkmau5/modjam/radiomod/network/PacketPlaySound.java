@@ -4,7 +4,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 
-public class PacketPlaySound extends PacketBase {
+public class PacketPlaySound extends RMPacket {
 
     private String name;
     private int x, y, z;

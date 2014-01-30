@@ -4,14 +4,13 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.radio.RadioNetwork;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 
 /**
  * No description given
  *
  * @author jk-5
  */
-public class TileEntityRadioNetwork extends TileEntity {
+public class TileEntityRadioNetwork extends RMTileEntity {
 
     public RadioNetwork network;
 
@@ -50,25 +49,7 @@ public class TileEntityRadioNetwork extends TileEntity {
             return newTile.network.add(this);
         }else if(newTile.network == null){
             return this.network.add(newTile);
-        }else{
-            return false; //TODO: remove this?
-            /*if(this.network.getNetworkSize() >= newTile.network.getNetworkSize()){
-                //Move all the tiles in the other tile's network to my network
-                for(int i = 0; i < newTile.network.getNetworkSize(); i++){
-                    TileEntityRadioNetwork t = newTile.network.getNetworkTiles().get(i);
-                    newTile.network.getNetworkTiles().remove(t);
-                    this.network.add(t);
-                    t.network = this.network;
-                }
-            }else{
-                //Move all the tiles in this tile's network to the other tile's network
-                for(int i = 0; i < this.network.getNetworkSize(); i++){
-                    TileEntityRadioNetwork t = this.network.getNetworkTiles().get(i);
-                    this.network.getNetworkTiles().remove(t);
-                    newTile.network.add(t);
-                    t.network = this.network;
-                }
-            }*/
         }
+        return false;
     }
 }

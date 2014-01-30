@@ -4,27 +4,24 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.tile.TileEntityRadio;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class BlockRadio extends Block {
+public class BlockRadio extends RMBlock {
 
     @SideOnly(Side.CLIENT) private IIcon top;
     @SideOnly(Side.CLIENT) private IIcon front;
     @SideOnly(Side.CLIENT) private IIcon bottom;
 
     public BlockRadio(){
-        super(Material.field_151573_f);
+        super("blockRadio", Material.field_151573_f);
         this.func_149647_a(RadioMod.tabRadioMod);
-        this.func_149663_c("radioMod.blockRadio");
         this.func_149711_c(0.8f);
         this.func_149752_b(3f);
     }
@@ -79,19 +76,5 @@ public class BlockRadio extends Block {
         super.func_149725_f(world, x, y, z, par5);
         //TODO: Fix packets
         //PacketDispatcher.sendPacketToAllAround(x, y, z, 256, world.provider.dimensionId, new PacketPlaySound(null, x, y, z, true).getPacket());
-    }
-
-    @Override
-    public boolean func_149727_a(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9){
-        TileEntity tileEntity = world.func_147438_o(x, y, z);
-        if(tileEntity == null || !(tileEntity instanceof TileEntityRadio)) return true;
-        if(!world.isRemote){
-            //NBTTagCompound tag = new NBTTagCompound();
-            //((TileEntityRadio) tileEntity).writeGuiData(tag);
-            //TODO: Rewrite GUI SYSTEM
-            //PacketDispatcher.sendPacketToPlayer(new PacketMediaPlayerData(tag).getPacket(), (Player) player);
-            //GuiOpener.openGuiOnClient(EnumGui.RADIO_BLOCK, player, x, y, z);
-        }
-        return true;
     }
 }

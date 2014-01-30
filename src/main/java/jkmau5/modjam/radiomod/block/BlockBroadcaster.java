@@ -2,27 +2,24 @@ package jkmau5.modjam.radiomod.block;
 
 import jkmau5.modjam.radiomod.RadioMod;
 import jkmau5.modjam.radiomod.tile.TileEntityBroadcaster;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class BlockBroadcaster extends Block {
+public class BlockBroadcaster extends RMBlock {
 
     private IIcon topIcon[];
     private IIcon bottomIcon;
     private IIcon sidesIcon;
 
     public BlockBroadcaster(){
-        super(Material.field_151573_f);
+        super("blockBroadcaster", Material.field_151573_f);
         this.func_149647_a(RadioMod.tabRadioMod);
-        this.func_149663_c("radioMod.blockBroadcaster");
 
         this.field_149756_F = 0.75f;
     }
@@ -59,12 +56,9 @@ public class BlockBroadcaster extends Block {
     @Override
     public IIcon func_149691_a(int side, int meta){
         switch(side){
-            case 1:
-                return this.topIcon[meta];
-            case 0:
-                return this.bottomIcon;
-            default:
-                return this.sidesIcon;
+            case 1: return this.topIcon[meta];
+            case 0: return this.bottomIcon;
+            default: return this.sidesIcon;
         }
     }
 
@@ -72,36 +66,5 @@ public class BlockBroadcaster extends Block {
     public void func_149689_a(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
         int meta = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
         world.setBlockMetadataWithNotify(x, y, z, meta, 2);
-    }
-
-    public boolean func_149727_a(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
-        super.func_149727_a(world, x, y, z, player, side, hitX, hitY, hitZ); //TODO: remove
-
-        if(world.isRemote) return true;
-
-        TileEntity tempTile = world.func_147438_o(x, y, z);
-        if(tempTile == null || !(tempTile instanceof TileEntityBroadcaster)){
-            return false;
-        }
-
-        TileEntityBroadcaster radio = (TileEntityBroadcaster) tempTile;
-        //TODO: Rewrite GUI stuff
-        //PacketDispatcher.sendPacketToPlayer(new PacketUpdateRadioName(x, y, z, world.provider.dimensionId, radio.getRadioName()).getPacket(), (Player) player);
-
-        //GuiOpener.openGuiOnClient(EnumGui.BROADCASTER_BLOCK, player, x, y, z);
-        return true;
-    }
-
-    @Override
-    public void func_149749_a(World world, int x, int y, int z, Block oldBlock, int oldMeta){
-        if(world.isRemote){
-            return;
-        }
-
-        TileEntity tempTile = world.func_147438_o(x, y, z);
-        if(tempTile == null || !(tempTile instanceof TileEntityBroadcaster)){
-            return;
-        }
-        super.func_149749_a(world, x, y, z, oldBlock, oldMeta);
     }
 }

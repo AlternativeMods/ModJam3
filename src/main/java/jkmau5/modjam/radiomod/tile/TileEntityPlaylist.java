@@ -1,11 +1,16 @@
 package jkmau5.modjam.radiomod.tile;
 
 import com.google.common.collect.Lists;
-import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import io.netty.buffer.ByteBuf;
 import jkmau5.modjam.radiomod.Constants;
 import jkmau5.modjam.radiomod.gui.GuiPlaylist;
+import jkmau5.modjam.radiomod.gui.RMGui;
+import lombok.Getter;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -22,12 +27,39 @@ import java.util.List;
  * You are allowed to change this code,
  * however, not to publish it without my permission.
  */
-public class TileEntityPlaylist extends TileEntityRadioNetwork {
+public class TileEntityPlaylist extends TileEntityRadioNetwork implements IGuiTileEntity, IGuiReturnHandler {
 
+    @Getter
     private List<String> titles = Lists.newArrayList();
 
-    public List<String> getTitles(){
-        return titles;
+    @Override
+    public void readGuiReturnData(ByteBuf buffer){
+        int operation = buffer.readByte();
+        String title = ByteBufUtils.readUTF8String(buffer);
+        if(operation == 0){ //Play song
+            this.network.playSound(Constants.getNormalRecordTitle(title));
+        }else if(operation == 1){ //Remove from list
+            this.removeTitle(Constants.getNormalRecordTitle(title));
+        }
+    }
+
+    @Override
+    public void writeGuiData(ByteBuf buffer){
+        ByteBufUtils.writeVarInt(buffer, this.titles.size(), 4);
+        for(int i = 0; i < this.titles.size(); i++){
+            ByteBufUtils.writeUTF8String(buffer, this.titles.get(i));
+        }
+    }
+
+    @Override
+    public boolean canPlayerOpenGui(EntityPlayer player){
+        return true;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public RMGui getGui(){
+        return new GuiPlaylist(this);
     }
 
     public boolean addTitle(String title){
@@ -69,8 +101,8 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound){
-        super.writeToNBT(par1NBTTagCompound);
+    public void func_145841_b(NBTTagCompound par1NBTTagCompound){
+        super.func_145841_b(par1NBTTagCompound);
 
         NBTTagList tagList = new NBTTagList();
         for(String title : this.titles){
@@ -82,8 +114,8 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-        super.readFromNBT(par1NBTTagCompound);
+    public void func_145839_a(NBTTagCompound par1NBTTagCompound){
+        super.func_145839_a(par1NBTTagCompound);
 
         titles = new ArrayList<String>();
         NBTTagList tagList = par1NBTTagCompound.func_150295_c("titles", 10 /*NBTTagCompound*/);
@@ -91,30 +123,14 @@ public class TileEntityPlaylist extends TileEntityRadioNetwork {
             NBTTagCompound tag = tagList.func_150305_b(i);
             addTitle(tag.getString("title"));
         }
-
-        if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
-            if(GuiPlaylist.playlist == this){
-                GuiPlaylist.updateTitles();
-            }
-        }
     }
 
     public void selectNetworkFromBroadcaster(World world) {
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
             TileEntity tile = world.func_147438_o(this.field_145851_c + dir.offsetX, this.field_145848_d + dir.offsetY, this.field_145849_e + dir.offsetZ);
-            if (tile instanceof TileEntityBroadcaster) this.network = ((TileEntityBroadcaster) tile).network;
+            if (tile instanceof TileEntityBroadcaster){
+                this.network = ((TileEntityBroadcaster) tile).network;
+            }
         }
     }
-
-    /*@Override
-    public Packet getDescriptionPacket(){
-        NBTTagCompound tag = new NBTTagCompound();
-        this.writeToNBT(tag);
-        return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, tag);
-    }
-
-    @Override
-    public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt){
-        readFromNBT(pkt.data);
-    }*/
 }

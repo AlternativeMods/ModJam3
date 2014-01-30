@@ -11,13 +11,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class BlockAntenna extends Block {
+public class BlockAntenna extends RMBlock {
 
     public BlockAntenna(){
-        super(Material.field_151573_f);
+        super("blockAntenna", Material.field_151573_f);
         this.func_149711_c(1.25F);
         this.func_149752_b(7.0F);
-        this.func_149663_c("radioMod.blockAntenna");
         this.func_149647_a(RadioMod.tabRadioMod);
         this.func_149713_g(0);
 
@@ -73,6 +72,7 @@ public class BlockAntenna extends Block {
 
     @Override
     public void func_149695_a(World world, int x, int y, int z, Block block){
+        super.func_149695_a(world, x, y, z, block);
         if(world.getBlockMetadata(x, y, z) == 0 && !this.func_149718_j(world, x, y, z)){
             if(world.getBlockMetadata(x, y, z) == 0) this.func_149697_b(world, x, y, z, 0, 0);
             world.func_147468_f(x, y, z);

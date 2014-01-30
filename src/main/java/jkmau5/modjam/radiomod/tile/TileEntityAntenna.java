@@ -1,35 +1,32 @@
 package jkmau5.modjam.radiomod.tile;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 
-public class TileEntityAntenna extends TileEntityRadioNetwork {
+public class TileEntityAntenna extends TileEntityRadioNetwork implements ISynchronizedTileEntity {
 
     public float yaw = 0f;
 
-    /*@Override
-    public Packet getDescriptionPacket(){
-        NBTTagCompound tag = new NBTTagCompound();
-        this.writeToNBT(tag);
-        return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, tag);
+    @Override
+    public void writeData(ByteBuf buffer){
+        buffer.writeFloat(this.yaw);
     }
 
     @Override
-    public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt){
-        this.readFromNBT(pkt.data);
-    }*/
-
-    //TODO: Write some TileEntity packet stuff
+    public void readData(ByteBuf buffer){
+        this.yaw = buffer.readFloat();
+    }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag){
-        super.readFromNBT(tag);
+    public void func_145839_a(NBTTagCompound tag){
+        super.func_145839_a(tag);
         this.yaw = tag.getFloat("yaw");
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag){
-        super.writeToNBT(tag);
+    public void func_145841_b(NBTTagCompound tag){
+        super.func_145841_b(tag);
         tag.setFloat("yaw", this.yaw);
     }
 
